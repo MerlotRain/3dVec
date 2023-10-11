@@ -1,0 +1,9 @@
+<svg width="400" height="200" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <title>Layer 1</title>
+  <ellipse stroke-width="3.9" stroke-dasharray="5,5" stroke="#FFFACD" ry="80" rx="180" id="svg_4" cy="99.52828" cx="200.47165" fill="#FFDAB9"/>
+  <text transform="matrix(1.10126 0 0 1.65815 -7.9292 -51.2237)" stroke="#000" font-style="italic" xml:space="preserve" text-anchor="start" font-family="'Sora'" font-size="26" id="svg_6" y="99.23654" x="74.01873" stroke-dasharray="5,5" stroke-width="0" fill="#87CEEB">DesktopFramework</text>
+  <text transform="matrix(1.10126 0 0 1.65815 -7.9292 -51.2237)" stroke="#000" font-style="italic" xml:space="preserve" text-anchor="start" font-family="'Sora'" font-size="26" id="svg_8" y="98.66759" x="52.60241" stroke-dasharray="5,5" stroke-width="0" fill="#76A32A">Q</text>
+ </g>
+
+</svg>
