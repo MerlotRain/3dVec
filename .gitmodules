@@ -1,6 +1,6 @@
-[submodule "third_party/Qt-Advanced-Docking-System"]
-    path = third_party/Qt-Advanced-Docking-System
-    url = https://github.com/githubuser0xFFFF/Qt-Advanced-Docking-System.git
-[submodule "third_party/SARibbon"]
-    path = third_party/SARibbon
-    url = https://github.com/czyt1988/SARibbon.git
+[submodule "3rdparty/SARibbon"]
+	path = 3rdparty/SARibbon
+	url = https://github.com/czyt1988/SARibbon.git
+[submodule "3rdparty/Qt-Advanced-Docking-System"]
+	path = 3rdparty/Qt-Advanced-Docking-System
+	url = https://github.com/githubuser0xFFFF/Qt-Advanced-Docking-System.git
