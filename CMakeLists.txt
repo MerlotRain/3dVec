@@ -1,10 +1,9 @@
 cmake_minimum_required(VERSION 3.20)
 project(desktopFramework)
 
-# 提前编译第三方库，然后依赖
-set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
-message("CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}")
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
 
 add_subdirectory(3rdparty/Qt-Advanced-Docking-System)
 add_subdirectory(3rdparty/SARibbon)
