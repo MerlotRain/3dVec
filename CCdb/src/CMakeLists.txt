@@ -1,5 +1,5 @@
 
-target_sources( ${PROJECT_NAME}
+target_sources( CCdb
 	PRIVATE
 	    ${CMAKE_CURRENT_LIST_DIR}/cc2DLabel.cpp
 	    ${CMAKE_CURRENT_LIST_DIR}/cc2DViewportLabel.cpp

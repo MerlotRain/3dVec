@@ -1,24 +1,21 @@
-project( QCC_DB_LIB )
 
-add_library( ${PROJECT_NAME} SHARED )
+add_library( CCdb SHARED )
 
 add_subdirectory( include )
 add_subdirectory( src )
 
-add_subdirectory( extern/CCCoreLib EXCLUDE_FROM_ALL )
-
-target_link_libraries( ${PROJECT_NAME}
+target_link_libraries( CCdb
     CCCoreLib
-    CC_FBO_LIB
 )
 
-target_compile_definitions( ${PROJECT_NAME} PRIVATE QCC_DB_LIBRARY_BUILD QT_NO_KEYWORDS )
+target_compile_definitions( CCdb PRIVATE QCC_DB_LIBRARY_BUILD QT_NO_KEYWORDS )
 
-set_target_properties( ${PROJECT_NAME} PROPERTIES
+set_target_properties( CCdb PROPERTIES
 	CXX_VISIBILITY_PRESET hidden
 )
 
-InstallSharedLibrary( TARGET CCCoreLib )
-InstallSharedLibrary( TARGET ${PROJECT_NAME} )
-
-include( cmake/InstallCGALDependencies.cmake )
+target_link_libraries( CCdb 
+    ${QT_VERSION_BASE}::Core 
+    ${QT_VERSION_BASE}::Gui 
+    ${QT_VERSION_BASE}::Widgets
+    ${QT_VERSION_BASE}::OpenGL)

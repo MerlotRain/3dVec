@@ -1,0 +1,3 @@
+{
+  "cmake.configureArgs": ["-DBUILD_WITH_QT6=ON","-DBUILD_TESTING=OFF"]
+}

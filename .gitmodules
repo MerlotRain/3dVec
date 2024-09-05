@@ -4,6 +4,9 @@
 [submodule "external/libdxfrw"]
 	path = external/libdxfrw
 	url = https://github.com/codelibs/libdxfrw.git
-[submodule "external/CCCoreLib"]
-	path = external/CCCoreLib
-	url = https://github.com/CloudCompare/CCCoreLib.git
+[submodule "external/shapelib"]
+	path = external/shapelib
+	url = https://github.com/OSGeo/shapelib.git
+[submodule "external/libredwg"]
+	path = external/libredwg
+	url = https://github.com/LibreDWG/libredwg.git

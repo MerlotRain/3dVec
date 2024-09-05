@@ -1,5 +1,5 @@
 
-target_sources( ${PROJECT_NAME}
+target_sources( CCdb
 	PRIVATE
 	    ${CMAKE_CURRENT_LIST_DIR}/ccWaveform.h
 		${CMAKE_CURRENT_LIST_DIR}/cc2DLabel.h
@@ -83,7 +83,7 @@ target_sources( ${PROJECT_NAME}
 		${CMAKE_CURRENT_LIST_DIR}/qCC_db.h
 )
 
-target_include_directories( ${PROJECT_NAME}
+target_include_directories( CCdb
 	PUBLIC
 	    ${CMAKE_CURRENT_LIST_DIR}
 )

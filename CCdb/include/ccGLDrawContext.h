@@ -196,11 +196,10 @@ struct ccGLDrawContext
 		, stereoPassIndex(0)
 		, drawRoundedPoints(false)
 	{}
-   
-	template<class TYPE>
-	TYPE *glFunctions() const
-	{				
-		return qGLContext ? qGLContext->versionFunctions<TYPE>() : 0;
+
+    QOpenGLFunctions *glFunctions() const
+    {				
+		return qGLContext ? qGLContext->functions() : 0;
 	}   
 };
 

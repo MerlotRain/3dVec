@@ -1,0 +1,3 @@
+
+add_subdirectory(libdxfrw)
+add_subdirectory(libspatialindex)
