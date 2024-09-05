@@ -1,0 +1,9 @@
+[submodule "external/libspatialindex"]
+	path = external/libspatialindex
+	url = https://github.com/libspatialindex/libspatialindex.git
+[submodule "external/libdxfrw"]
+	path = external/libdxfrw
+	url = https://github.com/codelibs/libdxfrw.git
+[submodule "external/CCCoreLib"]
+	path = external/CCCoreLib
+	url = https://github.com/CloudCompare/CCCoreLib.git
