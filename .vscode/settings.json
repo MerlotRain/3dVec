@@ -1,3 +1,7 @@
 {
-  "cmake.configureArgs": ["-DBUILD_WITH_QT6=ON","-DBUILD_TESTING=OFF"]
+  "cmake.configureArgs": [
+    "-DBUILD_WITH_QT6=OFF",
+    "-DBUILD_TESTING=OFF",
+    "-DQt5_DIR=/opt/homebrew/Cellar/qt@5/5.15.13_1/lib/cmake/Qt5"
+  ]
 }

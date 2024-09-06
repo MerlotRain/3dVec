@@ -10,3 +10,6 @@
 [submodule "external/libredwg"]
 	path = external/libredwg
 	url = https://github.com/LibreDWG/libredwg.git
+[submodule "CCCoreLib"]
+	path = CCCoreLib
+	url = https://github.com/CloudCompare/CCCoreLib.git
