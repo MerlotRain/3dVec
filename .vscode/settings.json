@@ -3,5 +3,21 @@
     "-DBUILD_WITH_QT6=OFF",
     "-DBUILD_TESTING=FALSE",
     "-DQt5_DIR=/opt/homebrew/Cellar/qt@5/5.15.13_1/lib/cmake/Qt5"
-  ]
+  ],
+  "files.associations": {
+    ".fantomasignore": "ignore",
+    "__locale": "cpp",
+    "regex": "cpp",
+    "string": "cpp",
+    "string_view": "cpp",
+    "*.tcc": "cpp",
+    "bitset": "cpp",
+    "quat": "cpp",
+    "vec2d": "cpp",
+    "vec2f": "cpp",
+    "vec3d": "cpp",
+    "vec3f": "cpp",
+    "vec4d": "cpp",
+    "vec4f": "cpp"
+  }
 }
