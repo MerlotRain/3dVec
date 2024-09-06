@@ -197,10 +197,11 @@ struct ccGLDrawContext
 		, drawRoundedPoints(false)
 	{}
 
-    QOpenGLFunctions *glFunctions() const
-    {				
-		return qGLContext ? qGLContext->functions() : 0;
-	}   
+    template<class TYPE>
+    TYPE *glFunctions() const
+    {
+        return qGLContext ? qGLContext->versionFunctions<TYPE>() : 0;
+    }
 };
 
 using CC_DRAW_CONTEXT = ccGLDrawContext;

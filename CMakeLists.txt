@@ -25,6 +25,11 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
 message("QT_VERSION_BASE=${QT_VERSION_BASE}")
 find_package(${QT_VERSION_BASE} COMPONENTS Core Gui Widgets Concurrent OpenGL OpenGLExtensions REQUIRED)
 
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
 add_subdirectory(external)
 add_subdirectory(CCCoreLib)
+add_subdirectory(CCFbo)
 add_subdirectory(CCdb)

@@ -6,6 +6,7 @@ add_subdirectory( src )
 
 target_link_libraries( CCdb
     CCCoreLib
+    CCFbo
 )
 
 target_compile_definitions( CCdb PRIVATE QCC_DB_LIBRARY_BUILD QT_NO_KEYWORDS )

@@ -310,8 +310,11 @@ static const double s_viridis[] =
 
 struct ColorStep
 {
+    ColorStep (uint8_t r, uint8_t g, uint8_t b, double p)
+	: red(r), green(g), blue(b), pos(p)
+	{}
 	uint8_t red = 0;
-	uint8_t green = 0;
+    uint8_t green = 0;
 	uint8_t blue = 0;
 	double pos = 0.0;
 };

@@ -25,6 +25,7 @@
 #include <ccOctree.h>
 #include <ccGenericPointCloud.h>
 
+
 ccOctreeSpinBox::ccOctreeSpinBox(QWidget* parent/*=nullptr*/)
 	: QSpinBox(parent)
 	, m_octreeBoxWidth(0)
@@ -32,7 +33,7 @@ ccOctreeSpinBox::ccOctreeSpinBox(QWidget* parent/*=nullptr*/)
 	setRange(0, CCCoreLib::DgmOctree::MAX_OCTREE_LEVEL);
 	
 	//we'll catch any modification of the spinbox value and update the suffix consequently
-	connect(this, qOverload<int>(&ccOctreeSpinBox::valueChanged), this, &ccOctreeSpinBox::onValueChange);
+	connect(this, QOverload<int>::of(&ccOctreeSpinBox::valueChanged), this, &ccOctreeSpinBox::onValueChange);
 }
 
 void ccOctreeSpinBox::setCloud(ccGenericPointCloud* cloud)
