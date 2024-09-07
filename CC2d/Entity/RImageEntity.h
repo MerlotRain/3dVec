@@ -26,7 +26,6 @@
 #include "RImageData.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Point entity.
@@ -95,9 +94,6 @@ public:
     getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
                 bool noAttributes = false, bool showOnRequest = false);
 
-    virtual void exportEntity(RExporter &e, bool preview = false,
-                              bool forceSelected = false) const;
-
     virtual RImageData &getData() { return data; }
 
     virtual const RImageData &getData() const { return data; }
@@ -141,14 +137,8 @@ public:
     int getPixelHeight() const { return data.getPixelHeight(); }
 
 protected:
-    virtual void print(QDebug dbg) const;
-
-protected:
     RImageData data;
 };
 
-Q_DECLARE_METATYPE(RImageEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RImageEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RImageEntity> *)
 
 #endif

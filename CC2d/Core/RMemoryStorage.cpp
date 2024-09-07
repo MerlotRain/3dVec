@@ -1013,7 +1013,6 @@ void RMemoryStorage::setObjectHandle(RObject &object,
         else
         {
             qWarning() << "collision with object of type:" << obj->getType();
-            //obj->dump();
         }
         objectHandle = getNewObjectHandle();
         qWarning() << "new handle" << QString("0x%1").arg(objectHandle, 0, 16);

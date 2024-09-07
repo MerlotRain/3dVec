@@ -17,10 +17,7 @@
  * along with QCAD.
  */
 #include "RPolylineEntity.h"
-#include "RExporter.h"
 #include "RLine.h"
-#include "RMetaTypes.h"
-#include "RPluginLoader.h"
 
 RPropertyTypeId RPolylineEntity::PropertyCustom;
 RPropertyTypeId RPolylineEntity::PropertyHandle;
@@ -168,16 +165,6 @@ void RPolylineEntity::init()
     RPolylineEntity::PropertyTotalLength.generateId(
             RPolylineEntity::getRtti(), "",
             QT_TRANSLATE_NOOP("REntity", "Total Length"));
-
-    if (RPluginLoader::hasPlugin("PROTOOLS"))
-    {
-        RPolylineEntity::PropertyArea.generateId(
-                RPolylineEntity::getRtti(), "",
-                QT_TRANSLATE_NOOP("REntity", "Area"));
-        RPolylineEntity::PropertyTotalArea.generateId(
-                RPolylineEntity::getRtti(), "",
-                QT_TRANSLATE_NOOP("REntity", "Total Area"));
-    }
 
     RPolylineEntity::PropertyBaseAngle.generateId(
             RPolylineEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Size"),
@@ -469,26 +456,6 @@ RPolylineEntity::getProperty(RPropertyTypeId &propertyTypeId,
 
     return REntity::getProperty(propertyTypeId, humanReadable, noAttributes,
                                 showOnRequest);
-}
-
-
-void RPolylineEntity::exportEntity(RExporter &e, bool preview,
-                                   bool forceSelected) const
-{
-    Q_UNUSED(preview);
-    Q_UNUSED(forceSelected);
-
-    e.setBrush(Qt::NoBrush);
-
-    e.exportPolyline(data, data.getPolylineGen());
-}
-
-void RPolylineEntity::print(QDebug dbg) const
-{
-    dbg.nospace() << "RPolylineEntity(";
-    REntity::print(dbg);
-    data.print(dbg);
-    dbg.nospace() << ")";
 }
 
 bool RPolylineEntity::validate()

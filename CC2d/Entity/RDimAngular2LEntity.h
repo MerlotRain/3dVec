@@ -20,13 +20,12 @@
 #ifndef RDIMANGULAR2LENTITY_H
 #define RDIMANGULAR2LENTITY_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RDimAngular2LData.h"
 #include "RDimAngularEntity.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Angular dimension entity from 2 lines class.
@@ -168,15 +167,10 @@ public:
 
     RVector getCenter() const { return getData().getCenter(); }
 
-protected:
-    virtual void print(QDebug dbg) const;
 
 protected:
     RDimAngular2LData data;
 };
 
-Q_DECLARE_METATYPE(RDimAngular2LEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimAngular2LEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RDimAngular2LEntity> *)
 
 #endif

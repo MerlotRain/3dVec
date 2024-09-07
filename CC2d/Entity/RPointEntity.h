@@ -26,7 +26,6 @@
 #include "RPointData.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Point entity.
@@ -79,9 +78,6 @@ public:
     getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
                 bool noAttributes = false, bool showOnRequest = false);
 
-    virtual void exportEntity(RExporter &e, bool preview = false,
-                              bool forceSelected = false) const;
-
     virtual RPointData &getData() { return data; }
 
     virtual const RPointData &getData() const { return data; }
@@ -89,14 +85,7 @@ public:
     RVector getPosition() const { return data.getPosition(); }
 
 protected:
-    virtual void print(QDebug dbg) const;
-
-protected:
     RPointData data;
 };
-
-Q_DECLARE_METATYPE(RPointEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RPointEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RPointEntity> *)
 
 #endif

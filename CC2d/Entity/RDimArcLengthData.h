@@ -20,7 +20,7 @@
 #ifndef RDIMARCLENGTHDATA_H
 #define RDIMARCLENGTHDATA_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RArc.h"
 #include "RDimAngularData.h"
@@ -115,9 +115,5 @@ private:
     int arcSymbolType;
 };
 
-Q_DECLARE_METATYPE(RDimArcLengthData)
-Q_DECLARE_METATYPE(RDimArcLengthData *)
-Q_DECLARE_METATYPE(const RDimArcLengthData *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimArcLengthData>)
 
 #endif

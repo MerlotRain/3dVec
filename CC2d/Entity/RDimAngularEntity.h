@@ -20,13 +20,12 @@
 #ifndef RDIMANGULARENTITY_H
 #define RDIMANGULARENTITY_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RDimAngularData.h"
 #include "RDimensionEntity.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Angular dimension entity base class.
@@ -145,15 +144,9 @@ public:
 
     virtual RArc getDimensionArc() const { return getData().getDimensionArc(); }
 
-protected:
-    virtual void print(QDebug dbg) const;
 
     //protected:
     //RDimAngularData data;
 };
-
-Q_DECLARE_METATYPE(RDimAngularEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimAngularEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RDimAngularEntity> *)
 
 #endif

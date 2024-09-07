@@ -18,7 +18,6 @@
  */
 #include "RCircleEntity.h"
 #include "RArcEntity.h"
-#include "RExporter.h"
 #include "RPoint.h"
 
 RPropertyTypeId RCircleEntity::PropertyCustom;
@@ -240,28 +239,9 @@ RCircleEntity::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
                                 showOnRequest);
 }
 
-
-void RCircleEntity::exportEntity(RExporter &e, bool preview,
-                                 bool forceSelected) const
-{
-    Q_UNUSED(preview)
-    Q_UNUSED(forceSelected)
-
-    e.setBrush(Qt::NoBrush);
-    e.exportCircle(data);
-}
-
 QSharedPointer<REntity>
 RCircleEntity::scaleNonUniform(const RVector &scaleFactors,
                                const RVector &center)
 {
     return RArcEntity::scaleNonUniform(*this, scaleFactors, center);
-}
-
-void RCircleEntity::print(QDebug dbg) const
-{
-    dbg.nospace() << "RCircleEntity(";
-    REntity::print(dbg);
-    dbg.nospace() << ", center: " << getCenter();
-    dbg.nospace() << ", radius: " << getRadius() << ")";
 }

@@ -20,13 +20,12 @@
 #ifndef RDIMALIGNEDENTITY_H
 #define RDIMALIGNEDENTITY_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RDimAlignedData.h"
 #include "RDimLinearEntity.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Aligned dimension entity class.
@@ -148,14 +147,8 @@ public:
     double getAngle() const { return data.getAngle(); }
 
 protected:
-    virtual void print(QDebug dbg) const;
-
-protected:
     RDimAlignedData data;
 };
 
-Q_DECLARE_METATYPE(RDimAlignedEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimAlignedEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RDimAlignedEntity> *)
 
 #endif

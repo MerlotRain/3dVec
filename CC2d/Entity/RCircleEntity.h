@@ -26,7 +26,6 @@
 #include "REntity.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Circle entity.
@@ -86,9 +85,6 @@ public:
     getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
                 bool noAttributes = false, bool showOnRequest = false);
 
-    virtual void exportEntity(RExporter &e, bool preview = false,
-                              bool forceSelected = false) const;
-
     virtual QSharedPointer<REntity> scaleNonUniform(const RVector &scaleFactors,
                                                     const RVector &center);
 
@@ -105,14 +101,7 @@ public:
     double getLength() const { return data.getLength(); }
 
 protected:
-    virtual void print(QDebug dbg) const;
-
-protected:
     RCircleData data;
 };
-
-Q_DECLARE_METATYPE(RCircleEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RCircleEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RCircleEntity> *)
 
 #endif

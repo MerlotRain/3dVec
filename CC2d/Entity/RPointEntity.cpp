@@ -17,7 +17,6 @@
  * along with QCAD.
  */
 #include "RPointEntity.h"
-#include "RExporter.h"
 #include "RPoint.h"
 
 RPropertyTypeId RPointEntity::PropertyCustom;
@@ -131,22 +130,4 @@ RPointEntity::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
     }
     return REntity::getProperty(propertyTypeId, humanReadable, noAttributes,
                                 showOnRequest);
-}
-
-
-void RPointEntity::exportEntity(RExporter &e, bool preview,
-                                bool forceSelected) const
-{
-    Q_UNUSED(preview);
-    Q_UNUSED(forceSelected);
-
-    e.setBrush(Qt::NoBrush);
-    e.exportPoint(data);
-}
-
-void RPointEntity::print(QDebug dbg) const
-{
-    dbg.nospace() << "RPointEntity(";
-    REntity::print(dbg);
-    dbg.nospace() << ", position: " << getPosition() << ")";
 }

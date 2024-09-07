@@ -20,13 +20,12 @@
 #ifndef RDIMANGULAR3PENTITY_H
 #define RDIMANGULAR3PENTITY_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RDimAngular3PData.h"
 #include "RDimAngularEntity.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Angular dimension from 3 points entity class.
@@ -146,15 +145,10 @@ public:
 
     RVector getCenter() const { return getData().getCenter(); }
 
-protected:
-    virtual void print(QDebug dbg) const;
 
 protected:
     RDimAngular3PData data;
 };
 
-Q_DECLARE_METATYPE(RDimAngular3PEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimAngular3PEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RDimAngular3PEntity> *)
 
 #endif

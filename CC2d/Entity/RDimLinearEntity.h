@@ -20,13 +20,12 @@
 #ifndef RDIMLINEARENTITY_H
 #define RDIMLINEARENTITY_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RDimLinearData.h"
 #include "RDimensionEntity.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Linear dimension entity base class.
@@ -143,13 +142,6 @@ public:
     {
         return getData().getExtensionPoint2();
     }
-
-protected:
-    virtual void print(QDebug dbg) const;
 };
-
-Q_DECLARE_METATYPE(RDimLinearEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimLinearEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RDimLinearEntity> *)
 
 #endif

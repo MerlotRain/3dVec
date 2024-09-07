@@ -18,6 +18,8 @@
  */
 
 #include "RGlobal.h"
+#include <QDir>
+#include <QFileInfo>
 
 const double RS::PointTolerance = 1.0e-9;
 const double RS::AngleTolerance = 1.0e-9;
@@ -25,38 +27,26 @@ const double RS::AngleTolerance = 1.0e-9;
 
 bool RS::exactMatch(const QRegularExpression &rx, const QString &string)
 {
-#if QT_VERSION >= 0x050000
     QString pat = rx.pattern();
     pat = "^" + pat + "$";
     QRegularExpression rxExact(pat);
     return rxExact.match(string).hasMatch();
-#else
-    return rx.exactMatch(string);
-#endif
 }
 
 bool RS::exactMatch(const QRegularExpression &rx,
                     QRegularExpressionMatch &match, const QString &string)
 {
-#if QT_VERSION >= 0x050000
     QString pat = rx.pattern();
     pat = "^" + pat + "$";
     QRegularExpression rxExact(pat);
     match = rxExact.match(string);
     return match.hasMatch();
-#else
-    return rx.exactMatch(string);
-#endif
 }
 
 bool RS::exactMatch(const QString &rxStr, const QString &string)
 {
     QRegularExpression rx("^" + rxStr + "$");
-#if QT_VERSION >= 0x050000
     return rx.match(string).hasMatch();
-#else
-    return rx.exactMatch(string);
-#endif
 }
 
 
@@ -159,19 +149,123 @@ bool RS::lessThanAlphanumerical(const QString &s1, const QString &s2)
 int RS::indexIn(const QRegularExpression &rx, QRegularExpressionMatch &match,
                 const QString &string, int from)
 {
-#if QT_VERSION >= 0x050000
     return (int) string.indexOf(rx, from, &match);
-#else
-    return rx.indexIn(string, from);
-#endif
 }
 
 int RS::matchedLength(const QRegularExpression &rx,
                       const QRegularExpressionMatch &match)
 {
-#if QT_VERSION >= 0x050000
     return (int) match.capturedLength();
+}
+
+/**
+ * \return List of all directories in subdirectory 'subDirectory' in
+ * all possible QCAD directories.
+ */
+QStringList RS::getDirectoryList(const QString &subDirectory)
+{
+    QStringList dirList;
+
+    QString appDir = QCoreApplication::applicationDirPath();
+    QFileInfo fi(appDir);
+    if (fi.fileName() == "debug" || fi.fileName() == "release")
+    {
+        appDir = fi.absolutePath();
+    }
+
+#ifdef Q_OS_MAC
+    // macOS app bundle:
+    dirList.append(appDir + "/../Resources/" + subDirectory);
+    dirList.append(appDir + "/../../../" + subDirectory);
+    dirList.append(QDir::currentPath() + "/" + subDirectory);
 #else
-    return rx.matchedLength();
+    dirList.append(appDir + "/" + subDirectory);
 #endif
+
+    /*
+#ifdef Q_OS_MAC
+    if (subDirectory!="library") {
+#endif
+        //local (application) directory has priority over other dirs:
+        dirList.append(appDir + QDir::separator() + subDirectory);
+
+ #ifdef Q_OS_LINUX
+        QString appDirName = QSettings.applicationName();
+        // Redhat style:
+        dirList.append("/usr/share/" + appDirName + "/" + subDirectory);
+
+        // SuSE style:
+        dirList.append("/usr/X11R6/" + appDirName + "/" + subDirectory);
+
+        dirList.append("/usr/X11R6/share/" + appDirName + "/" + subDirectory);
+        dirList.append(QDir::homePath() + "/." + appDirName + "/" + subDirectory);
+#endif
+
+#ifdef Q_OS_MAC
+    }
+#endif
+    */
+
+    // add a path to users home (config dir) to be used to extend pattern, linetypes, etc.
+    dirList.append("/" + subDirectory);
+    dirList.append("/" + subDirectory);
+
+    QStringList ret;
+    for (int i = 0; i < dirList.size(); i++)
+    {
+        QFileInfo fi(dirList.at(i));
+        QString dir = fi.canonicalFilePath();
+        if (fi.isDir() && !ret.contains(dir)) { ret.append(dir); }
+    }
+
+    return ret;
+}
+
+QStringList RS::getFileList(const QString &subDirectory,
+                            const QString &fileExtension)
+{
+
+    QStringList dirList = getDirectoryList(subDirectory);
+
+    QStringList fileList;
+    QString path;
+    QDir dir;
+
+    for (int i = 0; i < dirList.size(); ++i)
+    {
+        path = dirList.at(i);
+        dir = QDir(path);
+
+        if (dir.exists() && dir.isReadable())
+        {
+            // this seems to be case insensitive by default:
+            QStringList files = dir.entryList(QStringList("*." + fileExtension),
+                                              QDir::Files | QDir::Readable);
+            for (int k = 0; k < files.size(); ++k)
+            {
+                QString f = path + QDir::separator() + files.at(k);
+                fileList.append(f);
+            }
+        }
+    }
+
+    return fileList;
+}
+
+/**
+ * \return A list of absolute paths to all pattern files found.
+ */
+QStringList RS::getPatternList(bool metric)
+{
+    if (metric) { return getFileList("patterns/metric", "pat"); }
+    else { return getFileList("patterns/imperial", "pat"); }
+}
+
+/**
+ * \return A list of absolute paths to all pattern files found.
+ */
+QStringList RS::getLinetypeList(bool metric)
+{
+    if (metric) { return getFileList("linetypes/metric", "lin"); }
+    else { return getFileList("linetypes/imperial", "lin"); }
 }

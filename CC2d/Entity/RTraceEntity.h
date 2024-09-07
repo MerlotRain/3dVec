@@ -26,7 +26,7 @@
 #include "RTraceData.h"
 
 class RDocument;
-class RExporter;
+
 
 /**
  * Trace entity.
@@ -91,9 +91,6 @@ public:
     getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
                 bool noAttributes = false, bool showOnRequest = false);
 
-    virtual void exportEntity(RExporter &e, bool preview = false,
-                              bool forceSelected = false) const;
-
     virtual RTraceData &getData() { return data; }
 
     virtual const RTraceData &getData() const { return data; }
@@ -133,14 +130,7 @@ public:
     double getLength() const { return data.getLength(); }
 
 protected:
-    virtual void print(QDebug dbg) const;
-
-protected:
     RTraceData data;
 };
-
-Q_DECLARE_METATYPE(RTraceEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RTraceEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RTraceEntity> *)
 
 #endif

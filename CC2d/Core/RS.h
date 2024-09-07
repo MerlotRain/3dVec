@@ -43,15 +43,8 @@
 #endif
 #endif
 
-#if QT_VERSION >= 0x050000
 #include <QGuiApplication>
 #include <QRegularExpression>
-#else
-#include <QRegExp>
-#ifndef QRegularExpression
-#define QRegularExpression QRegExp
-#endif
-#endif
 
 #if QT_VERSION >= 0x060000
 #ifndef qSort
@@ -118,18 +111,6 @@ class RPropertyAttributes;
 #define REASING_INOUTBOUNCE QEasingCurve::InOutBounce
 #define REASING_OUTINBOUNCE QEasingCurve::OutInBounce
 
-
-#if QT_VERSION < 0x050000
-class QRegularExpressionMatch
-{
-};
-/*
-#  ifndef QRegularExpressionMatch
-#    define QRegularExpressionMatch int
-#  endif
-*/
-#endif
-
 /**
  * Class namespace for various global enums.
  *
@@ -144,62 +125,6 @@ class QRegularExpressionMatch
 class QCADCORE_EXPORT RS
 {
 public:
-    enum MetaType
-    {
-        Bool = QVariant::Bool,
-        Char = QVariant::Char,
-        Double = QVariant::Double,
-        Int = QVariant::Int,
-        UnknownType = QVariant::Invalid,
-        LongLong = QVariant::LongLong,
-        BitArray = QVariant::BitArray,
-        Bitmap = QVariant::Bitmap,
-        Brush = QVariant::Brush,
-        ByteArray = QVariant::ByteArray,
-        Color = QVariant::Color,
-        Cursor = QVariant::Cursor,
-        Date = QVariant::Date,
-        DateTime = QVariant::DateTime,
-        EasingCurve = QVariant::EasingCurve,
-        Font = QVariant::Font,
-        Hash = QVariant::Hash,
-        Icon = QVariant::Icon,
-        Image = QVariant::Image,
-        KeySequence = QVariant::KeySequence,
-        Line = QVariant::Line,
-        LineF = QVariant::LineF,
-        List = QVariant::List,
-        Locale = QVariant::Locale,
-        Map = QVariant::Map,
-        Matrix4x4 = QVariant::Matrix4x4,
-        Palette = QVariant::Palette,
-        Pen = QVariant::Pen,
-        Pixmap = QVariant::Pixmap,
-        Point = QVariant::Point,
-        PointF = QVariant::PointF,
-        Polygon = QVariant::Polygon,
-        Rect = QVariant::Rect,
-        RectF = QVariant::RectF,
-        Region = QVariant::Region,
-        Size = QVariant::Size,
-        SizeF = QVariant::SizeF,
-        SizePolicy = QVariant::SizePolicy,
-        String = QVariant::String,
-        StringList = QVariant::StringList,
-        TextFormat = QVariant::TextFormat,
-        TextLength = QVariant::TextLength,
-        Time = QVariant::Time,
-        Transform = QVariant::Transform,
-        Url = QVariant::Url,
-        Vector2D = QVariant::Vector2D,
-        Vector3D = QVariant::Vector3D,
-        Vector4D = QVariant::Vector4D,
-        Quaternion = QVariant::Quaternion,
-        UInt = QVariant::UInt,
-        ULongLong = QVariant::ULongLong,
-        UserType = QVariant::UserType
-    };
-
     /**
      * Message type for debugging and displaying user messages.
      */
@@ -835,6 +760,36 @@ public:
     static QStringList compareChunkify(const QString &s);
     static int compareAlphanumerical(const QString &s1, const QString &s2);
     static bool lessThanAlphanumerical(const QString &s1, const QString &s2);
+
+    template<class T>
+    static T mapValueCaseInsensitive(const QMap<QString, T> &map,
+                                     const QString &key)
+    {
+        QMapIterator<QString, T> it(map);
+        while (it.hasNext())
+        {
+            it.next();
+            if (QString::compare(it.key(), key, Qt::CaseInsensitive) == 0)
+            {
+                return it.value();
+            }
+        }
+
+        return T();
+    }
+
+    template<class T>
+    static bool mapContainsCaseInsensitive(const QMap<QString, T> &map,
+                                           const QString &key)
+    {
+        return QStringList(map.keys()).contains(key, Qt::CaseInsensitive);
+    }
+
+    static QStringList getDirectoryList(const QString &subDirectory);
+    static QStringList getFileList(const QString &subDirectory,
+                                   const QString &fileExtension);
+    static QStringList getPatternList(bool metric);
+    static QStringList getLinetypeList(bool metric);
 };
 
 #endif

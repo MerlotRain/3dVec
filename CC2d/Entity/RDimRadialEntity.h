@@ -20,13 +20,12 @@
 #ifndef RDIMRADIALENTITY_H
 #define RDIMRADIALENTITY_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RDimRadialData.h"
 #include "RDimensionEntity.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Aligned dimension entity class.
@@ -138,15 +137,9 @@ public:
 
     RVector getChordPoint() const { return data.getChordPoint(); }
 
-protected:
-    virtual void print(QDebug dbg) const;
 
 protected:
     RDimRadialData data;
 };
-
-Q_DECLARE_METATYPE(RDimRadialEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimRadialEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RDimRadialEntity> *)
 
 #endif

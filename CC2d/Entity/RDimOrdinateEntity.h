@@ -20,13 +20,12 @@
 #ifndef RDIMORDINATEENTITY_H
 #define RDIMORDINATEENTITY_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RDimOrdinateData.h"
 #include "RDimensionEntity.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Ordinate dimension entity class.
@@ -137,15 +136,9 @@ public:
 
     bool isMeasuringXAxis() const { return data.isMeasuringXAxis(); }
 
-protected:
-    virtual void print(QDebug dbg) const;
 
 protected:
     RDimOrdinateData data;
 };
-
-Q_DECLARE_METATYPE(RDimOrdinateEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimOrdinateEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RDimOrdinateEntity> *)
 
 #endif

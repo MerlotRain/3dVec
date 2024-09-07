@@ -20,7 +20,7 @@
 #ifndef RDIMENSIONDATA_H
 #define RDIMENSIONDATA_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RColor.h"
 #include "RDocument.h"
@@ -541,9 +541,5 @@ protected:
 
     mutable QList<QSharedPointer<RShape>> shapes;
 };
-
-Q_DECLARE_METATYPE(RDimensionData *)
-Q_DECLARE_METATYPE(const RDimensionData *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimensionData>)
 
 #endif

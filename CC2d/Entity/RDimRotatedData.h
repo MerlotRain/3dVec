@@ -20,7 +20,7 @@
 #ifndef RDIMROTATEDDATA_H
 #define RDIMROTATEDDATA_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RDimLinearData.h"
 #include "RDocument.h"
@@ -83,10 +83,5 @@ private:
     /** Fixed angle of dimension line in rad. */
     double rotation;
 };
-
-Q_DECLARE_METATYPE(RDimRotatedData)
-Q_DECLARE_METATYPE(RDimRotatedData *)
-Q_DECLARE_METATYPE(const RDimRotatedData *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimRotatedData>)
 
 #endif

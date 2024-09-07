@@ -20,7 +20,7 @@
 #ifndef RDIMORDINATEDATA_H
 #define RDIMORDINATEDATA_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RDimLinearData.h"
 #include "RDocument.h"
@@ -121,10 +121,5 @@ private:
     /** True: measures x-value, false: y-value */
     bool xType;
 };
-
-Q_DECLARE_METATYPE(RDimOrdinateData)
-Q_DECLARE_METATYPE(RDimOrdinateData *)
-Q_DECLARE_METATYPE(const RDimOrdinateData *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimOrdinateData>)
 
 #endif

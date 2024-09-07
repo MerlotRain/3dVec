@@ -200,9 +200,4 @@ private:
     bool fixedAngle;
 };
 
-Q_DECLARE_METATYPE(RRayData)
-Q_DECLARE_METATYPE(RRayData *)
-Q_DECLARE_METATYPE(const RRayData *)
-Q_DECLARE_METATYPE(QSharedPointer<RRayData>)
-
 #endif

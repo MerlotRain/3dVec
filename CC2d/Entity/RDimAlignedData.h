@@ -20,7 +20,7 @@
 #ifndef RDIMALIGNEDDATA_H
 #define RDIMALIGNEDDATA_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RDimLinearData.h"
 #include "RDocument.h"
@@ -89,9 +89,5 @@ private:
     mutable RVector refDefinitionPoint2;
 };
 
-Q_DECLARE_METATYPE(RDimAlignedData)
-Q_DECLARE_METATYPE(RDimAlignedData *)
-Q_DECLARE_METATYPE(const RDimAlignedData *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimAlignedData>)
 
 #endif

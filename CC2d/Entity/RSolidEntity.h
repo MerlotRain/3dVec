@@ -26,7 +26,6 @@
 #include "RSolidData.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Solid entity.
@@ -91,9 +90,6 @@ public:
     getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
                 bool noAttributes = false, bool showOnRequest = false);
 
-    virtual void exportEntity(RExporter &e, bool preview = false,
-                              bool forceSelected = false) const;
-
     virtual RSolidData &getData() { return data; }
 
     virtual const RSolidData &getData() const { return data; }
@@ -138,14 +134,7 @@ public:
     }
 
 protected:
-    virtual void print(QDebug dbg) const;
-
-protected:
     RSolidData data;
 };
-
-Q_DECLARE_METATYPE(RSolidEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RSolidEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RSolidEntity> *)
 
 #endif

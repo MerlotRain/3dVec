@@ -294,8 +294,6 @@ public:
         return RPolyline::getExploded(segments);
     }
 
-    RPainterPath toPainterPath() const { return RPolyline::toPainterPath(); }
-
     void simplify(double angleTolerance)
     {
         RPolyline::simplify(angleTolerance);
@@ -330,10 +328,5 @@ public:
 protected:
     bool polylineGen;
 };
-
-Q_DECLARE_METATYPE(RPolylineData)
-Q_DECLARE_METATYPE(RPolylineData *)
-Q_DECLARE_METATYPE(const RPolylineData *)
-Q_DECLARE_METATYPE(QSharedPointer<RPolylineData>)
 
 #endif

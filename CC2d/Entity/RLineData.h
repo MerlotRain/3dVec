@@ -198,9 +198,4 @@ public:
     }
 };
 
-Q_DECLARE_METATYPE(RLineData)
-Q_DECLARE_METATYPE(RLineData *)
-Q_DECLARE_METATYPE(const RLineData *)
-Q_DECLARE_METATYPE(QSharedPointer<RLineData>)
-
 #endif

@@ -22,9 +22,15 @@ set(core_SRCS
     RLinkedStorage.cpp
     RMemoryStorage.cpp
     RObject.cpp
+    RPattern.cpp
+    RPatternLine.cpp
+    RPatternList.cpp
+    RPatternListImperial.cpp
+    RPatternListMetric.cpp
     RPropertyAttributes.cpp
     RPropertyChange.cpp
     RPropertyTypeId.cpp
+    RResourceList.cpp
     RS.cpp
     RSpatialIndex.cpp
     RSpatialIndexSimple.cpp
@@ -37,6 +43,9 @@ set(core_SRCS
     RView.cpp
     RViewportData.cpp
     RViewportEntity.cpp
+    RTextBasedData.cpp
+    RTextLayout.cpp
+    RTextBasedEntity.cpp
 
     math/RArc.cpp
     math/RBox.cpp
@@ -82,9 +91,15 @@ set(core_HDRS
     RLinkedStorage.h
     RMemoryStorage.h
     RObject.h
+    RPattern.h
+    RPatternLine.h
+    RPatternList.h
+    RPatternListImperial.h
+    RPatternListMetric.h
     RPropertyAttributes.h
     RPropertyChange.h
     RPropertyTypeId.h
+    RResourceList.h
     RS.h
     RSpatialIndex.h
     RSpatialIndexSimple.h
@@ -98,6 +113,9 @@ set(core_HDRS
     RView.h
     RViewportData.h
     RViewportEntity.h
+    RTextBasedData.h
+    RTextLayout.h
+    RTextBasedEntity.h
 
     math/RArc.h
     math/RBox.h

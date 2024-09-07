@@ -194,7 +194,7 @@ RObject::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
             QVariantMap vm = customProperties.value(appId);
             if (vm.contains(name))
             {
-                if (RS::getMetaType(vm.value(name)) == RS::Int)
+                if (RS::getMetaType(vm.value(name)) == QVariant::Int)
                 {
                     return qMakePair(
                             vm.value(name),
@@ -572,15 +572,16 @@ double RObject::getCustomDoubleProperty(const QString &title,
                                         double defaultValue) const
 {
     QVariant ret = getCustomProperty(title, key, defaultValue);
-    if (RS::getMetaType(ret) == RS::Double || RS::getMetaType(ret) == RS::Int ||
-        RS::getMetaType(ret) == RS::UInt ||
-        RS::getMetaType(ret) == RS::LongLong ||
-        RS::getMetaType(ret) == RS::ULongLong)
+    if (RS::getMetaType(ret) == QVariant::Double ||
+        RS::getMetaType(ret) == QVariant::Int ||
+        RS::getMetaType(ret) == QVariant::UInt ||
+        RS::getMetaType(ret) == QVariant::LongLong ||
+        RS::getMetaType(ret) == QVariant::ULongLong)
     {
 
         return ret.toDouble();
     }
-    if (RS::getMetaType(ret) == RS::String)
+    if (RS::getMetaType(ret) == QVariant::String)
     {
         QString s = ret.toString();
         bool ok;
@@ -594,8 +595,8 @@ int RObject::getCustomIntProperty(const QString &title, const QString &key,
                                   int defaultValue) const
 {
     QVariant ret = getCustomProperty(title, key, defaultValue);
-    if (RS::getMetaType(ret) == RS::Int) { return ret.toInt(); }
-    if (RS::getMetaType(ret) == RS::String)
+    if (RS::getMetaType(ret) == QVariant::Int) { return ret.toInt(); }
+    if (RS::getMetaType(ret) == QVariant::String)
     {
         QString s = ret.toString();
         bool ok;
@@ -609,8 +610,8 @@ bool RObject::getCustomBoolProperty(const QString &title, const QString &key,
                                     bool defaultValue) const
 {
     QVariant ret = getCustomProperty(title, key, defaultValue);
-    if (RS::getMetaType(ret) == RS::Bool) { return ret.toBool(); }
-    if (RS::getMetaType(ret) == RS::String)
+    if (RS::getMetaType(ret) == QVariant::Bool) { return ret.toBool(); }
+    if (RS::getMetaType(ret) == QVariant::String)
     {
         QString s = ret.toString().toLower();
         return s == "true" || s == "1";
@@ -631,9 +632,7 @@ void RObject::setCustomProperty(const QString &title, const QString &key,
     customProperties[title].insert(key, value);
 }
 
-void RObject::setCustomProperties(const RQMapQStringQString &properties)
-{
-}
+void RObject::setCustomProperties(const RQMapQStringQString &properties) {}
 
 /**
  * Removes the custom property with the given name.

@@ -20,13 +20,12 @@
 #ifndef RDIMROTATEDENTITY_H
 #define RDIMROTATEDENTITY_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RDimLinearEntity.h"
 #include "RDimRotatedData.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Rotated, linear dimension entity class.
@@ -153,15 +152,9 @@ public:
 
     double getRotation() const { return data.getRotation(); }
 
-protected:
-    virtual void print(QDebug dbg) const;
 
 protected:
     RDimRotatedData data;
 };
-
-Q_DECLARE_METATYPE(RDimRotatedEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimRotatedEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RDimRotatedEntity> *)
 
 #endif

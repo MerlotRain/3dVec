@@ -26,7 +26,6 @@
 #include "RWipeoutData.h"
 
 class RDocument;
-class RExporter;
 class RArc;
 class RLine;
 
@@ -114,9 +113,6 @@ public:
     getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
                 bool noAttributes = false, bool showOnRequest = false);
 
-    virtual void exportEntity(RExporter &e, bool preview = false,
-                              bool forceSelected = false) const;
-
     void setShape(const RPolyline &l);
 
     bool getShowFrame() const { return data.getShowFrame(); }
@@ -148,9 +144,4 @@ public:
 protected:
     RWipeoutData data;
 };
-
-Q_DECLARE_METATYPE(RWipeoutEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RWipeoutEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RWipeoutEntity> *)
-
 #endif

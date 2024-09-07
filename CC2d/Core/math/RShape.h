@@ -556,8 +556,6 @@ public:
     static QSharedPointer<RShape>
     ellipseToArcCircleEllipse(const REllipse &ellipse);
 
-    void dump() const;
-
     static bool hasProxy() { return shapeProxy != NULL; }
 
     /**

@@ -20,7 +20,7 @@
 #ifndef RDIMANGULAR3PDATA_H
 #define RDIMANGULAR3PDATA_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RArc.h"
 #include "RDimAngularData.h"
@@ -103,9 +103,5 @@ private:
     //RVector dimArcPosition;
 };
 
-Q_DECLARE_METATYPE(RDimAngular3PData)
-Q_DECLARE_METATYPE(RDimAngular3PData *)
-Q_DECLARE_METATYPE(const RDimAngular3PData *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimAngular3PData>)
 
 #endif

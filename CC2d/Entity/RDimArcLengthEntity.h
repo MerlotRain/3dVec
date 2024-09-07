@@ -20,13 +20,12 @@
 #ifndef RDIMARCLENGTHENTITY_H
 #define RDIMARCLENGTHENTITY_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RDimAngularEntity.h"
 #include "RDimArcLengthData.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Arc length dimension entity class.
@@ -149,15 +148,10 @@ public:
 
     RVector getCenter() const { return getData().getCenter(); }
 
-protected:
-    virtual void print(QDebug dbg) const;
 
 protected:
     RDimArcLengthData data;
 };
 
-Q_DECLARE_METATYPE(RDimArcLengthEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimArcLengthEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RDimArcLengthEntity> *)
 
 #endif

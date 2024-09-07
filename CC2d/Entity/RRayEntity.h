@@ -26,7 +26,6 @@
 #include "RRayData.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Infinite ray entity.
@@ -89,9 +88,6 @@ public:
     getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
                 bool noAttributes = false, bool showOnRequest = false);
 
-    virtual void exportEntity(RExporter &e, bool preview = false,
-                              bool forceSelected = false) const;
-
     virtual RRayData &getData() { return data; }
 
     virtual const RRayData &getData() const { return data; }
@@ -151,14 +147,7 @@ public:
     double getLength() const { return data.getLength(); }
 
 protected:
-    virtual void print(QDebug dbg) const;
-
-protected:
     RRayData data;
 };
-
-Q_DECLARE_METATYPE(RRayEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RRayEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RRayEntity> *)
 
 #endif

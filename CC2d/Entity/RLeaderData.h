@@ -22,7 +22,6 @@
 
 #include <CC2dEntityExport.h>
 
-#include "RDimLinearData.h"
 #include "RDocument.h"
 #include "RPolyline.h"
 #include "RTriangle.h"
@@ -274,9 +273,5 @@ private:
     bool splineShaped;
 };
 
-Q_DECLARE_METATYPE(RLeaderData)
-Q_DECLARE_METATYPE(RLeaderData *)
-Q_DECLARE_METATYPE(const RLeaderData *)
-Q_DECLARE_METATYPE(QSharedPointer<RLeaderData>)
 
 #endif

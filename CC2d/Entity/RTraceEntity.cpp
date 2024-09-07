@@ -17,7 +17,6 @@
  * along with QCAD.
  */
 #include "RTraceEntity.h"
-#include "RExporter.h"
 #include "RLine.h"
 
 RPropertyTypeId RTraceEntity::PropertyCustom;
@@ -51,106 +50,134 @@ RPropertyTypeId RTraceEntity::PropertyLength;
 RPropertyTypeId RTraceEntity::PropertyTotalLength;
 
 
-RTraceEntity::RTraceEntity(RDocument* document, const RTraceData& data) :
-    REntity(document), data(document, data) {
+RTraceEntity::RTraceEntity(RDocument *document, const RTraceData &data)
+    : REntity(document), data(document, data)
+{
 }
 
-RTraceEntity::~RTraceEntity() {
-}
+RTraceEntity::~RTraceEntity() {}
 
-void RTraceEntity::init() {
-    RTraceEntity::PropertyCustom.generateId(RTraceEntity::getRtti(), RObject::PropertyCustom);
-    RTraceEntity::PropertyHandle.generateId(RTraceEntity::getRtti(), RObject::PropertyHandle);
-    RTraceEntity::PropertyProtected.generateId(RTraceEntity::getRtti(), RObject::PropertyProtected);
-    RTraceEntity::PropertyWorkingSet.generateId(RTraceEntity::getRtti(), RObject::PropertyWorkingSet);
-    RTraceEntity::PropertyType.generateId(RTraceEntity::getRtti(), REntity::PropertyType);
-    RTraceEntity::PropertyBlock.generateId(RTraceEntity::getRtti(), REntity::PropertyBlock);
-    RTraceEntity::PropertyLayer.generateId(RTraceEntity::getRtti(), REntity::PropertyLayer);
-    RTraceEntity::PropertyLinetype.generateId(RTraceEntity::getRtti(), REntity::PropertyLinetype);
-    RTraceEntity::PropertyLinetypeScale.generateId(RTraceEntity::getRtti(), REntity::PropertyLinetypeScale);
-    RTraceEntity::PropertyLineweight.generateId(RTraceEntity::getRtti(), REntity::PropertyLineweight);
-    RTraceEntity::PropertyColor.generateId(RTraceEntity::getRtti(), REntity::PropertyColor);
-    RTraceEntity::PropertyDisplayedColor.generateId(RTraceEntity::getRtti(), REntity::PropertyDisplayedColor);
-    RTraceEntity::PropertyDrawOrder.generateId(RTraceEntity::getRtti(), REntity::PropertyDrawOrder);
+void RTraceEntity::init()
+{
+    RTraceEntity::PropertyCustom.generateId(RTraceEntity::getRtti(),
+                                            RObject::PropertyCustom);
+    RTraceEntity::PropertyHandle.generateId(RTraceEntity::getRtti(),
+                                            RObject::PropertyHandle);
+    RTraceEntity::PropertyProtected.generateId(RTraceEntity::getRtti(),
+                                               RObject::PropertyProtected);
+    RTraceEntity::PropertyWorkingSet.generateId(RTraceEntity::getRtti(),
+                                                RObject::PropertyWorkingSet);
+    RTraceEntity::PropertyType.generateId(RTraceEntity::getRtti(),
+                                          REntity::PropertyType);
+    RTraceEntity::PropertyBlock.generateId(RTraceEntity::getRtti(),
+                                           REntity::PropertyBlock);
+    RTraceEntity::PropertyLayer.generateId(RTraceEntity::getRtti(),
+                                           REntity::PropertyLayer);
+    RTraceEntity::PropertyLinetype.generateId(RTraceEntity::getRtti(),
+                                              REntity::PropertyLinetype);
+    RTraceEntity::PropertyLinetypeScale.generateId(
+            RTraceEntity::getRtti(), REntity::PropertyLinetypeScale);
+    RTraceEntity::PropertyLineweight.generateId(RTraceEntity::getRtti(),
+                                                REntity::PropertyLineweight);
+    RTraceEntity::PropertyColor.generateId(RTraceEntity::getRtti(),
+                                           REntity::PropertyColor);
+    RTraceEntity::PropertyDisplayedColor.generateId(
+            RTraceEntity::getRtti(), REntity::PropertyDisplayedColor);
+    RTraceEntity::PropertyDrawOrder.generateId(RTraceEntity::getRtti(),
+                                               REntity::PropertyDrawOrder);
 
-    RTraceEntity::PropertyPoint1X.generateId(RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 1"), QT_TRANSLATE_NOOP("REntity", "X"));
-    RTraceEntity::PropertyPoint1Y.generateId(RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 1"), QT_TRANSLATE_NOOP("REntity", "Y"));
-    RTraceEntity::PropertyPoint1Z.generateId(RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 1"), QT_TRANSLATE_NOOP("REntity", "Z"));
-    RTraceEntity::PropertyPoint2X.generateId(RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 2"), QT_TRANSLATE_NOOP("REntity", "X"));
-    RTraceEntity::PropertyPoint2Y.generateId(RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 2"), QT_TRANSLATE_NOOP("REntity", "Y"));
-    RTraceEntity::PropertyPoint2Z.generateId(RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 2"), QT_TRANSLATE_NOOP("REntity", "Z"));
-    RTraceEntity::PropertyPoint3X.generateId(RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 3"), QT_TRANSLATE_NOOP("REntity", "X"));
-    RTraceEntity::PropertyPoint3Y.generateId(RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 3"), QT_TRANSLATE_NOOP("REntity", "Y"));
-    RTraceEntity::PropertyPoint3Z.generateId(RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 3"), QT_TRANSLATE_NOOP("REntity", "Z"));
-    RTraceEntity::PropertyPoint4X.generateId(RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 4"), QT_TRANSLATE_NOOP("REntity", "X"));
-    RTraceEntity::PropertyPoint4Y.generateId(RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 4"), QT_TRANSLATE_NOOP("REntity", "Y"));
-    RTraceEntity::PropertyPoint4Z.generateId(RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 4"), QT_TRANSLATE_NOOP("REntity", "Z"));
+    RTraceEntity::PropertyPoint1X.generateId(
+            RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 1"),
+            QT_TRANSLATE_NOOP("REntity", "X"));
+    RTraceEntity::PropertyPoint1Y.generateId(
+            RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 1"),
+            QT_TRANSLATE_NOOP("REntity", "Y"));
+    RTraceEntity::PropertyPoint1Z.generateId(
+            RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 1"),
+            QT_TRANSLATE_NOOP("REntity", "Z"));
+    RTraceEntity::PropertyPoint2X.generateId(
+            RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 2"),
+            QT_TRANSLATE_NOOP("REntity", "X"));
+    RTraceEntity::PropertyPoint2Y.generateId(
+            RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 2"),
+            QT_TRANSLATE_NOOP("REntity", "Y"));
+    RTraceEntity::PropertyPoint2Z.generateId(
+            RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 2"),
+            QT_TRANSLATE_NOOP("REntity", "Z"));
+    RTraceEntity::PropertyPoint3X.generateId(
+            RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 3"),
+            QT_TRANSLATE_NOOP("REntity", "X"));
+    RTraceEntity::PropertyPoint3Y.generateId(
+            RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 3"),
+            QT_TRANSLATE_NOOP("REntity", "Y"));
+    RTraceEntity::PropertyPoint3Z.generateId(
+            RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 3"),
+            QT_TRANSLATE_NOOP("REntity", "Z"));
+    RTraceEntity::PropertyPoint4X.generateId(
+            RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 4"),
+            QT_TRANSLATE_NOOP("REntity", "X"));
+    RTraceEntity::PropertyPoint4Y.generateId(
+            RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 4"),
+            QT_TRANSLATE_NOOP("REntity", "Y"));
+    RTraceEntity::PropertyPoint4Z.generateId(
+            RTraceEntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Point 4"),
+            QT_TRANSLATE_NOOP("REntity", "Z"));
 
-    RTraceEntity::PropertyLength.generateId(RTraceEntity::getRtti(), "", QT_TRANSLATE_NOOP("REntity", "Length"));
-    RTraceEntity::PropertyTotalLength.generateId(RTraceEntity::getRtti(), "", QT_TRANSLATE_NOOP("REntity", "Total Length"));
+    RTraceEntity::PropertyLength.generateId(
+            RTraceEntity::getRtti(), "",
+            QT_TRANSLATE_NOOP("REntity", "Length"));
+    RTraceEntity::PropertyTotalLength.generateId(
+            RTraceEntity::getRtti(), "",
+            QT_TRANSLATE_NOOP("REntity", "Total Length"));
 }
 
 bool RTraceEntity::setProperty(RPropertyTypeId propertyTypeId,
-        const QVariant& value, RTransaction* transaction) {
+                               const QVariant &value, RTransaction *transaction)
+{
     bool ret = REntity::setProperty(propertyTypeId, value, transaction);
 
-    if (propertyTypeId==PropertyPoint1X || propertyTypeId==PropertyPoint1Y || propertyTypeId==PropertyPoint1Z) {
+    if (propertyTypeId == PropertyPoint1X ||
+        propertyTypeId == PropertyPoint1Y || propertyTypeId == PropertyPoint1Z)
+    {
         RVector v = data.getVertexAt(0);
-        if (propertyTypeId==PropertyPoint1X) {
-            v.x = value.toDouble();
-        }
-        else if (propertyTypeId==PropertyPoint1Y) {
-            v.y = value.toDouble();
-        }
-        else if (propertyTypeId==PropertyPoint1Z) {
-            v.z = value.toDouble();
-        }
+        if (propertyTypeId == PropertyPoint1X) { v.x = value.toDouble(); }
+        else if (propertyTypeId == PropertyPoint1Y) { v.y = value.toDouble(); }
+        else if (propertyTypeId == PropertyPoint1Z) { v.z = value.toDouble(); }
         data.setVertexAt(0, v);
         ret = true;
     }
-    else if (propertyTypeId==PropertyPoint2X || propertyTypeId==PropertyPoint2Y || propertyTypeId==PropertyPoint2Z) {
+    else if (propertyTypeId == PropertyPoint2X ||
+             propertyTypeId == PropertyPoint2Y ||
+             propertyTypeId == PropertyPoint2Z)
+    {
         RVector v = data.getVertexAt(1);
-        if (propertyTypeId==PropertyPoint2X) {
-            v.x = value.toDouble();
-        }
-        else if (propertyTypeId==PropertyPoint2Y) {
-            v.y = value.toDouble();
-        }
-        else if (propertyTypeId==PropertyPoint2Z) {
-            v.z = value.toDouble();
-        }
+        if (propertyTypeId == PropertyPoint2X) { v.x = value.toDouble(); }
+        else if (propertyTypeId == PropertyPoint2Y) { v.y = value.toDouble(); }
+        else if (propertyTypeId == PropertyPoint2Z) { v.z = value.toDouble(); }
         data.setVertexAt(1, v);
         ret = true;
     }
-    else if (propertyTypeId==PropertyPoint3X || propertyTypeId==PropertyPoint3Y || propertyTypeId==PropertyPoint3Z) {
+    else if (propertyTypeId == PropertyPoint3X ||
+             propertyTypeId == PropertyPoint3Y ||
+             propertyTypeId == PropertyPoint3Z)
+    {
         RVector v = data.getVertexAt(2);
-        if (propertyTypeId==PropertyPoint3X) {
-            v.x = value.toDouble();
-        }
-        else if (propertyTypeId==PropertyPoint3Y) {
-            v.y = value.toDouble();
-        }
-        else if (propertyTypeId==PropertyPoint3Z) {
-            v.z = value.toDouble();
-        }
+        if (propertyTypeId == PropertyPoint3X) { v.x = value.toDouble(); }
+        else if (propertyTypeId == PropertyPoint3Y) { v.y = value.toDouble(); }
+        else if (propertyTypeId == PropertyPoint3Z) { v.z = value.toDouble(); }
         data.setVertexAt(2, v);
         ret = true;
     }
-    else if (propertyTypeId==PropertyPoint4X || propertyTypeId==PropertyPoint4Y || propertyTypeId==PropertyPoint4Z) {
-        if (data.countVertices()<4) {
-            data.appendVertex(RVector(0,0,0));
-        }
+    else if (propertyTypeId == PropertyPoint4X ||
+             propertyTypeId == PropertyPoint4Y ||
+             propertyTypeId == PropertyPoint4Z)
+    {
+        if (data.countVertices() < 4) { data.appendVertex(RVector(0, 0, 0)); }
 
         RVector v = data.getVertexAt(3);
-        if (propertyTypeId==PropertyPoint4X) {
-            v.x = value.toDouble();
-        }
-        else if (propertyTypeId==PropertyPoint4Y) {
-            v.y = value.toDouble();
-        }
-        else if (propertyTypeId==PropertyPoint4Z) {
-            v.z = value.toDouble();
-        }
+        if (propertyTypeId == PropertyPoint4X) { v.x = value.toDouble(); }
+        else if (propertyTypeId == PropertyPoint4Y) { v.y = value.toDouble(); }
+        else if (propertyTypeId == PropertyPoint4Z) { v.z = value.toDouble(); }
         data.setVertexAt(3, v);
         ret = true;
     }
@@ -158,75 +185,93 @@ bool RTraceEntity::setProperty(RPropertyTypeId propertyTypeId,
     return ret;
 }
 
-QPair<QVariant, RPropertyAttributes> RTraceEntity::getProperty(
-        RPropertyTypeId& propertyTypeId, bool humanReadable,
-        bool noAttributes, bool showOnRequest) {
-    if (propertyTypeId == PropertyPoint1X) {
-        return qMakePair(QVariant(data.getVertexAt(0).x), RPropertyAttributes());
-    } else if (propertyTypeId == PropertyPoint1Y) {
-        return qMakePair(QVariant(data.getVertexAt(0).y), RPropertyAttributes());
-    } else if (propertyTypeId == PropertyPoint1Z) {
-        return qMakePair(QVariant(data.getVertexAt(0).z), RPropertyAttributes());
-    } else if (propertyTypeId == PropertyPoint2X) {
-        return qMakePair(QVariant(data.getVertexAt(1).x), RPropertyAttributes());
-    } else if (propertyTypeId == PropertyPoint2Y) {
-        return qMakePair(QVariant(data.getVertexAt(1).y), RPropertyAttributes());
-    } else if (propertyTypeId == PropertyPoint2Z) {
-        return qMakePair(QVariant(data.getVertexAt(1).z), RPropertyAttributes());
-    }else if (propertyTypeId == PropertyPoint3X) {
-        return qMakePair(QVariant(data.getVertexAt(2).x), RPropertyAttributes());
-    } else if (propertyTypeId == PropertyPoint3Y) {
-        return qMakePair(QVariant(data.getVertexAt(2).y), RPropertyAttributes());
-    } else if (propertyTypeId == PropertyPoint3Z) {
-        return qMakePair(QVariant(data.getVertexAt(2).z), RPropertyAttributes());
-    }else if (propertyTypeId == PropertyPoint4X) {
-        if (data.countVertices()<4) {
+QPair<QVariant, RPropertyAttributes>
+RTraceEntity::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
+                          bool noAttributes, bool showOnRequest)
+{
+    if (propertyTypeId == PropertyPoint1X)
+    {
+        return qMakePair(QVariant(data.getVertexAt(0).x),
+                         RPropertyAttributes());
+    }
+    else if (propertyTypeId == PropertyPoint1Y)
+    {
+        return qMakePair(QVariant(data.getVertexAt(0).y),
+                         RPropertyAttributes());
+    }
+    else if (propertyTypeId == PropertyPoint1Z)
+    {
+        return qMakePair(QVariant(data.getVertexAt(0).z),
+                         RPropertyAttributes());
+    }
+    else if (propertyTypeId == PropertyPoint2X)
+    {
+        return qMakePair(QVariant(data.getVertexAt(1).x),
+                         RPropertyAttributes());
+    }
+    else if (propertyTypeId == PropertyPoint2Y)
+    {
+        return qMakePair(QVariant(data.getVertexAt(1).y),
+                         RPropertyAttributes());
+    }
+    else if (propertyTypeId == PropertyPoint2Z)
+    {
+        return qMakePair(QVariant(data.getVertexAt(1).z),
+                         RPropertyAttributes());
+    }
+    else if (propertyTypeId == PropertyPoint3X)
+    {
+        return qMakePair(QVariant(data.getVertexAt(2).x),
+                         RPropertyAttributes());
+    }
+    else if (propertyTypeId == PropertyPoint3Y)
+    {
+        return qMakePair(QVariant(data.getVertexAt(2).y),
+                         RPropertyAttributes());
+    }
+    else if (propertyTypeId == PropertyPoint3Z)
+    {
+        return qMakePair(QVariant(data.getVertexAt(2).z),
+                         RPropertyAttributes());
+    }
+    else if (propertyTypeId == PropertyPoint4X)
+    {
+        if (data.countVertices() < 4)
+        {
             return qMakePair(QVariant(), RPropertyAttributes());
         }
-        return qMakePair(QVariant(data.getVertexAt(3).x), RPropertyAttributes());
-    } else if (propertyTypeId == PropertyPoint4Y) {
-        if (data.countVertices()<4) {
+        return qMakePair(QVariant(data.getVertexAt(3).x),
+                         RPropertyAttributes());
+    }
+    else if (propertyTypeId == PropertyPoint4Y)
+    {
+        if (data.countVertices() < 4)
+        {
             return qMakePair(QVariant(), RPropertyAttributes());
         }
-        return qMakePair(QVariant(data.getVertexAt(3).y), RPropertyAttributes());
-    } else if (propertyTypeId == PropertyPoint4Z) {
-        if (data.countVertices()<4) {
+        return qMakePair(QVariant(data.getVertexAt(3).y),
+                         RPropertyAttributes());
+    }
+    else if (propertyTypeId == PropertyPoint4Z)
+    {
+        if (data.countVertices() < 4)
+        {
             return qMakePair(QVariant(), RPropertyAttributes());
         }
-        return qMakePair(QVariant(data.getVertexAt(3).z), RPropertyAttributes());
-    } else if (propertyTypeId==PropertyLength) {
-        return qMakePair(QVariant(data.getLength()), RPropertyAttributes(RPropertyAttributes::ReadOnly));
-    } else if (propertyTypeId==PropertyTotalLength) {
-        return qMakePair(QVariant(data.getLength()), RPropertyAttributes(RPropertyAttributes::Sum));
+        return qMakePair(QVariant(data.getVertexAt(3).z),
+                         RPropertyAttributes());
+    }
+    else if (propertyTypeId == PropertyLength)
+    {
+        return qMakePair(QVariant(data.getLength()),
+                         RPropertyAttributes(RPropertyAttributes::ReadOnly));
+    }
+    else if (propertyTypeId == PropertyTotalLength)
+    {
+        return qMakePair(QVariant(data.getLength()),
+                         RPropertyAttributes(RPropertyAttributes::Sum));
     }
 
-    return REntity::getProperty(propertyTypeId, humanReadable, noAttributes, showOnRequest);
-}
-
-
-void RTraceEntity::exportEntity(RExporter& e, bool preview, bool forceSelected) const {
-    Q_UNUSED(preview)
-    Q_UNUSED(forceSelected)
-
-    // note that order of fourth and third vertex is swapped:
-    RPolyline pl;
-    pl.appendVertex(data.getVertexAt(0));
-    pl.appendVertex(data.getVertexAt(1));
-    if (data.countVertices()>3) {
-        pl.appendVertex(data.getVertexAt(3));
-    }
-    pl.appendVertex(data.getVertexAt(2));
-    pl.setClosed(true);
-
-    e.exportPolyline(pl);
-}
-
-void RTraceEntity::print(QDebug dbg) const {
-    dbg.nospace() << "RTraceEntity(";
-    REntity::print(dbg);
-    dbg.nospace() << ", p1: " << getData().getVertexAt(0)
-                  << ", p2: " << getData().getVertexAt(1)
-                  << ", p3: " << getData().getVertexAt(2)
-                  << ", p4: " << getData().getVertexAt(3);
-    dbg.nospace() << ")";
+    return REntity::getProperty(propertyTypeId, humanReadable, noAttributes,
+                                showOnRequest);
 }

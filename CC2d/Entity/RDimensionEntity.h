@@ -20,13 +20,12 @@
 #ifndef RDIMENSIONENTITY_H
 #define RDIMENSIONENTITY_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RDimensionData.h"
 #include "REntity.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Base class for dimension entity classes.
@@ -125,14 +124,6 @@ public:
     virtual QPair<QVariant, RPropertyAttributes>
     getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
                 bool noAttributes = false, bool showOnRequest = false);
-
-    virtual void exportEntity(RExporter &e, bool preview = false,
-                              bool forceSelected = false) const;
-
-    static void renderDimensionText(RExporter &e, const RDocument *doc,
-                                    RTextData &textData,
-                                    bool isSelected = false,
-                                    bool forceSelected = false);
 
     virtual RDimensionData &getData() = 0;
 
@@ -248,13 +239,7 @@ public:
     }
 
     static QSet<QString> getDimensionBlockNames(RDocument *doc);
-
-protected:
-    virtual void print(QDebug dbg) const;
 };
 
-Q_DECLARE_METATYPE(RDimensionEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimensionEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RDimensionEntity> *)
 
 #endif

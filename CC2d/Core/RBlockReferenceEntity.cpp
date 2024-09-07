@@ -272,14 +272,14 @@ bool RBlockReferenceEntity::setProperty(RPropertyTypeId propertyTypeId,
 
     if (propertyTypeId == PropertyReferencedBlock)
     {
-        if (RS::getMetaType(value) == RS::Int ||
-            RS::getMetaType(value) == RS::LongLong)
+        if (RS::getMetaType(value) == QVariant::Int ||
+            RS::getMetaType(value) == QVariant::LongLong)
         {
 
             ret = ret || RObject::setMember(getData().referencedBlockId,
                                             value.toInt(), true);
         }
-        else if (RS::getMetaType(value) == RS::String)
+        else if (RS::getMetaType(value) == QVariant::String)
         {
             RDocument *document = getData().getDocument();
             if (document != NULL)

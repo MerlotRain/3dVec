@@ -24,14 +24,10 @@
 #include "REllipse.h"
 #include "RHatchData.h"
 #include "RLine.h"
-#include "RPainterPath.h"
-#include "RPainterPathExporter.h"
 #include "RPatternListImperial.h"
 #include "RPatternListMetric.h"
 #include "RPointEntity.h"
 #include "RPolyline.h"
-#include "RSettings.h"
-#include "RSpline.h"
 #include "RUnit.h"
 
 RHatchProxy *RHatchData::hatchProxy = NULL;
@@ -50,8 +46,7 @@ RHatchData::RHatchData(RDocument *document, const RHatchData &data)
     if (document != NULL) { linetypeId = document->getLinetypeByLayerId(); }
 }
 
-RHatchData::RHatchData(const RHatchData &other)
-    : REntityData(other), RPainterPathSource(other)
+RHatchData::RHatchData(const RHatchData &other) : REntityData(other)
 {
     *this = other;
 }
@@ -79,9 +74,6 @@ RHatchData &RHatchData::operator=(const RHatchData &other)
     transparency = other.transparency;
     patternName = other.patternName;
     originPoint = other.originPoint;
-    other.getPainterPaths(false);
-    painterPaths = other.painterPaths;
-    boundaryPath = other.boundaryPath;
     gotDraft = other.gotDraft;
     pattern = other.pattern;
     gotPixelSizeHint = other.gotPixelSizeHint;
@@ -123,13 +115,6 @@ RHatchData &RHatchData::operator=(const RHatchData &other)
                 addBoundary(QSharedPointer<RShape>(new REllipse(*ellipseArc)));
                 continue;
             }
-
-            QSharedPointer<RSpline> spline = shape.dynamicCast<RSpline>();
-            if (!spline.isNull())
-            {
-                addBoundary(QSharedPointer<RShape>(new RSpline(*spline)));
-                continue;
-            }
         }
     }
 
@@ -146,21 +131,10 @@ void RHatchData::clearBoundary()
 RBox RHatchData::getBoundingBox(bool ignoreEmpty) const
 {
     Q_UNUSED(ignoreEmpty)
-
-    if (dirty) { getBoundaryPath(); }
-
-    if (boundaryPath.isEmpty()) { return RBox(); }
-
-    return boundaryPath.getBoundingBox();
+    return RBox();
 }
 
-RVector RHatchData::getPointOnEntity() const
-{
-    if (dirty) { getBoundaryPath(); }
-
-    QPointF p = boundaryPath.pointAtPercent(0.0);
-    return RVector(p.x(), p.y());
-}
+RVector RHatchData::getPointOnEntity() const { return RVector(); }
 
 double RHatchData::getDistanceTo(const RVector &point, bool limited,
                                  double range, bool draft,
@@ -174,29 +148,10 @@ double RHatchData::getDistanceTo(const RVector &point, bool limited,
         return RNANDOUBLE;
     }
 
-    if (boundaryPath.isEmpty()) { return RNANDOUBLE; }
-
     double ret = RNANDOUBLE;
 
     // path is filled (solid) or very dens / huge or we're in draft mode:
     int comp = getComplexity();
-    if (isSolid() || comp > 10000 || painterPaths.isEmpty() || draft)
-    {
-        if (boundaryPath.contains(QPointF(point.x, point.y)))
-        {
-            if (RMath::isNaN(ret) || strictRange < ret) { ret = strictRange; }
-        }
-    }
-
-    // path is not filled and relatively simple (simple hatch):
-    else
-    {
-        for (int i = 0; i < painterPaths.count(); i++)
-        {
-            double d = painterPaths[i].getDistanceTo(point);
-            if (RMath::isNaN(ret) || d < ret) { ret = d; }
-        }
-    }
 
     return ret;
 }
@@ -206,17 +161,17 @@ bool RHatchData::intersectsWith(const RShape &shape) const
     const RPolyline *polyline = dynamic_cast<const RPolyline *>(&shape);
     if (polyline == NULL) { return false; }
 
-    QPainterPath polylinePath = polyline->toPainterPath();
+    // QPainterPath polylinePath = polyline->toPainterPath();
 
-    for (int i = 0; i < painterPaths.count(); i++)
-    {
-        if (polylinePath.intersects(painterPaths[i]) &&
-            !polylinePath.contains(painterPaths[i]))
-        {
+    // for (int i = 0; i < painterPaths.count(); i++)
+    // {
+    //     if (polylinePath.intersects(painterPaths[i]) &&
+    //         !polylinePath.contains(painterPaths[i]))
+    //     {
 
-            return true;
-        }
-    }
+    //         return true;
+    //     }
+    // }
 
     return false;
 }
@@ -264,22 +219,6 @@ RHatchData::getReferencePoints(RS::ProjectionRenderingHint hint) const
                     ret.append(ellipseArc->getCenter());
                 }
                 else { ret.append(ellipseArc->getStartPoint()); }
-                continue;
-            }
-
-            QSharedPointer<RSpline> spline = shape.dynamicCast<RSpline>();
-            if (!spline.isNull())
-            {
-                if (spline->hasFitPoints())
-                {
-                    ret.append(
-                            RRefPoint::toRefPointList(spline->getFitPoints()));
-                }
-                else
-                {
-                    ret.append(RRefPoint::toRefPointList(
-                            spline->getControlPoints()));
-                }
                 continue;
             }
         }
@@ -367,40 +306,6 @@ bool RHatchData::moveReferencePoint(const RVector &referencePoint,
                         ret = true;
                     }
                 }
-            }
-
-            QSharedPointer<RSpline> spline = shape.dynamicCast<RSpline>();
-            if (!spline.isNull())
-            {
-                //                if (spline->hasFitPoints()) {
-                //                    QList<RVector> fitPoints = spline->setFitPoints();
-                //                    QList<RVector>::iterator it;
-                //                    for (it=fitPoints.begin(); it!=fitPoints.end(); ++it) {
-                //                        if (referencePoint.getDistanceTo(*it) < RS::PointTolerance) {
-                //                            (*it) = targetPoint;
-                //                            ret = true;
-                //                        }
-                //                    }
-
-                //                    if (ret) {
-                //                        spline->setFitPoints(fitPoints);
-                //                    }
-                //                }
-                //                else {
-                QList<RVector> controlPoints = spline->getControlPoints();
-                QList<RVector>::iterator it;
-                for (it = controlPoints.begin(); it != controlPoints.end();
-                     ++it)
-                {
-                    if (referencePoint.equalsFuzzy(*it))
-                    {
-                        (*it) = targetPoint;
-                        ret = true;
-                    }
-                }
-
-                if (ret) { spline->setControlPoints(controlPoints); }
-                //                }
             }
         }
     }
@@ -530,14 +435,6 @@ RHatchData::getShapes(const RBox &queryBox, bool ignoreComplex, bool segment,
         }
         return ret;
     }
-
-    QList<RPainterPath> paths = getPainterPaths();
-    for (int i = 0; i < paths.length(); i++)
-    {
-        RPainterPath path = paths[i];
-        ret.append(path.getShapes());
-    }
-
     return ret;
 }
 
@@ -740,666 +637,6 @@ void RHatchData::addBoundary(QSharedPointer<RShape> shape, bool addAutoLoops)
     update();
 }
 
-/**
- * \param pixelSizeHint Pixel size hint for rendering arcs.
- * Negative if it does not matter (current cached painter paths are returned).
- */
-QList<RPainterPath> RHatchData::getPainterPaths(bool draft,
-                                                double pixelSizeHint) const
-{
-    if (!updatesEnabled) { return painterPaths; }
-
-    if (!dirty)
-    {
-        // cached painter path represents hatch in current draft mode (draft or normal):
-        if (draft == gotDraft &&
-            (RMath::fuzzyCompare(pixelSizeHint, gotPixelSizeHint) ||
-             pixelSizeHint < 0.0))
-        {
-            return painterPaths;
-        }
-    }
-
-    painterPaths.clear();
-
-    // for solids, return boundary path, which can be filled:
-    // in draft mode, return boundary path to be shown without fill:
-    if (isSolid() || draft)
-    {
-        getBoundaryPath(pixelSizeHint);
-        if (draft)
-        {
-            boundaryPath.setPen(QPen(Qt::SolidLine));
-            boundaryPath.setBrush(QBrush(Qt::NoBrush));
-        }
-        else if (isSolid())
-        {
-            boundaryPath.setPen(QPen(Qt::NoPen));
-            boundaryPath.setBrush(QBrush(Qt::SolidPattern));
-        }
-        boundaryPath.setAutoRegen(true);
-        painterPaths.append(boundaryPath);
-        dirty = false;
-        gotDraft = draft;
-        return painterPaths;
-    }
-
-    // drop hatch patterns with very small scale factor:
-    if (scaleFactor < RS::PointTolerance) { return painterPaths; }
-
-    ////RDebug::startTimer();
-
-    //qDebug() << "regenerating hatch";
-    ////RDebug::startTimer();
-
-    // get pattern:
-    const RPattern *p = NULL;
-    bool customPattern = false;
-    if (hasCustomPattern())
-    {
-        p = &pattern;
-        customPattern = true;
-    }
-    else
-    {
-        //if (document==NULL || (RUnit::isMetric(document->getUnit()) && document->getUnit()!=RS::None)) {
-        if (document == NULL) { qDebug() << "doc is NULL"; }
-
-        if (document == NULL || document->isMetric())
-        {
-            //qDebug() << "metric pattern" << getPatternName();
-            p = RPatternListMetric::get(getPatternName());
-        }
-        else
-        {
-            //qDebug() << "imperial pattern" << getPatternName();
-            p = RPatternListImperial::get(getPatternName());
-        }
-    }
-
-    // cannot load pattern at this point, return boundary for bounding box correctness:
-    if (p == NULL || !p->isLoaded())
-    {
-        qWarning() << "RHatchData::getPainterPaths: cannot load hatch pattern: "
-                   << getPatternName();
-        painterPaths.append(boundaryPath);
-        dirty = false;
-        gotDraft = draft;
-        return painterPaths;
-    }
-
-    getBoundaryPath(pixelSizeHint);
-
-    RPattern localPattern = *p;
-
-    if (!customPattern)
-    {
-        localPattern.rotate(angle);
-        localPattern.scale(scaleFactor);
-    }
-
-    bool hasDots = localPattern.hasDots();
-
-    RBox boundaryBox = boundaryPath.getBoundingBox();
-
-    // grow boundary by 1% of largest size:
-    double w = boundaryBox.getWidth();
-    double h = boundaryBox.getHeight();
-    double s = qMax(w, h);
-    boundaryBox.grow(s / 100.0);
-
-    QList<RLine> boundaryEdges = boundaryBox.getLines2d();
-    QList<RVector> boundaryCorners = boundaryBox.getCorners2d();
-
-    QElapsedTimer timer;
-    timer.start();
-    int timeOut = -1;
-
-    QList<RPatternLine> patternLines = localPattern.getPatternLines();
-    for (int i = 0; i < patternLines.length(); i++)
-    {
-        RPatternLine patternLine = patternLines[i];
-
-        // origin for pattern line:
-        RVector spBase = originPoint + patternLine.basePoint;
-        RLine baseLine(spBase,
-                       spBase + RVector::createPolar(1.0, patternLine.angle));
-
-        // iterate through corners and find left most / right most offsets:
-        double maxDistLeft = RNANDOUBLE;
-        double minDistLeft = RNANDOUBLE;
-        double maxDistRight = RNANDOUBLE;
-        double minDistRight = RNANDOUBLE;
-        for (int k = 0; k < boundaryCorners.length(); k++)
-        {
-            RVector corner = boundaryCorners[k];
-            double dist = baseLine.getDistanceTo(corner, false);
-            RS::Side side = baseLine.getSideOfPoint(corner);
-
-            if (side == RS::LeftHand)
-            {
-                if (RMath::isNaN(maxDistLeft) || dist > qAbs(maxDistLeft))
-                {
-                    maxDistLeft = -dist;
-                }
-                if (RMath::isNaN(minDistLeft) || dist < qAbs(minDistLeft))
-                {
-                    minDistLeft = -dist;
-                }
-            }
-            if (side == RS::RightHand)
-            {
-                if (RMath::isNaN(maxDistRight) || dist > maxDistRight)
-                {
-                    maxDistRight = dist;
-                }
-                if (RMath::isNaN(minDistRight) || dist < minDistRight)
-                {
-                    minDistRight = dist;
-                }
-            }
-        }
-
-        if (RMath::isNaN(maxDistLeft)) { maxDistLeft = minDistRight; }
-
-        if (RMath::isNaN(maxDistRight)) { maxDistRight = minDistLeft; }
-
-        if (RMath::isNaN(maxDistLeft) || RMath::isNaN(maxDistRight))
-        {
-            qWarning() << "RHatchData::getPainterPaths: no max limits found";
-            return painterPaths;
-        }
-
-        if (qAbs(patternLine.offset.y) < RS::PointTolerance)
-        {
-            qWarning() << "RHatchData::getPainterPaths: invalid pattern line "
-                          "offset: "
-                       << patternLine.offset;
-            return painterPaths;
-        }
-
-        int leftMultiple = (int) (maxDistLeft / qAbs(patternLine.offset.y)) - 1;
-        int rightMultiple =
-                (int) (maxDistRight / qAbs(patternLine.offset.y)) + 1;
-
-        RVector offset = patternLine.offset;
-        offset.rotate(patternLine.angle);
-
-        // offset leads towards the left side of the base line, switch left / right limits:
-        RS::Side offsetSide =
-                baseLine.getSideOfPoint(baseLine.getStartPoint() + offset);
-        if (offsetSide == RS::LeftHand)
-        {
-            int tmp = leftMultiple;
-            leftMultiple = -rightMultiple;
-            rightMultiple = -tmp;
-        }
-
-        // repeat pattern line from left to right:
-        for (int m = leftMultiple; m < rightMultiple; m++)
-        {
-            RVector currentOffset = offset * m;
-
-            RVector sp = originPoint + patternLine.basePoint + currentOffset;
-            RLine orthoLine(sp,
-                            sp + RVector::createPolar(1.0, patternLine.angle +
-                                                                   M_PI / 2.0));
-
-            // limit pattern generation to area between boundaryBox edges:
-            RLine line(sp, sp + RVector::createPolar(1.0, patternLine.angle));
-
-            QList<RVector> intersections;
-            for (int k = 0; k < boundaryEdges.length(); k++)
-            {
-                RLine edge = boundaryEdges[k];
-                QList<RVector> ips =
-                        RShape::getIntersectionPoints(line, edge, false);
-
-                for (int ib = 0; ib < ips.length(); ib++)
-                {
-                    if (edge.isOnShape(ips[ib]))
-                    {
-                        intersections.append(ips[ib]);
-                    }
-                }
-            }
-
-            // iterate through intersection points and find closest to the left / right:
-            double orthoMaxDistLeft = RNANDOUBLE;
-            double orthoMinDistLeft = RNANDOUBLE;
-            double orthoMaxDistRight = RNANDOUBLE;
-            double orthoMinDistRight = RNANDOUBLE;
-
-            RVector ipMaxLeft;
-            RVector ipMinLeft;
-            RVector ipMaxRight;
-            RVector ipMinRight;
-            for (int k = 0; k < intersections.length(); k++)
-            {
-                RVector ip = intersections[k];
-                double dist = orthoLine.getDistanceTo(ip, false);
-                RS::Side side = orthoLine.getSideOfPoint(ip);
-
-                if (side == RS::LeftHand)
-                {
-                    if (RMath::isNaN(orthoMaxDistLeft) ||
-                        dist > qAbs(orthoMaxDistLeft))
-                    {
-                        orthoMaxDistLeft = -dist;
-                        ipMaxLeft = ip;
-                    }
-                    if (RMath::isNaN(orthoMinDistLeft) ||
-                        dist < qAbs(orthoMinDistLeft))
-                    {
-                        orthoMinDistLeft = -dist;
-                        ipMinLeft = ip;
-                    }
-                }
-                if (side == RS::RightHand)
-                {
-                    if (RMath::isNaN(orthoMaxDistRight) ||
-                        dist > orthoMaxDistRight)
-                    {
-                        orthoMaxDistRight = dist;
-                        ipMaxRight = ip;
-                    }
-                    if (RMath::isNaN(orthoMinDistRight) ||
-                        dist < orthoMinDistRight)
-                    {
-                        orthoMinDistRight = dist;
-                        ipMinRight = ip;
-                    }
-                }
-            }
-
-            if (RMath::isNaN(orthoMaxDistLeft))
-            {
-                orthoMaxDistLeft = orthoMinDistRight;
-                ipMaxLeft = ipMinRight;
-            }
-
-            if (RMath::isNaN(orthoMaxDistRight))
-            {
-                orthoMaxDistRight = orthoMinDistLeft;
-                ipMaxRight = ipMinLeft;
-            }
-
-            if (RMath::isNaN(orthoMaxDistLeft) ||
-                RMath::isNaN(orthoMaxDistRight))
-            {
-                //qDebug() << "orthoMaxDistLeft / orthoMaxDistRight is NaN";
-                continue;
-            }
-
-            // line over maximum extent of the contour to hatch:
-            RLine unclippedLine(ipMaxLeft, ipMaxRight);
-
-            // line split up into segments, cut at contour intersections:
-            QList<RLine> segments = getSegments(unclippedLine);
-
-            // untrimmed for debugging:
-            //QList<RLine> segments;
-            //segments.append(unclippedLine);
-
-            RPainterPathExporter ppExporter;
-            //ppExporter.setExportZeroLinesAsPoints(false);
-            ppExporter.setExportZeroLinesAsPoints(true);
-            // ignore zero lines if
-            // line was split up into segments
-            ppExporter.setIgnoreZeroLines(!hasDots);
-            // ensure pattern scale of 1:
-            ppExporter.setLineweight(RLineweight::Weight100);
-            if (!patternLine.dashes.isEmpty())
-            {
-                RLinetypePattern pat;
-                pat.set(patternLine.dashes);
-                ppExporter.setLinetypePattern(pat);
-            }
-
-            // copy segments that are inside contour into hatch pattern:
-            for (int si = 0; si < segments.size(); si++)
-            {
-                RVector middle = segments[si].getMiddlePoint();
-                if (boundaryPath.contains(QPointF(middle.x, middle.y)))
-                {
-                    RS::Side side = orthoLine.getSideOfPoint(
-                            segments[si].getStartPoint());
-                    double offset =
-                            sp.getDistanceTo(segments[si].getStartPoint());
-                    if (side == RS::RightHand) { offset *= -1; }
-                    ppExporter.exportLine(segments[si], offset);
-                    RPainterPath path = ppExporter.getPainterPath();
-                    path.setSimplePointDisplay(true);
-
-                    if (!path.isEmpty())
-                    {
-                        //clippedPattern.addPath(path);
-                        path.setPen(QPen(Qt::SolidLine));
-                        painterPaths.append(path);
-                    }
-                }
-            }
-
-            //if (timer.elapsed()>500) {
-            if (timeOut == -1)
-            {
-                timeOut = RSettings::getIntValue("GraphicsView/MaxHatchTime",
-                                                 2000);
-            }
-            if (timer.elapsed() > timeOut)
-            {
-                qWarning() << "RHatchData::getPainterPaths: hatch pattern too "
-                              "dense. hatch pattern generation aborted "
-                              "(timeout set to "
-                           << timeOut << ")...";
-                painterPaths.clear();
-                dirty = false;
-                gotDraft = draft;
-                return painterPaths;
-            }
-            //}
-        }
-    }
-
-    dirty = false;
-    gotDraft = draft;
-
-    ////RDebug::stopTimer("regen hatch");
-    ////RDebug::printBacktrace();
-
-    return painterPaths;
-}
-
-/**
- * \return Painter path that represents this hatch boundary.
- */
-RPainterPath RHatchData::getBoundaryPath(double pixelSizeHint) const
-{
-    if (!dirty && (RMath::fuzzyCompare(gotPixelSizeHint, pixelSizeHint) ||
-                   pixelSizeHint < 0.0))
-    {
-        return boundaryPath;
-    }
-
-    boundaryPath = RPainterPath();
-    gotPixelSizeHint = pixelSizeHint;
-    boundaryPath.setPixelSizeHint(pixelSizeHint);
-
-    for (int i = 0; i < boundary.size(); ++i)
-    {
-        QList<QSharedPointer<RShape>> loop = boundary.at(i);
-        RVector cursor = RVector::invalid;
-        RVector loopStartPoint = RVector::invalid;
-        for (int k = 0; k < loop.size(); ++k)
-        {
-            QSharedPointer<RShape> shape = loop.at(k);
-
-            QSharedPointer<RLine> line = shape.dynamicCast<RLine>();
-            if (!line.isNull())
-            {
-                if (k == 0)
-                {
-                    loopStartPoint = line->getStartPoint();
-                    boundaryPath.moveTo(loopStartPoint);
-                }
-                else
-                {
-                    if (!cursor.isValid() ||
-                        !cursor.equalsFuzzy(line->getStartPoint(), 0.001))
-                    {
-                        qWarning() << "RHatchData::getBoundaryPath: loop not "
-                                      "closed: line does not connect: loop: "
-                                   << i << " / element: " << k;
-                        qWarning() << "RHatchData::getBoundaryPath: cursor: "
-                                   << cursor;
-                        qWarning() << "RHatchData::getBoundaryPath: " << *line;
-                        return RPainterPath();
-                    }
-                }
-
-                cursor = line->getEndPoint();
-                boundaryPath.lineTo(cursor);
-                continue;
-            }
-
-            QSharedPointer<RArc> arc = shape.dynamicCast<RArc>();
-            if (!arc.isNull())
-            {
-                if (k == 0)
-                {
-                    loopStartPoint = arc->getStartPoint();
-                    boundaryPath.moveTo(loopStartPoint);
-                }
-                else
-                {
-                    if (!cursor.isValid())
-                    {
-                        qWarning() << "RHatchData::getBoundaryPath: loop not "
-                                      "closed: invalid cursor before arc";
-                        return RPainterPath();
-                    }
-                    if (!cursor.equalsFuzzy(arc->getStartPoint(), 0.001))
-                    {
-                        qWarning() << "RHatchData::getBoundaryPath: loop not "
-                                      "closed: arc does not connect";
-                        qWarning() << "RHatchData::getBoundaryPath: cursor: "
-                                   << cursor;
-                        qWarning()
-                                << "RHatchData::getBoundaryPath: arc: " << *arc;
-                        return RPainterPath();
-                    }
-                }
-
-                RPainterPathExporter exp;
-                exp.setExportZeroLinesAsPoints(false);
-                exp.setPixelSizeHint(pixelSizeHint * 2);
-                exp.exportArcSegment(*arc);
-                RPainterPath p = exp.getPainterPath();
-                boundaryPath.appendPath(p);
-                cursor = arc->getEndPoint();
-                continue;
-            }
-
-            QSharedPointer<RCircle> circle = shape.dynamicCast<RCircle>();
-            if (!circle.isNull())
-            {
-                if (k != 0 || loop.size() != 1)
-                {
-                    qWarning() << "RHatchData::getBoundaryPath: loop not "
-                                  "closed: cirlce in loop";
-                    return RPainterPath();
-                }
-                RBox box(circle->getCenter() - RVector(circle->getRadius(),
-                                                       circle->getRadius()),
-                         circle->getCenter() + RVector(circle->getRadius(),
-                                                       circle->getRadius()));
-                RVector start =
-                        circle->getCenter() + RVector(circle->getRadius(), 0);
-                boundaryPath.moveTo(start);
-                boundaryPath.arcTo(box.toQRectF(), 360.0, -360);
-                cursor = RVector::invalid;
-                continue;
-            }
-
-            QSharedPointer<REllipse> ellipseArc = shape.dynamicCast<REllipse>();
-            if (!ellipseArc.isNull())
-            {
-                REllipse ellipseCopy = *ellipseArc;
-                if (ellipseCopy.isFullEllipse())
-                {
-                    if (k != 0 || loop.size() != 1)
-                    {
-                        qWarning() << "RHatchData::getBoundaryPath: loop not "
-                                      "closed: full ellipse in loop";
-                        return RPainterPath();
-                    }
-                    loopStartPoint = ellipseCopy.getStartPoint();
-                    boundaryPath.moveTo(loopStartPoint);
-                }
-                else
-                {
-                    if (k == 0)
-                    {
-                        loopStartPoint = ellipseCopy.getStartPoint();
-                        boundaryPath.moveTo(loopStartPoint);
-                    }
-                    else
-                    {
-                        if (!cursor.isValid())
-                        {
-                            qWarning() << "RHatchData::getBoundaryPath: loop "
-                                          "not closed: invalid cursor before "
-                                          "ellipse arc";
-                            return RPainterPath();
-                        }
-                        if (!cursor.equalsFuzzy(ellipseCopy.getStartPoint(),
-                                                0.001))
-                        {
-                            qWarning()
-                                    << "RHatchData::getBoundaryPath: loop not "
-                                       "closed: ellipse arc does not connect";
-                            return RPainterPath();
-                        }
-                    }
-                }
-
-                REllipse ellipseArcNorm = ellipseCopy;
-                ellipseArcNorm.move(-ellipseArcNorm.getCenter());
-                ellipseArcNorm.rotate(-ellipseArcNorm.getAngle());
-
-                // create normalized ellipse arc at angle 0, 0/0:
-                RPainterPath ePath;
-                RBox box(-RVector(ellipseArcNorm.getMajorRadius(),
-                                  ellipseArcNorm.getMinorRadius()),
-                         RVector(ellipseArcNorm.getMajorRadius(),
-                                 ellipseArcNorm.getMinorRadius()));
-                ePath.moveTo(ellipseArcNorm.getStartPoint());
-
-                // TODO: interpolate as line segments:
-                ePath.arcTo(
-                        box.toQRectF(),
-                        360 - RMath::rad2deg(ellipseArcNorm.getStartParam()),
-                        -RMath::rad2deg(ellipseArcNorm.getSweep()));
-
-                // transform ellipse arc to real position / angle:
-                QTransform t;
-                t.translate(ellipseCopy.getCenter().x,
-                            ellipseCopy.getCenter().y);
-                t.rotate(RMath::rad2deg(ellipseCopy.getAngle()));
-                ePath.transform(t);
-
-                // append ellipse arc to path:
-                RVector start = ePath.getStartPoint();
-                if (!cursor.isValid() || !cursor.equalsFuzzy(start, 0.001))
-                {
-                    if (k != 0)
-                    {
-                        qWarning() << "RHatchData::getBoundaryPath: loop not "
-                                      "closed: ellipse arc does not connect";
-                        return RPainterPath();
-                    }
-                }
-
-                if (ellipseCopy.isFullEllipse())
-                {
-                    boundaryPath.addPath(ePath);
-                }
-                else { boundaryPath.connectPath(ePath); }
-                if (ellipseCopy.isFullEllipse()) { cursor = RVector::invalid; }
-                else { cursor = ellipseCopy.getEndPoint(); }
-
-                continue;
-            }
-
-            QSharedPointer<RSpline> spline = shape.dynamicCast<RSpline>();
-            if (!spline.isNull())
-            {
-                // spline is open, a part of a loop:
-                bool periodic = spline->isPeriodic();
-                if (!periodic)
-                {
-                    if (k == 0)
-                    {
-                        loopStartPoint = spline->getStartPoint();
-                        boundaryPath.moveTo(loopStartPoint);
-                    }
-                    else
-                    {
-                        if (!cursor.isValid() ||
-                            !cursor.equalsFuzzy(spline->getStartPoint(), 0.001))
-                        {
-                            qWarning()
-                                    << "RHatchData::getBoundaryPath: loop not "
-                                       "closed: spline does not connect: loop: "
-                                    << i << " / element: " << k;
-                            qWarning()
-                                    << "RHatchData::getBoundaryPath: cursor: "
-                                    << cursor;
-                            qWarning() << "RHatchData::getBoundaryPath: "
-                                       << *spline;
-                            return RPainterPath();
-                        }
-                    }
-                }
-
-                QList<RSpline> beziers = spline->getBezierSegments();
-                for (int b = 0; b < beziers.size(); b++)
-                {
-                    RSpline s = beziers.at(b);
-                    QList<RVector> controlPoints = s.getControlPoints();
-                    if (periodic && b == 0)
-                    {
-                        boundaryPath.moveTo(controlPoints[0]);
-                    }
-                    if (s.getDegree() == 1)
-                    {
-                        Q_ASSERT(controlPoints.size() == 2);
-                        boundaryPath.lineTo(controlPoints[1]);
-                    }
-                    else if (s.getDegree() == 2)
-                    {
-                        Q_ASSERT(controlPoints.size() == 3);
-                        boundaryPath.quadTo(controlPoints[1], controlPoints[2]);
-                    }
-                    else if (s.getDegree() == 3)
-                    {
-                        Q_ASSERT(controlPoints.size() == 4);
-                        boundaryPath.cubicTo(controlPoints[1], controlPoints[2],
-                                             controlPoints[3]);
-                    }
-                    else
-                    {
-                        Q_ASSERT(controlPoints.size() == s.getDegree() + 1);
-                        //boundaryPath.cubicTo(controlPoints[1], controlPoints[2], controlPoints[3]);
-                        QList<QSharedPointer<RShape>> segs = s.getExploded(16);
-                        for (int sc = 0; sc < segs.length(); sc++)
-                        {
-                            QSharedPointer<RLine> l =
-                                    segs[sc].dynamicCast<RLine>();
-                            if (l.isNull()) { continue; }
-                            boundaryPath.lineTo(l->getEndPoint());
-                        }
-                    }
-                }
-                cursor = spline->getEndPoint();
-                continue;
-            }
-        }
-
-        if (cursor.isValid() && loopStartPoint.isValid() &&
-            !cursor.equalsFuzzy(loopStartPoint, 0.001))
-        {
-
-            qWarning() << "RHatchData::getBoundaryPath: loop not closed: "
-                       << "end (" << cursor << ") does not connect to "
-                       << "start (" << loopStartPoint << ")";
-            //boundaryPath.lineTo(loopStartPoint);
-            return RPainterPath();
-        }
-    }
-
-    return boundaryPath;
-}
 
 QList<RLine> RHatchData::getSegments(const RLine &line) const
 {
@@ -1498,25 +735,9 @@ RHatchData::getBoundaryElementsAt(int index, int &internalIndex) const
                 return ret;
             }
 
-            // spline: control points are treated like additional nodes:
-            QSharedPointer<RSpline> spline = loop.at(k).dynamicCast<RSpline>();
-            if (!spline.isNull())
             {
-                // node is at end of the spline:
-                //                if (indexCounter+spline->countControlPoints()-1==index) {
-                //                    ret.first = spline;
-                //                    ret.second =
-                //                }
-                if (index < indexCounter + spline->countControlPoints() - 1)
-                {
-                    ret.first = spline;
-                    ret.second = QSharedPointer<RShape>();
-                    internalIndex = index - indexCounter;
-                    return ret;
-                }
-                indexCounter += spline->countControlPoints() - 1;
+                indexCounter++;
             }
-            else { indexCounter++; }
         }
     }
 
@@ -1554,10 +775,8 @@ QList<RPolyline> RHatchData::getBoundaryAsPolylines(double segmentLength) const
 
 int RHatchData::getComplexity() const
 {
-    QList<RPainterPath> pps = getPainterPaths(false);
 
     int ret = 0;
-    for (int i = 0; i < pps.count(); i++) { ret += pps[i].getElementCount(); }
 
     return ret;
 }

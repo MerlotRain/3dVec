@@ -17,9 +17,6 @@
  * along with QCAD.
  */
 #include "RLeaderEntity.h"
-#include "RExporter.h"
-#include "RMetaTypes.h"
-#include "RPluginLoader.h"
 #include "RStorage.h"
 
 RPropertyTypeId RLeaderEntity::PropertyCustom;
@@ -117,11 +114,6 @@ void RLeaderEntity::init()
 
     RLeaderEntity::PropertyDimscale.generateId(RLeaderEntity::getRtti(),
                                                RDimStyle::PropertyDimscale);
-    if (RPluginLoader::hasPlugin("DWG"))
-    {
-        RLeaderEntity::PropertyDimasz.generateId(RLeaderEntity::getRtti(),
-                                                 RDimStyle::PropertyDimasz);
-    }
 }
 
 bool RLeaderEntity::setProperty(RPropertyTypeId propertyTypeId,
@@ -145,14 +137,14 @@ bool RLeaderEntity::setProperty(RPropertyTypeId propertyTypeId,
 
     if (propertyTypeId == PropertyDimLeaderBlock)
     {
-        if (RS::getMetaType(value) == RS::Int ||
-            RS::getMetaType(value) == RS::LongLong)
+        if (RS::getMetaType(value) == QVariant::Int ||
+            RS::getMetaType(value) == QVariant::LongLong)
         {
 
             ret = ret || RObject::setMember(getData().dimLeaderBlockId,
                                             value.toInt(), true);
         }
-        else if (RS::getMetaType(value) == RS::String)
+        else if (RS::getMetaType(value) == QVariant::String)
         {
             RDocument *document = getData().getDocument();
             if (document != NULL)
@@ -283,53 +275,4 @@ RLeaderEntity::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
 
     return REntity::getProperty(propertyTypeId, humanReadable, noAttributes,
                                 showOnRequest);
-}
-
-
-void RLeaderEntity::exportEntity(RExporter &e, bool preview,
-                                 bool forceSelected) const
-{
-    Q_UNUSED(preview)
-    Q_UNUSED(forceSelected)
-
-    // a leader needs at least two vertices to display something:
-    if (countVertices() <= 1) { return; }
-
-    if (hasArrowHead())
-    {
-        RDocument *doc = (RDocument *) getDocument();
-        REntity::Id dimLeaderBlockId = data.getDimLeaderBlockId();
-        if (dimLeaderBlockId != REntity::INVALID_ID && doc != NULL)
-        {
-            // create temporary block reference to leader arrow block:
-            RBlockReferenceEntity arrowBlock(
-                    doc, RBlockReferenceData(
-                                 dimLeaderBlockId, getStartPoint(),
-                                 RVector(data.getDimasz(), data.getDimasz()),
-                                 getDirection1() + M_PI));
-            arrowBlock.setLayerId(getLayerId());
-            arrowBlock.setSelected(isSelected());
-            arrowBlock.update();
-            arrowBlock.exportEntity(e, preview, forceSelected);
-        }
-        else
-        {
-            // use regular arrow for leader:
-            RTriangle arrow = data.getArrowShape();
-            QList<QSharedPointer<RShape>> arrowShapes;
-            arrowShapes.append(QSharedPointer<RShape>(new RTriangle(arrow)));
-            e.exportShapes(arrowShapes);
-        }
-    }
-
-    e.setBrush(Qt::NoBrush);
-    e.exportPolyline(data);
-}
-
-void RLeaderEntity::print(QDebug dbg) const
-{
-    dbg.nospace() << "RLeaderEntity(";
-    REntity::print(dbg);
-    data.print(dbg);
-    dbg.nospace() << ")";
 }

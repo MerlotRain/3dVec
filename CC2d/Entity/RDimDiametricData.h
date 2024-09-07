@@ -20,7 +20,7 @@
 #ifndef RDIMDIAMETRICDATA_H
 #define RDIMDIAMETRICDATA_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RDimensionData.h"
 #include "RDocument.h"
@@ -85,10 +85,5 @@ private:
     /** Chord point. Definition point from RDimensionData is near chord point. */
     RVector chordPoint;
 };
-
-Q_DECLARE_METATYPE(RDimDiametricData)
-Q_DECLARE_METATYPE(RDimDiametricData *)
-Q_DECLARE_METATYPE(const RDimDiametricData *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimDiametricData>)
 
 #endif

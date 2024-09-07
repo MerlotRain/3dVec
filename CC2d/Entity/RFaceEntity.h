@@ -26,7 +26,6 @@
 #include "RFaceData.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Face entity.
@@ -91,9 +90,6 @@ public:
     getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
                 bool noAttributes = false, bool showOnRequest = false);
 
-    virtual void exportEntity(RExporter &e, bool preview = false,
-                              bool forceSelected = false) const;
-
     virtual RFaceData &getData() { return data; }
 
     virtual const RFaceData &getData() const { return data; }
@@ -138,14 +134,8 @@ public:
     }
 
 protected:
-    virtual void print(QDebug dbg) const;
-
-protected:
     RFaceData data;
 };
 
-Q_DECLARE_METATYPE(RFaceEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RFaceEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RFaceEntity> *)
 
 #endif

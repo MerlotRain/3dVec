@@ -25,7 +25,6 @@
 #include "RBox.h"
 #include "RDocument.h"
 #include "REntity.h"
-#include "RPainterPathSource.h"
 #include "RPolyline.h"
 #include "RPolylineData.h"
 #include "RVector.h"
@@ -78,10 +77,5 @@ public:
 private:
     bool showFrame;
 };
-
-Q_DECLARE_METATYPE(RWipeoutData)
-Q_DECLARE_METATYPE(RWipeoutData *)
-Q_DECLARE_METATYPE(const RWipeoutData *)
-Q_DECLARE_METATYPE(QSharedPointer<RWipeoutData>)
 
 #endif

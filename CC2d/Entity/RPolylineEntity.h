@@ -26,7 +26,6 @@
 #include "RPolylineData.h"
 
 class RDocument;
-class RExporter;
 class RArc;
 class RLine;
 
@@ -112,9 +111,6 @@ public:
     virtual QPair<QVariant, RPropertyAttributes>
     getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
                 bool noAttributes = false, bool showOnRequest = false);
-
-    virtual void exportEntity(RExporter &e, bool preview = false,
-                              bool forceSelected = false) const;
 
     virtual RPolylineData &getData() { return data; }
 
@@ -279,8 +275,6 @@ public:
 
     virtual int getComplexity() const { return countSegments(); }
 
-    RPainterPath toPainterPath() const { return data.toPainterPath(); }
-
     void simplify(double angleTolerance) { data.simplify(angleTolerance); }
 
     QList<RVector> verifyTangency(double toleranceMin = RS::AngleTolerance,
@@ -339,14 +333,7 @@ public:
     virtual bool validate();
 
 protected:
-    virtual void print(QDebug dbg) const;
-
-protected:
     RPolylineData data;
 };
-
-Q_DECLARE_METATYPE(RPolylineEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RPolylineEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RPolylineEntity> *)
 
 #endif

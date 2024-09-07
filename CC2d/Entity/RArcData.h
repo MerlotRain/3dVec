@@ -194,9 +194,4 @@ public:
     }
 };
 
-Q_DECLARE_METATYPE(RArcData)
-Q_DECLARE_METATYPE(RArcData*)
-Q_DECLARE_METATYPE(const RArcData*)
-Q_DECLARE_METATYPE(QSharedPointer<RArcData>)
-
 #endif

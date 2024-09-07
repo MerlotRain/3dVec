@@ -27,7 +27,6 @@
 #include "RLineweight.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Arc entity.
@@ -96,9 +95,6 @@ public:
     virtual QPair<QVariant, RPropertyAttributes>
     getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
                 bool noAttributes = false, bool showOnRequest = false);
-
-    virtual void exportEntity(RExporter &e, bool preview = false,
-                              bool forceSelected = false) const;
 
     virtual QSharedPointer<REntity> scaleNonUniform(const RVector &scaleFactors,
                                                     const RVector &center);
@@ -179,14 +175,7 @@ public:
     }
 
 protected:
-    virtual void print(QDebug dbg) const;
-
-protected:
     RArcData data;
 };
-
-Q_DECLARE_METATYPE(RArcEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RArcEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RArcEntity> *)
 
 #endif

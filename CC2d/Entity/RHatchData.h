@@ -27,8 +27,6 @@
 #include "REntity.h"
 #include "RHatchProxy.h"
 #include "RLine.h"
-#include "RPainterPath.h"
-#include "RPainterPathSource.h"
 #include "RPattern.h"
 #include "RPoint.h"
 #include "RVector.h"
@@ -45,8 +43,7 @@
  * \copyable
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RHatchData : public REntityData,
-                                     public RPainterPathSource
+class QCADENTITY_EXPORT RHatchData : public REntityData
 {
 
     friend class RHatchEntity;
@@ -169,10 +166,6 @@ public:
     {
         if (loop < boundary.length()) { boundary[loop].append(shape); }
     }
-    RPainterPath getBoundaryPath(double pixelSizeHint = RDEFAULT_MIN1) const;
-    virtual QList<RPainterPath>
-    getPainterPaths(bool draft = false,
-                    double pixelSizeHint = RDEFAULT_MIN1) const;
 
     QList<QList<QSharedPointer<RShape>>> getBoundary() const
     {
@@ -264,8 +257,6 @@ private:
      */
     mutable RPattern pattern;
 
-    mutable RPainterPath boundaryPath;
-    mutable QList<RPainterPath> painterPaths;
     mutable bool dirty;
     mutable bool gotDraft;
     mutable double gotPixelSizeHint;
@@ -273,9 +264,5 @@ private:
     static RHatchProxy *hatchProxy;
 };
 
-Q_DECLARE_METATYPE(RHatchData)
-Q_DECLARE_METATYPE(RHatchData *)
-Q_DECLARE_METATYPE(const RHatchData *)
-Q_DECLARE_METATYPE(QSharedPointer<RHatchData>)
 
 #endif

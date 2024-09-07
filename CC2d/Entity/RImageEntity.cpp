@@ -20,11 +20,8 @@
 #include "RArc.h"
 #include "RCircle.h"
 #include "REllipse.h"
-#include "RExporter.h"
 #include "RLine.h"
-#include "RMetaTypes.h"
 #include "RPoint.h"
-#include "RSpline.h"
 
 RPropertyTypeId RImageEntity::PropertyCustom;
 RPropertyTypeId RImageEntity::PropertyHandle;
@@ -319,24 +316,4 @@ RImageEntity::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
 
     return REntity::getProperty(propertyTypeId, humanReadable, noAttributes,
                                 showOnRequest);
-}
-
-
-void RImageEntity::exportEntity(RExporter &e, bool preview,
-                                bool forceSelected) const
-{
-    Q_UNUSED(preview);
-
-    e.exportImage(data, forceSelected);
-}
-
-void RImageEntity::print(QDebug dbg) const
-{
-    dbg.nospace() << "RImageEntity(";
-    REntity::print(dbg);
-    dbg.nospace() << ", fileName: " << data.fileName
-                  << ", uVector: " << data.uVector
-                  << ", vVector: " << data.vVector
-                  << ", insertionPoint: " << data.insertionPoint;
-    dbg.nospace() << ")";
 }

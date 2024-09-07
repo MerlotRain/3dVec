@@ -26,7 +26,6 @@
 #include "RHatchData.h"
 
 class RDocument;
-class RExporter;
 
 #ifndef RDEFAULT_MIN1
 #define RDEFAULT_MIN1 -1
@@ -111,18 +110,9 @@ public:
     getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
                 bool noAttributes = false, bool showOnRequest = false);
 
-    virtual void exportEntity(RExporter &e, bool preview = false,
-                              bool forceSelected = false) const;
-
     virtual RHatchData &getData() { return data; }
 
     virtual const RHatchData &getData() const { return data; }
-
-    QList<RPainterPath> getPainterPaths(bool draft = false,
-                                        double pixelSizeHint = 0.0) const
-    {
-        return data.getPainterPaths(draft, pixelSizeHint);
-    }
 
     virtual int getComplexity() const { return data.getComplexity(); }
 
@@ -184,14 +174,7 @@ public:
     virtual void setViewportContext(const RViewportData &origin);
 
 protected:
-    virtual void print(QDebug dbg) const;
-
-protected:
     RHatchData data;
 };
-
-Q_DECLARE_METATYPE(RHatchEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RHatchEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RHatchEntity> *)
 
 #endif

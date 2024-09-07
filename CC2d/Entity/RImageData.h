@@ -26,7 +26,6 @@
 #include "RDocument.h"
 #include "REntity.h"
 #include "RLine.h"
-#include "RPainterPath.h"
 #include "RPoint.h"
 #include "RVector.h"
 
@@ -141,9 +140,5 @@ private:
     mutable QImage image;
 };
 
-Q_DECLARE_METATYPE(RImageData)
-Q_DECLARE_METATYPE(RImageData *)
-Q_DECLARE_METATYPE(const RImageData *)
-Q_DECLARE_METATYPE(QSharedPointer<RImageData>)
 
 #endif

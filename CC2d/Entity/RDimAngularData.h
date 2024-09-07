@@ -20,7 +20,7 @@
 #ifndef RDimAngularData_H
 #define RDimAngularData_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RArc.h"
 #include "RDimensionData.h"
@@ -82,9 +82,5 @@ public:
 
     virtual RArc getDimensionArc() const;
 };
-
-Q_DECLARE_METATYPE(RDimAngularData *)
-Q_DECLARE_METATYPE(const RDimAngularData *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimAngularData>)
 
 #endif

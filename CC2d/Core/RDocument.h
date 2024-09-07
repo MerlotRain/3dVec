@@ -470,8 +470,6 @@ public:
 
     static RDocument& getClipboard();
 
-    void dump();
-
 protected:
     static RDocument* clipboard;
 

@@ -48,9 +48,4 @@ public:
     virtual RS::EntityType getType() const { return RS::EntityTrace; }
 };
 
-Q_DECLARE_METATYPE(RTraceData)
-Q_DECLARE_METATYPE(RTraceData *)
-Q_DECLARE_METATYPE(const RTraceData *)
-Q_DECLARE_METATYPE(QSharedPointer<RTraceData>)
-
 #endif

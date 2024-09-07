@@ -20,7 +20,7 @@
 #ifndef RDIMRADIALDATA_H
 #define RDIMRADIALDATA_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RDimensionData.h"
 #include "RDocument.h"
@@ -83,10 +83,5 @@ private:
     /** Chord point. Definition point from RDimensionData is center. */
     RVector chordPoint;
 };
-
-Q_DECLARE_METATYPE(RDimRadialData)
-Q_DECLARE_METATYPE(RDimRadialData *)
-Q_DECLARE_METATYPE(const RDimRadialData *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimRadialData>)
 
 #endif

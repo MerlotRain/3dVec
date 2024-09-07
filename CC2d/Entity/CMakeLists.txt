@@ -2,10 +2,6 @@
 add_library(CC2dEntity SHARED
     RArcData.cpp RArcData.h
     RArcEntity.cpp RArcEntity.h
-    RAttributeData.cpp RAttributeData.h
-    RAttributeDefinitionData.cpp RAttributeDefinitionData.h
-    RAttributeDefinitionEntity.cpp RAttributeDefinitionEntity.h
-    RAttributeEntity.cpp RAttributeEntity.h
     RCircleData.cpp RCircleData.h
     RCircleEntity.cpp RCircleEntity.h
     RDimAlignedData.cpp RDimAlignedData.h
@@ -28,7 +24,6 @@ add_library(CC2dEntity SHARED
     RDimRadialEntity.cpp RDimRadialEntity.h
     RDimRotatedData.cpp RDimRotatedData.h
     RDimRotatedEntity.cpp RDimRotatedEntity.h
-    RDimStyleProxyBasic.cpp RDimStyleProxyBasic.h
     RDimensionData.cpp RDimensionData.h
     RDimensionEntity.cpp RDimensionEntity.h
     REllipseData.cpp REllipseData.h
@@ -54,16 +49,11 @@ add_library(CC2dEntity SHARED
     RRayEntity.cpp RRayEntity.h
     RSolidData.cpp RSolidData.h
     RSolidEntity.cpp RSolidEntity.h
-    RSplineData.cpp RSplineData.h
-    RSplineEntity.cpp RSplineEntity.h
-    RTextData.cpp RTextData.h
-    RTextEntity.cpp RTextEntity.h
-    RToleranceData.cpp RToleranceData.h
-    RToleranceEntity.cpp RToleranceEntity.h
     RTraceData.cpp RTraceData.h
     RTraceEntity.cpp RTraceEntity.h
     RXLineData.cpp RXLineData.h
     RXLineEntity.cpp RXLineEntity.h
+    RTextData.cpp RTextData.h
     ${RC}
 )
 

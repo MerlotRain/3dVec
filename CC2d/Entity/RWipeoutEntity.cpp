@@ -17,10 +17,7 @@
  * along with QCAD.
  */
 #include "RWipeoutEntity.h"
-#include "RExporter.h"
 #include "RLine.h"
-#include "RMetaTypes.h"
-#include "RPluginLoader.h"
 
 RPropertyTypeId RWipeoutEntity::PropertyCustom;
 RPropertyTypeId RWipeoutEntity::PropertyHandle;
@@ -221,31 +218,4 @@ RWipeoutEntity::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
 
     return REntity::getProperty(propertyTypeId, humanReadable, noAttributes,
                                 showOnRequest);
-}
-
-
-void RWipeoutEntity::exportEntity(RExporter &e, bool preview,
-                                  bool forceSelected) const
-{
-    Q_UNUSED(preview);
-    Q_UNUSED(forceSelected);
-
-    RPolyline pl = data.getBoundary();
-
-    e.setBrush(Qt::SolidPattern);
-
-    if (!getShowFrame())
-    {
-        QPen pen = e.getPen();
-        pen.setStyle(Qt::NoPen);
-        e.setPen(pen);
-    }
-
-    e.setWipeout(true);
-    if (!getShowFrame()) { e.setFrameless(true); }
-
-    e.exportPolyline(pl);
-
-    if (!getShowFrame()) { e.setFrameless(false); }
-    e.setWipeout(false);
 }

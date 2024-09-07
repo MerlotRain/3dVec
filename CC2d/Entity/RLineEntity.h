@@ -26,7 +26,7 @@
 #include "RLineData.h"
 
 class RDocument;
-class RExporter;
+
 
 /**
  * Line entity.
@@ -90,9 +90,6 @@ public:
     getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
                 bool noAttributes = false, bool showOnRequest = false);
 
-    virtual void exportEntity(RExporter &e, bool preview = false,
-                              bool forceSelected = false) const;
-
     virtual RLineData &getData() { return data; }
 
     virtual const RLineData &getData() const { return data; }
@@ -148,14 +145,7 @@ public:
     double getLength() const { return data.getLength(); }
 
 protected:
-    virtual void print(QDebug dbg) const;
-
-protected:
     RLineData data;
 };
-
-Q_DECLARE_METATYPE(RLineEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RLineEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RLineEntity> *)
 
 #endif

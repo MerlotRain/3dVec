@@ -20,7 +20,7 @@
 #ifndef RTEXTDATA_H
 #define RTEXTDATA_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RDocument.h"
 #include "RTextBasedData.h"
@@ -56,10 +56,5 @@ public:
     virtual RS::EntityType getType() const { return RS::EntityText; }
 };
 
-Q_DECLARE_METATYPE(RTextData)
-Q_DECLARE_METATYPE(RTextData *)
-Q_DECLARE_METATYPE(const RTextData *)
-Q_DECLARE_METATYPE(QSharedPointer<RTextData>)
-Q_DECLARE_METATYPE(QSharedPointer<RTextData> *)
 
 #endif

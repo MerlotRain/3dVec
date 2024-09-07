@@ -48,9 +48,5 @@ public:
     virtual RS::EntityType getType() const { return RS::EntityFace; }
 };
 
-Q_DECLARE_METATYPE(RFaceData)
-Q_DECLARE_METATYPE(RFaceData *)
-Q_DECLARE_METATYPE(const RFaceData *)
-Q_DECLARE_METATYPE(QSharedPointer<RFaceData>)
 
 #endif

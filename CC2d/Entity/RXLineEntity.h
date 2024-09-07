@@ -26,7 +26,6 @@
 #include "RXLineData.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Infinite line entity.
@@ -89,9 +88,6 @@ public:
     getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
                 bool noAttributes = false, bool showOnRequest = false);
 
-    virtual void exportEntity(RExporter &e, bool preview = false,
-                              bool forceSelected = false) const;
-
     virtual RXLineData &getData() { return data; }
 
     virtual const RXLineData &getData() const { return data; }
@@ -151,14 +147,7 @@ public:
     double getLength() const { return data.getLength(); }
 
 protected:
-    virtual void print(QDebug dbg) const;
-
-protected:
     RXLineData data;
 };
-
-Q_DECLARE_METATYPE(RXLineEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RXLineEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RXLineEntity> *)
 
 #endif

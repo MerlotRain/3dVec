@@ -173,9 +173,4 @@ public:
     }
 };
 
-Q_DECLARE_METATYPE(RCircleData)
-Q_DECLARE_METATYPE(RCircleData *)
-Q_DECLARE_METATYPE(const RCircleData *)
-Q_DECLARE_METATYPE(QSharedPointer<RCircleData>)
-
 #endif

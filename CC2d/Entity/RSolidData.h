@@ -197,9 +197,4 @@ public:
     RPolyline getGeometry() { return *this; }
 };
 
-Q_DECLARE_METATYPE(RSolidData)
-Q_DECLARE_METATYPE(RSolidData *)
-Q_DECLARE_METATYPE(const RSolidData *)
-Q_DECLARE_METATYPE(QSharedPointer<RSolidData>)
-
 #endif

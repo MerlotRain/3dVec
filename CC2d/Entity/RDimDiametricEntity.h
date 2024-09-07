@@ -20,13 +20,12 @@
 #ifndef RDIMDIAMETRICENTITY_H
 #define RDIMDIAMETRICENTITY_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RDimDiametricData.h"
 #include "RDimensionEntity.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Aligned dimension entity class.
@@ -144,15 +143,10 @@ public:
 
     RVector getFarChordPoint() const { return data.getFarChordPoint(); }
 
-protected:
-    virtual void print(QDebug dbg) const;
 
 protected:
     RDimDiametricData data;
 };
 
-Q_DECLARE_METATYPE(RDimDiametricEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimDiametricEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RDimDiametricEntity> *)
 
 #endif

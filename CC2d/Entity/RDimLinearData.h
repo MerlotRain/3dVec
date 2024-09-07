@@ -20,7 +20,7 @@
 #ifndef RDIMLINEARDATA_H
 #define RDIMLINEARDATA_H
 
-#include <CC2dEntityExport.h>
+#include "CC2dEntityExport.h"
 
 #include "RDimensionData.h"
 #include "RDocument.h"
@@ -108,9 +108,5 @@ protected:
     /** Definition point. Startpoint of the second extension line. */
     RVector extensionPoint2;
 };
-
-Q_DECLARE_METATYPE(RDimLinearData *)
-Q_DECLARE_METATYPE(const RDimLinearData *)
-Q_DECLARE_METATYPE(QSharedPointer<RDimLinearData>)
 
 #endif

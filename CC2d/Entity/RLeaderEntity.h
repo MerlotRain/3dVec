@@ -26,7 +26,6 @@
 #include "RLeaderData.h"
 
 class RDocument;
-class RExporter;
 
 /**
  * Leader entity class.
@@ -177,18 +176,8 @@ public:
 
     void clearStyleOverrides() { data.clearStyleOverrides(); }
 
-    virtual void exportEntity(RExporter &e, bool preview = false,
-                              bool forceSelected = false) const;
-
-protected:
-    virtual void print(QDebug dbg) const;
-
 protected:
     RLeaderData data;
 };
-
-Q_DECLARE_METATYPE(RLeaderEntity *)
-Q_DECLARE_METATYPE(QSharedPointer<RLeaderEntity>)
-Q_DECLARE_METATYPE(QSharedPointer<RLeaderEntity> *)
 
 #endif

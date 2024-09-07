@@ -17,7 +17,6 @@
  * along with QCAD.
  */
 #include "RLineEntity.h"
-#include "RExporter.h"
 #include "RLine.h"
 
 RPropertyTypeId RLineEntity::PropertyCustom;
@@ -255,23 +254,4 @@ RLineEntity::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
 
     return REntity::getProperty(propertyTypeId, humanReadable, noAttributes,
                                 showOnRequest);
-}
-
-
-void RLineEntity::exportEntity(RExporter &e, bool preview,
-                               bool forceSelected) const
-{
-    Q_UNUSED(preview)
-    Q_UNUSED(forceSelected)
-
-    e.setBrush(Qt::NoBrush);
-    e.exportLine(data);
-}
-
-void RLineEntity::print(QDebug dbg) const
-{
-    dbg.nospace() << "RLineEntity(";
-    REntity::print(dbg);
-    dbg.nospace() << ", startPoint: " << getStartPoint()
-                  << ", endPoint: " << getEndPoint() << ")";
 }
