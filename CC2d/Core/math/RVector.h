@@ -22,7 +22,6 @@
 
 #include <CC2dCoreExport.h>
 
-#include <QDebug>
 #include <QList>
 #include <QMetaType>
 #include <QTransform>

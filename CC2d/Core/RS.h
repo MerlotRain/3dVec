@@ -29,34 +29,34 @@
 #include <QString>
 #include <QStringList>
 //#include <QTextCodec>
-#include <QVariant>
 #include <QMetaType>
 #include <QTextCharFormat>
+#include <QVariant>
 
 
 // Qt < 5.10
 #if QT_VERSION < 0x050A00
-#  ifdef ssize_t
-#    define qsizetype ssize_t
-#  else
-#    define qsizetype int
-#  endif
+#ifdef ssize_t
+#define qsizetype ssize_t
+#else
+#define qsizetype int
+#endif
 #endif
 
 #if QT_VERSION >= 0x050000
-#  include <QRegularExpression>
-#  include <QGuiApplication>
+#include <QGuiApplication>
+#include <QRegularExpression>
 #else
-#  include <QRegExp>
-#  ifndef QRegularExpression
-#    define QRegularExpression QRegExp
-#  endif
+#include <QRegExp>
+#ifndef QRegularExpression
+#define QRegularExpression QRegExp
+#endif
 #endif
 
 #if QT_VERSION >= 0x060000
-#  ifndef qSort
-#    define qSort std::sort
-#  endif
+#ifndef qSort
+#define qSort std::sort
+#endif
 #endif
 
 class RVector;
@@ -66,14 +66,14 @@ class RPropertyAttributes;
  * Some useful macros for OS detection.
  */
 #if defined(WIN64) || defined(_WIN64) || defined(__WIN64__)
-#  define ROS_WINDOWS
-#  define ROS_WIN32
-#  define ROS_WIN64
+#define ROS_WINDOWS
+#define ROS_WIN32
+#define ROS_WIN64
 #elif defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-#  define ROS_WINDOWS
-#  define ROS_WIN32
+#define ROS_WINDOWS
+#define ROS_WIN32
 #else
-#  define ROS_POSIX
+#define ROS_POSIX
 #endif
 
 #define REASING_LINEAR QEasingCurve::Linear
@@ -117,15 +117,11 @@ class RPropertyAttributes;
 #define REASING_OUTBOUNCE QEasingCurve::OutBounce
 #define REASING_INOUTBOUNCE QEasingCurve::InOutBounce
 #define REASING_OUTINBOUNCE QEasingCurve::OutInBounce
-//#define REASING_INCURVE QEasingCurve::InCurve
-//#define REASING_OUTCURVE QEasingCurve::OutCurve
-//#define REASING_SINECURVE QEasingCurve::SineCurve
-//#define REASING_COSINECURVE QEasingCurve::CosineCurve
-//#define REASING_BEZIERSPLINE QEasingCurve::BezierSpline
-//#define REASING_TCBSPLINE QEasingCurve::TCBSpline
+
 
 #if QT_VERSION < 0x050000
-class QRegularExpressionMatch {
+class QRegularExpressionMatch
+{
 };
 /*
 #  ifndef QRegularExpressionMatch
@@ -145,10 +141,11 @@ class QRegularExpressionMatch {
  * \ingroup core
  * \scriptable
  */
-class QCADCORE_EXPORT RS {
+class QCADCORE_EXPORT RS
+{
 public:
-
-    enum MetaType {
+    enum MetaType
+    {
         Bool = QVariant::Bool,
         Char = QVariant::Char,
         Double = QVariant::Double,
@@ -206,50 +203,51 @@ public:
     /**
      * Message type for debugging and displaying user messages.
      */
-    enum MessageType {
-       Print,
-       Debug,
-       Warning,
-       Critical,
-       Command
+    enum MessageType
+    {
+        Print,
+        Debug,
+        Warning,
+        Critical,
+        Command
     };
 
     /**
      * Entity types used for property handling / filtering.
      * \todo QCAD 4: rename to objectType
      */
-    enum EntityType {
+    enum EntityType
+    {
         ObjectAll,
-        ObjectUnknown,      /**< Unknown object */
+        ObjectUnknown, /**< Unknown object */
 
         ObjectLinetype,
         ObjectLayer,
         ObjectBlock,
-        ObjectLayout,
         ObjectLayerState,
         ObjectView,
         ObjectUcs,
         ObjectDocumentVariable,
         ObjectDimStyle,
 
-        EntityAll,          /**< All entities (for filters) */
-        EntityUnknown,      /**< Unknown entity */
+        EntityAll,     /**< All entities (for filters) */
+        EntityUnknown, /**< Unknown entity */
 
-        EntityAttribute,    /**< Block attribute */
-        EntityAttributeDefinition,     /**< Block attribute definition */
-        EntityBlockRef,     /**< Block reference */
-        EntityBlockRefAttr, /**< Block reference with attributes */
-        EntityPoint,        /**< Point */
-        EntityLine,         /**< Line */
-        EntityXLine,        /**< XLine */
-        EntityRay,          /**< Ray */
-        EntityPolyline,     /**< Polyline */
-        EntityArc,          /**< Arc */
-        EntityCircle,       /**< Circle */
-        EntityEllipse,      /**< Ellipse */
-        EntitySolid,        /**< Solid */
-        Entity3dFace,       /**< 3d Face */
-        EntityTextBased,    /**< Any text based entity (text, attribute def, attribute) */
+        EntityAttribute,           /**< Block attribute */
+        EntityAttributeDefinition, /**< Block attribute definition */
+        EntityBlockRef,            /**< Block reference */
+        EntityBlockRefAttr,        /**< Block reference with attributes */
+        EntityPoint,               /**< Point */
+        EntityLine,                /**< Line */
+        EntityXLine,               /**< XLine */
+        EntityRay,                 /**< Ray */
+        EntityPolyline,            /**< Polyline */
+        EntityArc,                 /**< Arc */
+        EntityCircle,              /**< Circle */
+        EntityEllipse,             /**< Ellipse */
+        EntitySolid,               /**< Solid */
+        Entity3dFace,              /**< 3d Face */
+        EntityTextBased, /**< Any text based entity (text, attribute def, attribute) */
         EntityText,         /**< Text */
         EntityTrace,        /**< Trace */
         EntityFace,         /**< Face */
@@ -273,17 +271,12 @@ public:
         EntityWipeout,      /**< Wipeout */
         EntityXRef,         /**< XRef */
 
-        EntityUser          /**< User defined entity. Use this to identify
+        EntityUser /**< User defined entity. Use this to identify
                                  entities that are added in a separate library
                                  and resort to C++ RTTI for RTTI. */
     };
-
-    /**
-     * Sets the current rendering hint for exports.
-     *
-     * \see RExporter::setProjectionRenderingHint
-     */
-    enum ProjectionRenderingHint {
+    enum ProjectionRenderingHint
+    {
         RenderTop,
         RenderSide,
         RenderFront,
@@ -293,7 +286,8 @@ public:
     /**
      * Orthogonal mode, used for snap restrictions.
      */
-    enum OrthoMode {
+    enum OrthoMode
+    {
         OrthoVertical,
         OrthoHorizonal,
         Orthogonal
@@ -303,7 +297,8 @@ public:
      * Side used for side of a point relative to an entity
      * (right hand or left hand side)
      */
-    enum Side {
+    enum Side
+    {
         NoSide = 0,
         LeftHand = 1,
         RightHand = 2,
@@ -313,86 +308,93 @@ public:
     /**
      * Entity ending. Used for returning which end of an entity is meant.
      */
-    enum Ending {
-        EndingStart,    /**< Start point. */
-        EndingEnd,      /**< End point. */
-        EndingNone      /**< Neither. */
+    enum Ending
+    {
+        EndingStart, /**< Start point. */
+        EndingEnd,   /**< End point. */
+        EndingNone   /**< Neither. */
     };
 
     /**
      * Vertical alignments.
      */
-    enum VAlign {
-        VAlignTop,      /**< Top. */
-        VAlignMiddle,   /**< Middle */
-        VAlignBase,     /**< Base line */
-        VAlignBottom    /**< Bottom */
+    enum VAlign
+    {
+        VAlignTop,    /**< Top. */
+        VAlignMiddle, /**< Middle */
+        VAlignBase,   /**< Base line */
+        VAlignBottom  /**< Bottom */
     };
 
     /**
      * Horizontal alignments.
      */
-    enum HAlign {
-        HAlignLeft,      /**< Left */
-        HAlignCenter,    /**< Centered */
-        HAlignRight,     /**< Right */
-        HAlignAlign,     /**< Aligned */
-        HAlignMid,       /**< Middle (?) */
-        HAlignFit        /**< Fit */
+    enum HAlign
+    {
+        HAlignLeft,   /**< Left */
+        HAlignCenter, /**< Centered */
+        HAlignRight,  /**< Right */
+        HAlignAlign,  /**< Aligned */
+        HAlignMid,    /**< Middle (?) */
+        HAlignFit     /**< Fit */
     };
 
     /**
      * Text drawing direction.
      */
-    enum TextDrawingDirection {
-        LeftToRight = 1,     /**< Left to right */
-        TopToBottom = 3,     /**< Top to bottom */
-        ByStyle = 5          /**< Inherited from associated text style */
+    enum TextDrawingDirection
+    {
+        LeftToRight = 1, /**< Left to right */
+        TopToBottom = 3, /**< Top to bottom */
+        ByStyle = 5      /**< Inherited from associated text style */
     };
 
     /**
      * Line spacing style for texts.
      */
-    enum TextLineSpacingStyle {
-        AtLeast = 1,        /**< Taller characters will override */
-        Exact = 2           /**< Taller characters will not override */
+    enum TextLineSpacingStyle
+    {
+        AtLeast = 1, /**< Taller characters will override */
+        Exact = 2    /**< Taller characters will not override */
     };
 
     /**
      * End used to specify from which end of a shape to measure a distance.
      */
-    enum From {
+    enum From
+    {
         FromStart = 0x1,
         FromEnd = 0x2,
-        FromAny = FromStart|FromEnd,         /**< Start or end **/
+        FromAny = FromStart | FromEnd, /**< Start or end **/
         AlongPolyline = 0x4
     };
 
     /**
      * Projection type for isometric projections.
      */
-    enum IsoProjectionType {
-        NoProjection =  0x00000000,      //!< No projection (2d x/y)
-        Top =           0x00000001,      //!< Top projection (x/y)
-        Bottom =        0x00000002,      //!< Bottom projection (x/y)
-        Left =          0x00000004,      //!< Front left projection (x/z)
-        LeftBack =      0x00000008,      //!< Back left projection (x/z)
-        Right =         0x00000010,      //!< Front right projection (y/z)
-        RightBack =     0x00000020,      //!< Back right projection (y/z)
+    enum IsoProjectionType
+    {
+        NoProjection = 0x00000000,//!< No projection (2d x/y)
+        Top = 0x00000001,         //!< Top projection (x/y)
+        Bottom = 0x00000002,      //!< Bottom projection (x/y)
+        Left = 0x00000004,        //!< Front left projection (x/z)
+        LeftBack = 0x00000008,    //!< Back left projection (x/z)
+        Right = 0x00000010,       //!< Front right projection (y/z)
+        RightBack = 0x00000020,   //!< Back right projection (y/z)
 
-        Isometric =     0x00010000,      //!< Isometric
-        IsometricTrue = 0x00020000,      //!< Isometric
-        Planometric =   0x00040000,      //!< Planometric
-        Dimetric =      0x00080000,      //!< Dimetric
+        Isometric = 0x00010000,    //!< Isometric
+        IsometricTrue = 0x00020000,//!< Isometric
+        Planometric = 0x00040000,  //!< Planometric
+        Dimetric = 0x00080000,     //!< Dimetric
 
-        Cabinet =       0x00100000,      //!< Cabinet
-        Cabinet30 =     0x00200000,      //!< Cabinet30
-        Cavalier =      0x00400000,      //!< Cavalier
+        Cabinet = 0x00100000,  //!< Cabinet
+        Cabinet30 = 0x00200000,//!< Cabinet30
+        Cavalier = 0x00400000, //!< Cavalier
 
-        User1 =         0x01000000,      //!< User defined 1
-        User2 =         0x02000000,      //!< User defined 2
-        User3 =         0x04000000,      //!< User defined 3
-        User4 =         0x08000000,      //!< User defined 4
+        User1 = 0x01000000,//!< User defined 1
+        User2 = 0x02000000,//!< User defined 2
+        User3 = 0x04000000,//!< User defined 3
+        User4 = 0x08000000,//!< User defined 4
 
         // backwards compatibility:
         IsoTop = Top | Isometric,
@@ -406,37 +408,39 @@ public:
     /**
      * Enum of supported measurement systems.
      */
-    enum Measurement {
+    enum Measurement
+    {
         UnknownMeasurement = -1,
-        Imperial = 0,         /**< Imperial */
-        Metric = 1,            /**< Metric */
+        Imperial = 0, /**< Imperial */
+        Metric = 1,   /**< Metric */
     };
 
     /**
      * Enum of supported units (values correspond to DXF spec).
      */
-    enum Unit {
-        None = 0,         /**< No unit (unit from parent) */
-        Inch = 1,         /**< Inch */
-        Foot = 2,         /**< Foot: 12 Inches */
-        Mile = 3,         /**< Mile: 1760 Yards = 1609 m */
-        Millimeter = 4,   /**< Millimeter: 0.001m */
-        Centimeter = 5,   /**< Centimeter: 0.01m */
-        Meter = 6,        /**< Meter */
-        Kilometer = 7,    /**< Kilometer: 1000m */
-        Microinch = 8,    /**< Microinch: 0.000001 */
-        Mil = 9,          /**< Mil = 0.001 Inch*/
-        Yard = 10,        /**< Yard: 3 Feet */
-        Angstrom = 11,    /**< Angstrom: 10^-10m  */
-        Nanometer = 12,   /**< Nanometer: 10^-9m  */
-        Micron = 13,      /**< Micron: 10^-6m  */
-        Decimeter = 14,   /**< Decimeter: 0.1m */
-        Decameter = 15,   /**< Decameter: 10m */
-        Hectometer = 16,  /**< Hectometer: 100m */
-        Gigameter = 17,   /**< Gigameter: 1000000m */
-        Astro = 18,       /**< Astro: 149.6 x 10^9m */
-        Lightyear = 19,   /**< Lightyear: 9460731798 x 10^6m */
-        Parsec = 20,      /**< Parsec: 30857 x 10^12 */
+    enum Unit
+    {
+        None = 0,        /**< No unit (unit from parent) */
+        Inch = 1,        /**< Inch */
+        Foot = 2,        /**< Foot: 12 Inches */
+        Mile = 3,        /**< Mile: 1760 Yards = 1609 m */
+        Millimeter = 4,  /**< Millimeter: 0.001m */
+        Centimeter = 5,  /**< Centimeter: 0.01m */
+        Meter = 6,       /**< Meter */
+        Kilometer = 7,   /**< Kilometer: 1000m */
+        Microinch = 8,   /**< Microinch: 0.000001 */
+        Mil = 9,         /**< Mil = 0.001 Inch*/
+        Yard = 10,       /**< Yard: 3 Feet */
+        Angstrom = 11,   /**< Angstrom: 10^-10m  */
+        Nanometer = 12,  /**< Nanometer: 10^-9m  */
+        Micron = 13,     /**< Micron: 10^-6m  */
+        Decimeter = 14,  /**< Decimeter: 0.1m */
+        Decameter = 15,  /**< Decameter: 10m */
+        Hectometer = 16, /**< Hectometer: 100m */
+        Gigameter = 17,  /**< Gigameter: 1000000m */
+        Astro = 18,      /**< Astro: 149.6 x 10^9m */
+        Lightyear = 19,  /**< Lightyear: 9460731798 x 10^6m */
+        Parsec = 20,     /**< Parsec: 30857 x 10^12 */
         //Plu = 21          /**< PLU: Plotter units used in HP/GL. 40plu = 1mm. not supported by open design*/
         MaxUnit = Parsec
     };
@@ -444,7 +448,8 @@ public:
     /**
      * Angle format for printing angles.
      */
-    enum AngleFormat {
+    enum AngleFormat
+    {
         /** Degrees with decimal point (e.g. 24.5<degree symbol>) */
         DegreesDecimal = 0,
         /** Degrees, Minutes and Seconds (e.g. 24<degree symbol>30'5'') */
@@ -460,7 +465,8 @@ public:
     /**
      * Format for length values.
      */
-    enum LinearFormat {
+    enum LinearFormat
+    {
         /** Scientific (e.g. 2.5E+05) */
         Scientific = 1,
         /** Decimal (e.g. 9.5)*/
@@ -482,16 +488,18 @@ public:
     /**
      * Angle Units.
      */
-    enum AngleUnit {
-        Deg,               /**< Degrees */
-        Rad,               /**< Radians */
-        Gra                /**< Gradians */
+    enum AngleUnit
+    {
+        Deg, /**< Degrees */
+        Rad, /**< Radians */
+        Gra  /**< Gradians */
     };
 
     /**
      * Well established document variables.
      */
-    enum KnownVariable {
+    enum KnownVariable
+    {
         ANGBASE,
         ANGDIR,
         ATTMODE,
@@ -502,7 +510,7 @@ public:
         CHAMFERA,
         CHAMFERB,
         CHAMFERC,
-        CHAMFERD,  // 10
+        CHAMFERD,// 10
         CLAYER,
         CMLJUST,
         CMLSCALE,
@@ -513,7 +521,7 @@ public:
         DIMALTF,
         DIMALTRND,
         DIMALTTD,
-        DIMALTTZ,  // 20
+        DIMALTTZ,// 20
         DIMALTU,
         DIMALTZ,
         DIMAPOST,
@@ -525,7 +533,7 @@ public:
         DIMAZIN,
         DIMBLK,
         DIMBLK1,
-        DIMBLK2,  // 30
+        DIMBLK2,// 30
         DIMCEN,
         DIMCLRD,
         DIMCLRE,
@@ -537,7 +545,7 @@ public:
         /** Decimal separator in dimensions */
         DIMDSEP,
         DIMEXE,
-        DIMEXO,  // 40
+        DIMEXO,// 40
         DIMFRAC,
         /** Distance between dimension text and dimension lines, negative for box */
         DIMGAP,
@@ -550,7 +558,7 @@ public:
         DIMLUNIT,
         DIMLWD,
         DIMLWE,
-        DIMPOST,  // 50
+        DIMPOST,// 50
         DIMRND,
         DIMSAH,
         DIMSCALE,
@@ -561,7 +569,7 @@ public:
         DIMSOXD,
         /** Vertical position of dimension label */
         DIMTAD,
-        DIMTDEC,  // 60
+        DIMTDEC,// 60
         DIMTFAC,
         DIMTIH,
         DIMTIX,
@@ -572,7 +580,7 @@ public:
         DIMTOLJ,
         DIMTP,
         /** Archtick size or 0 for arrows */
-        DIMTSZ,  // 70
+        DIMTSZ,// 70
         DIMTVP,
         DIMTXSTY,
         /** Dimension text size */
@@ -584,7 +592,7 @@ public:
         DISPSILH,
         DWGCODEPAGE,
         DRAWORDERCTL,
-        ELEVATION,  // 80
+        ELEVATION,// 80
         EXTMAX,
         EXTMIN,
         FACETRES,
@@ -668,7 +676,8 @@ public:
         INVALID = -1,
     };
 
-    enum KnownVariableType {
+    enum KnownVariableType
+    {
         VarTypeBool = 1,
         VarTypeInt = 2,
         VarTypeDouble = 3,
@@ -676,34 +685,39 @@ public:
         VarTypeUnknown = -1
     };
 
-    enum BooleanOperation {
+    enum BooleanOperation
+    {
         Intersection,
         Union,
         Difference,
         Xor
     };
 
-    enum FillType {
+    enum FillType
+    {
         EvenOdd,
         NonZero,
         Positive,
         Negative
     };
 
-    enum Orientation {
+    enum Orientation
+    {
         UnknownOrientation = -1,
         Any = 0,
         CW = 1,
         CCW = 2
     };
 
-    enum JoinType {
+    enum JoinType
+    {
         JoinBevel,
         JoinRound,
         JoinMiter
     };
 
-    enum EndType {
+    enum EndType
+    {
         EndClosedPolygon,
         EndClosedLine,
         EndOpenButt,
@@ -712,7 +726,8 @@ public:
         EndOpenSingle
     };
 
-    enum Easing {
+    enum Easing
+    {
         Linear = REASING_LINEAR,
         InQuad = REASING_INQUAD,
         OutQuad = REASING_OUTQUAD,
@@ -754,17 +769,72 @@ public:
         OutBounce = REASING_OUTBOUNCE,
         InOutBounce = REASING_INOUTBOUNCE,
         OutInBounce = REASING_OUTINBOUNCE,
-        //InCurve = REASING_INCURVE,
-        //OutCurve = REASING_OUTCURVE,
-        //SineCurve = REASING_SINECURVE,
-        //CosineCurve = REASING_COSINECURVE,
-        //BezierSpline = REASING_BEZIERSPLINE,
-        //TCBSpline = REASING_TCBSPLINE
     };
 
 public:
     static const double PointTolerance;
     static const double AngleTolerance;
+
+    // workaround for Qt 6 deprecating QList::toSet:
+    template<class T>
+    static QSet<T> toSet(const QList<T> &list)
+    {
+#if QT_VERSION >= 0x060000
+        return QSet<T>(list.begin(), list.end());
+#else
+        return list.toSet();
+#endif
+    }
+
+    // workaround for Qt 6 deprecating QSet::toList:
+    template<class T>
+    static QList<T> toList(const QSet<T> &set)
+    {
+#if QT_VERSION >= 0x060000
+        return QList<T>(set.begin(), set.end());
+#else
+        return set.toList();
+#endif
+    }
+
+
+    static int getMetaType(const QVariant &v)
+    {
+#if QT_VERSION >= 0x060000
+        return v.metaType().id();
+#else
+        return v.type();
+#endif
+    }
+
+
+    // workarounds for Qt 6 QRegExp changes:
+    /**
+     * \nonscriptable
+     */
+    static bool exactMatch(const QRegularExpression &rx, const QString &string);
+    /**
+     * \nonscriptable
+     */
+    static bool exactMatch(const QRegularExpression &rx,
+                           QRegularExpressionMatch &match,
+                           const QString &string);
+    /**
+     * \nonscriptable
+     */
+    static bool exactMatch(const QString &rxStr, const QString &string);
+
+    static int indexIn(const QRegularExpression &rx,
+                       QRegularExpressionMatch &match, const QString &string,
+                       int from = 0);
+
+    static int matchedLength(const QRegularExpression &rx,
+                             const QRegularExpressionMatch &match);
+
+    static QStringList sortAlphanumerical(const QStringList &list);
+    static QStringList compareChunkify(const QString &s);
+    static int compareAlphanumerical(const QString &s1, const QString &s2);
+    static bool lessThanAlphanumerical(const QString &s1, const QString &s2);
 };
 
 #endif

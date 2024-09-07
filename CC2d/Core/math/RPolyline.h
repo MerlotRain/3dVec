@@ -319,8 +319,6 @@ public:
 protected:
     bool isLineSegment(int i) const;
 
-    void print(QDebug dbg) const;
-
 protected:
     /**
      * \getter{getVertices}

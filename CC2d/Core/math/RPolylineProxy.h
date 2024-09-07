@@ -26,7 +26,6 @@
 #include <RS.h>
 
 class RArc;
-class RExporter;
 class RLine;
 class RPolyline;
 class RVector;

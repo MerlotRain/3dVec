@@ -48,9 +48,6 @@ class QCADCORE_EXPORT RColor: public QColor {
 
 
 public:
-    friend QCADCORE_EXPORT QDataStream& operator<<(QDataStream& stream, const RColor& color);
-
-    friend QCADCORE_EXPORT QDataStream& operator>>(QDataStream& stream, RColor& color);
 
     enum Mode {
         ByLayer, ByBlock, Fixed
@@ -136,23 +133,5 @@ private:
     static const double cadColors[][3];
 };
 
-/**
- *\nonscriptable
- */
-QCADCORE_EXPORT QDataStream& operator<<(QDataStream& stream, const RColor& color);
-
-/**
- *\nonscriptable
- */
-QCADCORE_EXPORT QDataStream& operator>>(QDataStream& stream, RColor& color);
-
-QCADCORE_EXPORT QDebug operator<<(QDebug dbg, const RColor& c);
-
-Q_DECLARE_METATYPE(RColor)
-Q_DECLARE_METATYPE(RColor*)
-typedef QPair<QString, RColor> _RPairStringRColor;
-Q_DECLARE_METATYPE(_RPairStringRColor)
-Q_DECLARE_METATYPE(QList< _RPairStringRColor >)
-Q_DECLARE_METATYPE(RColor::Mode)
 
 #endif /* RCOLOR_H_ */
