@@ -19,23 +19,25 @@
 #include "RArcData.h"
 #include "RArcEntity.h"
 
-RArcData::RArcData() {
-}
+RArcData::RArcData() {}
 
-RArcData::RArcData(const RArc& arc) : RArc(arc) {
-}
+RArcData::RArcData(const RArc &arc) : RArc(arc) {}
 
-RArcData::RArcData(RDocument* document, const RArcData& data) {
+RArcData::RArcData(RDocument *document, const RArcData &data)
+{
     *this = data;
     this->document = document;
 }
 
-RArcData::RArcData(const RVector& center, double radius, double startAngle,
-        double endAngle, bool reversed) :
-    RArc(center, radius, startAngle, endAngle, reversed) {
+RArcData::RArcData(const RVector &center, double radius, double startAngle,
+                   double endAngle, bool reversed)
+    : RArc(center, radius, startAngle, endAngle, reversed)
+{
 }
 
-QList<RRefPoint> RArcData::getReferencePoints(RS::ProjectionRenderingHint hint) const {
+QList<RRefPoint>
+RArcData::getReferencePoints(RS::ProjectionRenderingHint hint) const
+{
     Q_UNUSED(hint)
 
     QList<RRefPoint> ret;
@@ -50,8 +52,11 @@ QList<RRefPoint> RArcData::getReferencePoints(RS::ProjectionRenderingHint hint) 
     p.append(RRefPoint(center - RVector(radius, 0), RRefPoint::Tertiary));
     p.append(RRefPoint(center - RVector(0, radius), RRefPoint::Tertiary));
 
-    for (int i=0; i<p.size(); i++) {
-        if (RMath::isAngleBetween(center.getAngleTo(p[i]), startAngle, endAngle, reversed)) {
+    for (int i = 0; i < p.size(); i++)
+    {
+        if (RMath::isAngleBetween(center.getAngleTo(p[i]), startAngle, endAngle,
+                                  reversed))
+        {
             ret.append(p[i]);
         }
     }
@@ -59,30 +64,40 @@ QList<RRefPoint> RArcData::getReferencePoints(RS::ProjectionRenderingHint hint) 
     return ret;
 }
 
-bool RArcData::moveReferencePoint(const RVector& referencePoint, const RVector& targetPoint, Qt::KeyboardModifiers modifiers) {
+bool RArcData::moveReferencePoint(const RVector &referencePoint,
+                                  const RVector &targetPoint,
+                                  Qt::KeyboardModifiers modifiers)
+{
     Q_UNUSED(modifiers)
 
-    bool shift = (modifiers & Qt::ShiftModifier)>0;
+    bool shift = (modifiers & Qt::ShiftModifier) > 0;
 
     bool ret = false;
-    if (referencePoint.equalsFuzzy(center)) {
+    if (referencePoint.equalsFuzzy(center))
+    {
         center = targetPoint;
         ret = true;
-    } else if (referencePoint.equalsFuzzy(getStartPoint())) {
+    }
+    else if (referencePoint.equalsFuzzy(getStartPoint()))
+    {
         moveStartPoint(targetPoint, shift);
         ret = true;
-    } else if (referencePoint.equalsFuzzy(getEndPoint())) {
+    }
+    else if (referencePoint.equalsFuzzy(getEndPoint()))
+    {
         moveEndPoint(targetPoint, shift);
         ret = true;
     }
     else if (referencePoint.equalsFuzzy(center + RVector(radius, 0)) ||
              referencePoint.equalsFuzzy(center + RVector(0, radius)) ||
              referencePoint.equalsFuzzy(center - RVector(radius, 0)) ||
-             referencePoint.equalsFuzzy(center - RVector(0, radius))) {
+             referencePoint.equalsFuzzy(center - RVector(0, radius)))
+    {
         radius = center.getDistanceTo(targetPoint);
         ret = true;
     }
-    else if (referencePoint.equalsFuzzy(getMiddlePoint())) {
+    else if (referencePoint.equalsFuzzy(getMiddlePoint()))
+    {
         moveMiddlePoint(targetPoint);
         ret = true;
     }

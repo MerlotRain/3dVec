@@ -22,8 +22,8 @@
 
 #include "CC2dCoreExport.h"
 
-#include "REntity.h"
 #include "RBlockReferenceData.h"
+#include "REntity.h"
 
 class RDocument;
 
@@ -34,7 +34,8 @@ class RDocument;
  * \sharedPointerSupport
  * \ingroup core
  */
-class QCADCORE_EXPORT RBlockReferenceEntity: public REntity {
+class QCADCORE_EXPORT RBlockReferenceEntity : public REntity
+{
 
 public:
     static RPropertyTypeId PropertyCustom;
@@ -65,136 +66,111 @@ public:
     static RPropertyTypeId PropertyRowSpacing;
 
 public:
-    RBlockReferenceEntity(RDocument* document, const RBlockReferenceData& data);
-    RBlockReferenceEntity(const RBlockReferenceEntity& other);
+    RBlockReferenceEntity(RDocument *document, const RBlockReferenceData &data);
+    RBlockReferenceEntity(const RBlockReferenceEntity &other);
     virtual ~RBlockReferenceEntity();
 
     static void init();
 
-    static RS::EntityType getRtti() {
-        return RS::EntityBlockRef;
+    static RS::EntityType getRtti() { return RS::EntityBlockRef; }
+
+    static QSet<RPropertyTypeId> getStaticPropertyTypeIds()
+    {
+        return RPropertyTypeId::getPropertyTypeIds(
+                RBlockReferenceEntity::getRtti());
     }
 
-    static QSet<RPropertyTypeId> getStaticPropertyTypeIds() {
-        return RPropertyTypeId::getPropertyTypeIds(RBlockReferenceEntity::getRtti());
-    }
-
-    virtual RBlockReferenceEntity* clone() const {
+    virtual RBlockReferenceEntity *clone() const
+    {
         return new RBlockReferenceEntity(*this);
     }
 
-    virtual QSet<RPropertyTypeId> getPropertyTypeIds(RPropertyAttributes::Option option = RPropertyAttributes::NoOptions) const;
+    virtual QSet<RPropertyTypeId>
+    getPropertyTypeIds(RPropertyAttributes::Option option =
+                               RPropertyAttributes::NoOptions) const;
 
     virtual bool setProperty(RPropertyTypeId propertyTypeId,
-            const QVariant& value, RTransaction* transaction=NULL);
-    virtual QPair<QVariant, RPropertyAttributes> getProperty(
-            RPropertyTypeId& propertyTypeId,
-            bool humanReadable = false, bool noAttributes = false, bool showOnRequest = false);
+                             const QVariant &value,
+                             RTransaction *transaction = NULL);
+    virtual QPair<QVariant, RPropertyAttributes>
+    getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
+                bool noAttributes = false, bool showOnRequest = false);
 
-    virtual RBlockReferenceData& getData() {
-        return data;
-    }
+    virtual RBlockReferenceData &getData() { return data; }
 
-    virtual const RBlockReferenceData& getData() const {
-        return data;
-    }
+    virtual const RBlockReferenceData &getData() const { return data; }
 
-    RVector getPosition() const {
-       return data.getPosition();
-    }
+    RVector getPosition() const { return data.getPosition(); }
 
-    void setPosition(const RVector& pos) {
-        data.setPosition(pos);
-    }
+    void setPosition(const RVector &pos) { data.setPosition(pos); }
 
-    RVector getScaleFactors() const {
-        return data.getScaleFactors();
-    }
+    RVector getScaleFactors() const { return data.getScaleFactors(); }
 
-    void setScaleFactors(const RVector sf) {
-        data.setScaleFactors(sf);
-    }
+    void setScaleFactors(const RVector sf) { data.setScaleFactors(sf); }
 
-    double getRotation() const {
-        return data.getRotation();
-    }
+    double getRotation() const { return data.getRotation(); }
 
-    void setRotation(double r) {
-        data.setRotation(r);
-    }
+    void setRotation(double r) { data.setRotation(r); }
 
-    int getColumnCount() const {
-        return data.getColumnCount();
-    }
-    void setColumnCount(int c) {
-        data.setColumnCount(c);
-    }
+    int getColumnCount() const { return data.getColumnCount(); }
+    void setColumnCount(int c) { data.setColumnCount(c); }
 
-    int getRowCount() const {
-        return data.getRowCount();
-    }
-    void setRowCount(int c) {
-        data.setRowCount(c);
-    }
+    int getRowCount() const { return data.getRowCount(); }
+    void setRowCount(int c) { data.setRowCount(c); }
 
-    double getColumnSpacing() const {
-        return data.getColumnSpacing();
-    }
-    void setColumnSpacing(double s) {
-        data.setColumnSpacing(s);
-    }
+    double getColumnSpacing() const { return data.getColumnSpacing(); }
+    void setColumnSpacing(double s) { data.setColumnSpacing(s); }
 
-    double getRowSpacing() const {
-        return data.getRowSpacing();
-    }
-    void setRowSpacing(double s) {
-        data.setRowSpacing(s);
-    }
+    double getRowSpacing() const { return data.getRowSpacing(); }
+    void setRowSpacing(double s) { data.setRowSpacing(s); }
 
-    void setReferencedBlockId(RBlock::Id blockId) {
+    void setReferencedBlockId(RBlock::Id blockId)
+    {
         data.setReferencedBlockId(blockId);
     }
 
-    void setReferencedBlockName(const QString& blockName) {
+    void setReferencedBlockName(const QString &blockName)
+    {
         data.setReferencedBlockName(blockName);
     }
 
-    RBlock::Id getReferencedBlockId() const {
+    RBlock::Id getReferencedBlockId() const
+    {
         return data.getReferencedBlockId();
     }
 
-    QString getReferencedBlockName() const {
+    QString getReferencedBlockName() const
+    {
         return data.getReferencedBlockName();
     }
 
     //virtual bool rotate(double rotation, const RVector& center = RDEFAULT_RVECTOR);
 
-    virtual void update() const {
-        data.update();
-    }
+    virtual void update() const { data.update(); }
 
-    void update(REntity::Id entityId) const {
-        data.update(entityId);
-    }
+    void update(REntity::Id entityId) const { data.update(entityId); }
 
-    QSharedPointer<REntity> queryEntity(REntity::Id entityId, bool transform = false, bool ignoreAttDef = true) const {
+    QSharedPointer<REntity> queryEntity(REntity::Id entityId,
+                                        bool transform = false,
+                                        bool ignoreAttDef = true) const
+    {
         return data.queryEntity(entityId, transform, ignoreAttDef);
     }
 
-    bool applyTransformationTo(REntity& entity) const {
+    bool applyTransformationTo(REntity &entity) const
+    {
         return data.applyTransformationTo(entity);
     }
 
     /**
      * \nonscriptable
      */
-    bool applyTransformationTo(QSharedPointer<REntity>& entity) const {
+    bool applyTransformationTo(QSharedPointer<REntity> &entity) const
+    {
         return data.applyTransformationTo(entity);
     }
 
-    RVector mapToBlock(const RVector& v) const {
-        return data.mapToBlock(v);
-    }
+    RVector mapToBlock(const RVector &v) const { return data.mapToBlock(v); }
 
 protected:
     RBlockReferenceData data;

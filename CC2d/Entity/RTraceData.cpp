@@ -18,18 +18,18 @@
  */
 #include "RTraceData.h"
 
-RTraceData::RTraceData() {
-}
+RTraceData::RTraceData() {}
 
-RTraceData::RTraceData(RDocument* document, const RTraceData& data)
-    : RSolidData() {
+RTraceData::RTraceData(RDocument *document, const RTraceData &data)
+    : RSolidData()
+{
     *this = data;
     this->document = document;
-    if (document!=NULL) {
-        linetypeId = document->getLinetypeByLayerId();
-    }
+    if (document != NULL) { linetypeId = document->getLinetypeByLayerId(); }
 }
 
-RTraceData::RTraceData(const RVector& p1, const RVector& p2, const RVector& p3, const RVector& p4) :
-    RSolidData(p1, p2, p3, p4) {
+RTraceData::RTraceData(const RVector &p1, const RVector &p2, const RVector &p3,
+                       const RVector &p4)
+    : RSolidData(p1, p2, p3, p4)
+{
 }

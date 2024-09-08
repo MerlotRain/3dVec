@@ -25,48 +25,64 @@ RPropertyTypeId RLinetype::PropertyDescription;
 RPropertyTypeId RLinetype::PropertyMetric;
 RPropertyTypeId RLinetype::PropertyPatternString;
 
-RLinetype::RLinetype(RDocument* document) : RObject(document) {
+RLinetype::RLinetype(RDocument *document) : RObject(document) {}
+
+RLinetype::RLinetype(RDocument *document, const RLinetypePattern &pattern)
+    : RObject(document), pattern(pattern)
+{
 }
 
-RLinetype::RLinetype(RDocument* document, const RLinetypePattern& pattern)
-    : RObject(document), pattern(pattern) {
-}
-
-RLinetype::RLinetype(const RLinetype& other) : RObject(other) {
+RLinetype::RLinetype(const RLinetype &other) : RObject(other)
+{
     pattern = other.pattern;
 }
 
-RLinetype::~RLinetype() {
-}
+RLinetype::~RLinetype() {}
 
-bool RLinetype::operator==(const RLinetype & linetype) const {
+bool RLinetype::operator==(const RLinetype &linetype) const
+{
     return getName().compare(linetype.getName(), Qt::CaseInsensitive) == 0;
 }
 
-bool RLinetype::operator!=(const RLinetype & linetype) const{
-    return !operator ==(linetype);
+bool RLinetype::operator!=(const RLinetype &linetype) const
+{
+    return !operator==(linetype);
 }
 
-void RLinetype::init() {
-    RLinetype::PropertyType.generateId(RLinetype::getRtti(), RObject::PropertyType);
-    RLinetype::PropertyName.generateId(RLinetype::getRtti(), "", QT_TRANSLATE_NOOP("RLinetype", "Name"));
-    RLinetype::PropertyDescription.generateId(RLinetype::getRtti(), "", QT_TRANSLATE_NOOP("RLinetype", "Description"));
-    RLinetype::PropertyMetric.generateId(RLinetype::getRtti(), "", QT_TRANSLATE_NOOP("RLinetype", "Metric"));
-    RLinetype::PropertyPatternString.generateId(RLinetype::getRtti(), "", QT_TRANSLATE_NOOP("RLinetype", "Pattern"));
+void RLinetype::init()
+{
+    RLinetype::PropertyType.generateId(RLinetype::getRtti(),
+                                       RObject::PropertyType);
+    RLinetype::PropertyName.generateId(RLinetype::getRtti(), "",
+                                       QT_TRANSLATE_NOOP("RLinetype", "Name"));
+    RLinetype::PropertyDescription.generateId(
+            RLinetype::getRtti(), "",
+            QT_TRANSLATE_NOOP("RLinetype", "Description"));
+    RLinetype::PropertyMetric.generateId(
+            RLinetype::getRtti(), "", QT_TRANSLATE_NOOP("RLinetype", "Metric"));
+    RLinetype::PropertyPatternString.generateId(
+            RLinetype::getRtti(), "",
+            QT_TRANSLATE_NOOP("RLinetype", "Pattern"));
 }
 
 bool RLinetype::setProperty(RPropertyTypeId propertyTypeId,
-    const QVariant& value, RTransaction* transaction) {
+                            const QVariant &value, RTransaction *transaction)
+{
 
     Q_UNUSED(transaction)
 
     bool ret = false;
-    ret = RObject::setMember(pattern.name, value, PropertyName == propertyTypeId);
-    ret = RObject::setMember(pattern.description, value, PropertyDescription == propertyTypeId);
-    ret = RObject::setMember(pattern.metric, value, PropertyMetric == propertyTypeId);
+    ret = RObject::setMember(pattern.name, value,
+                             PropertyName == propertyTypeId);
+    ret = RObject::setMember(pattern.description, value,
+                             PropertyDescription == propertyTypeId);
+    ret = RObject::setMember(pattern.metric, value,
+                             PropertyMetric == propertyTypeId);
 
-    if (propertyTypeId==PropertyPatternString) {
-        if (pattern.getPatternString()!=value.toString()) {
+    if (propertyTypeId == PropertyPatternString)
+    {
+        if (pattern.getPatternString() != value.toString())
+        {
             pattern.setPatternString(value.toString());
             ret = true;
         }
@@ -74,42 +90,42 @@ bool RLinetype::setProperty(RPropertyTypeId propertyTypeId,
     return ret;
 }
 
-QPair<QVariant, RPropertyAttributes> RLinetype::getProperty(
-        RPropertyTypeId& propertyTypeId, bool humanReadable,
-        bool noAttributes, bool showOnRequest) {
+QPair<QVariant, RPropertyAttributes>
+RLinetype::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
+                       bool noAttributes, bool showOnRequest)
+{
 
-    if (propertyTypeId == PropertyName) {
+    if (propertyTypeId == PropertyName)
+    {
         return qMakePair(QVariant(pattern.name), RPropertyAttributes());
     }
-    if (propertyTypeId == PropertyDescription) {
+    if (propertyTypeId == PropertyDescription)
+    {
         return qMakePair(QVariant(pattern.description), RPropertyAttributes());
     }
-    if (propertyTypeId == PropertyMetric) {
+    if (propertyTypeId == PropertyMetric)
+    {
         return qMakePair(QVariant(pattern.metric), RPropertyAttributes());
     }
-    if (propertyTypeId == PropertyPatternString) {
+    if (propertyTypeId == PropertyPatternString)
+    {
         QVariant v;
         v.setValue(pattern.getPatternString());
         return qMakePair(v, RPropertyAttributes());
     }
 
     //return qMakePair(QVariant(), RPropertyAttributes());
-    return RObject::getProperty(propertyTypeId, humanReadable, noAttributes, showOnRequest);
+    return RObject::getProperty(propertyTypeId, humanReadable, noAttributes,
+                                showOnRequest);
 }
 
-bool RLinetype::isValid() const {
-    return !pattern.name.isNull();
-}
+bool RLinetype::isValid() const { return !pattern.name.isNull(); }
 
-RLinetypePattern RLinetype::getPattern() const {
-    return pattern;
-}
+RLinetypePattern RLinetype::getPattern() const { return pattern; }
 
-void RLinetype::setPattern(const RLinetypePattern& p) {
-    pattern = p;
-}
+void RLinetype::setPattern(const RLinetypePattern &p) { pattern = p; }
 
-bool RLinetype::operator<(const RLinetype & linetype) const {
+bool RLinetype::operator<(const RLinetype &linetype) const
+{
     return getName().toLower() < linetype.getName().toLower();
 }
-

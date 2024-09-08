@@ -32,23 +32,18 @@
  * \scriptable
  * \ingroup core
  */
-class QCADCORE_EXPORT RSpatialIndexVisitor {
+class QCADCORE_EXPORT RSpatialIndexVisitor
+{
 public:
     virtual ~RSpatialIndexVisitor() {}
     /**
      * \nonscriptable
      */
-    virtual void visitData(
-        int id,
-        int pos,
-        double x1, double y1, double z1,
-        double x2, double y2, double z2
-    ) = 0;
+    virtual void visitData(int id, int pos, double x1, double y1, double z1,
+                           double x2, double y2, double z2) = 0;
 
-    virtual void visitNode(
-        double x1, double y1, double z1,
-        double x2, double y2, double z2
-    ) = 0;
+    virtual void visitNode(double x1, double y1, double z1, double x2,
+                           double y2, double z2) = 0;
 };
 
 #endif

@@ -19,45 +19,45 @@
 #include "RDimRadialData.h"
 #include "RUnit.h"
 
-RDimRadialData::RDimRadialData() {
-}
+RDimRadialData::RDimRadialData() {}
 
-RDimRadialData::RDimRadialData(RDocument* document, const RDimRadialData& data)
-    : RDimensionData(document) {
+RDimRadialData::RDimRadialData(RDocument *document, const RDimRadialData &data)
+    : RDimensionData(document)
+{
     *this = data;
     this->document = document;
-    if (document!=NULL) {
-        linetypeId = document->getLinetypeByLayerId();
-    }
+    if (document != NULL) { linetypeId = document->getLinetypeByLayerId(); }
 }
 
 /**
  * \param definitionPoint2 Definition point. Startpoint of the
  *         first extension line.
  */
-RDimRadialData::RDimRadialData(const RDimensionData& dimData,
-                                 const RVector& definitionPoint2)
-    : RDimensionData(dimData),
-      chordPoint(definitionPoint2) {
-
+RDimRadialData::RDimRadialData(const RDimensionData &dimData,
+                               const RVector &definitionPoint2)
+    : RDimensionData(dimData), chordPoint(definitionPoint2)
+{
 }
 
-bool RDimRadialData::isValid() const {
-    return RDimensionData::isValid() &&
-            chordPoint.isValid();
+bool RDimRadialData::isValid() const
+{
+    return RDimensionData::isValid() && chordPoint.isValid();
 }
 
-bool RDimRadialData::isSane() const {
-    return RDimensionData::isSane() &&
-            chordPoint.isSane();
+bool RDimRadialData::isSane() const
+{
+    return RDimensionData::isSane() && chordPoint.isSane();
 }
 
-QList<RRefPoint> RDimRadialData::getReferencePoints(RS::ProjectionRenderingHint hint) const {
+QList<RRefPoint>
+RDimRadialData::getReferencePoints(RS::ProjectionRenderingHint hint) const
+{
     QList<RRefPoint> ret = RDimensionData::getReferencePoints(hint);
 
     ret.append(textPositionCenter);
 
-    if (arrow1Pos.isValid()) {
+    if (arrow1Pos.isValid())
+    {
         ret.append(RRefPoint(arrow1Pos, RRefPoint::Arrow));
     }
 
@@ -66,10 +66,14 @@ QList<RRefPoint> RDimRadialData::getReferencePoints(RS::ProjectionRenderingHint 
     return ret;
 }
 
-bool RDimRadialData::moveReferencePoint(const RVector& referencePoint, const RVector& targetPoint, Qt::KeyboardModifiers modifiers) {
+bool RDimRadialData::moveReferencePoint(const RVector &referencePoint,
+                                        const RVector &targetPoint,
+                                        Qt::KeyboardModifiers modifiers)
+{
     bool ret = false;
 
-    if (referencePoint.equalsFuzzy(chordPoint)) {
+    if (referencePoint.equalsFuzzy(chordPoint))
+    {
         double d = definitionPoint.getDistanceTo(chordPoint);
         double a = definitionPoint.getAngleTo(targetPoint);
 
@@ -80,52 +84,56 @@ bool RDimRadialData::moveReferencePoint(const RVector& referencePoint, const RVe
         autoTextPos = true;
         ret = true;
     }
-//    else if (referencePoint.getDistanceTo(definitionPoint) < RS::PointTolerance) {
-//        RVector c = (definitionPoint + chordPoint)/2.0;
-//        double d = c.getDistanceTo(definitionPoint);
-//        double a = c.getAngleTo(targetPoint);
+    //    else if (referencePoint.getDistanceTo(definitionPoint) < RS::PointTolerance) {
+    //        RVector c = (definitionPoint + chordPoint)/2.0;
+    //        double d = c.getDistanceTo(definitionPoint);
+    //        double a = c.getAngleTo(targetPoint);
 
-//        RVector v = RVector::createPolar(d, a);
-//        definitionPoint = c + v;
-//        chordPoint = c - v;
+    //        RVector v = RVector::createPolar(d, a);
+    //        definitionPoint = c + v;
+    //        chordPoint = c - v;
 
-//        autoTextPos = true;
-//        ret = true;
-//    }
+    //        autoTextPos = true;
+    //        ret = true;
+    //    }
 
-    if (!ret) {
-        ret = RDimensionData::moveReferencePoint(referencePoint, targetPoint, modifiers);
+    if (!ret)
+    {
+        ret = RDimensionData::moveReferencePoint(referencePoint, targetPoint,
+                                                 modifiers);
     }
 
-    if (ret) {
-        update();
-    }
+    if (ret) { update(); }
 
     return ret;
 }
 
-bool RDimRadialData::move(const RVector& offset) {
+bool RDimRadialData::move(const RVector &offset)
+{
     RDimensionData::move(offset);
     chordPoint.move(offset);
     update();
     return true;
 }
 
-bool RDimRadialData::rotate(double rotation, const RVector& center) {
+bool RDimRadialData::rotate(double rotation, const RVector &center)
+{
     RDimensionData::rotate(rotation, center);
     chordPoint.rotate(rotation, center);
     update();
     return true;
 }
 
-bool RDimRadialData::scale(const RVector& scaleFactors, const RVector& center) {
+bool RDimRadialData::scale(const RVector &scaleFactors, const RVector &center)
+{
     RDimensionData::scale(scaleFactors, center);
     chordPoint.scale(scaleFactors, center);
     update();
     return true;
 }
 
-bool RDimRadialData::mirror(const RLine& axis) {
+bool RDimRadialData::mirror(const RLine &axis)
+{
     RDimensionData::mirror(axis);
     chordPoint.mirror(axis);
     update();
@@ -256,11 +264,13 @@ QList<QSharedPointer<RShape> > RDimRadialData::getShapes(const RBox& queryBox, b
 }
 */
 
-double RDimRadialData::getMeasuredValue() const {
+double RDimRadialData::getMeasuredValue() const
+{
     return definitionPoint.getDistanceTo(chordPoint);
 }
 
-QString RDimRadialData::getAutoLabel() const {
+QString RDimRadialData::getAutoLabel() const
+{
     double distance = getMeasuredValue();
     distance *= getDimlfac();
     return formatLabel(distance);

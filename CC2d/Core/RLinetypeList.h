@@ -27,8 +27,8 @@
 #include <QSet>
 #include <QString>
 
-#include <QList>
 #include "RLinetypePattern.h"
+#include <QList>
 
 /**
  * Base class for global lists of linetypes.

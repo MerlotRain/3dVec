@@ -7,11 +7,12 @@
 
 class RStorage;
 
-class RStorageBlockSort {
+class RStorageBlockSort
+{
 public:
-    RStorageBlockSort(const RStorage* storage) : storage(storage) {}
+    RStorageBlockSort(const RStorage *storage) : storage(storage) {}
     bool operator()(RBlock::Id a, RBlock::Id b) const;
-    const RStorage* storage;
+    const RStorage *storage;
 };
 
 #endif

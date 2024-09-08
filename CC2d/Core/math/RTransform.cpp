@@ -19,25 +19,29 @@
 #include "RTransform.h"
 #include "RTransformOp.h"
 
-RTransform& RTransform::translate(qreal dx, qreal dy) {
+RTransform &RTransform::translate(qreal dx, qreal dy)
+{
     ops.append(RTransformOp::createTranslation(dx, dy));
     QTransform::translate(dx, dy);
     return *this;
 }
 
-RTransform& RTransform::scale(qreal sx, qreal sy) {
+RTransform &RTransform::scale(qreal sx, qreal sy)
+{
     ops.append(RTransformOp::createScale(sx, sy));
     QTransform::scale(sx, sy);
     return *this;
 }
 
-RTransform& RTransform::rotateRadians(qreal angle, Qt::Axis axis) {
+RTransform &RTransform::rotateRadians(qreal angle, Qt::Axis axis)
+{
     ops.append(RTransformOp::createRotation(angle));
     QTransform::rotateRadians(angle, axis);
     return *this;
 }
 
-RTransform& RTransform::rotate(qreal angle, Qt::Axis axis) {
+RTransform &RTransform::rotate(qreal angle, Qt::Axis axis)
+{
     ops.append(RTransformOp::createRotation(RMath::deg2rad(angle)));
     QTransform::rotate(angle, axis);
     return *this;

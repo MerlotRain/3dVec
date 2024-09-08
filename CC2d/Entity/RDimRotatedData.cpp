@@ -19,16 +19,15 @@
 #include "RDimRotatedData.h"
 #include "RUnit.h"
 
-RDimRotatedData::RDimRotatedData() : rotation(0.0) {
-}
+RDimRotatedData::RDimRotatedData() : rotation(0.0) {}
 
-RDimRotatedData::RDimRotatedData(RDocument* document, const RDimRotatedData& data)
-    : RDimLinearData(document) {
+RDimRotatedData::RDimRotatedData(RDocument *document,
+                                 const RDimRotatedData &data)
+    : RDimLinearData(document)
+{
     *this = data;
     this->document = document;
-    if (document!=NULL) {
-        linetypeId = document->getLinetypeByLayerId();
-    }
+    if (document != NULL) { linetypeId = document->getLinetypeByLayerId(); }
 }
 
 /**
@@ -37,16 +36,17 @@ RDimRotatedData::RDimRotatedData(RDocument* document, const RDimRotatedData& dat
  * \param extensionPoint2 Definition point. Startpoint of the
  *         second extension line.
  */
-RDimRotatedData::RDimRotatedData(const RDimensionData& dimData,
-                               const RVector& extensionPoint1,
-                               const RVector& extensionPoint2,
-                               double rotation)
+RDimRotatedData::RDimRotatedData(const RDimensionData &dimData,
+                                 const RVector &extensionPoint1,
+                                 const RVector &extensionPoint2,
+                                 double rotation)
     : RDimLinearData(dimData, extensionPoint1, extensionPoint2),
-      rotation(rotation) {
-
+      rotation(rotation)
+{
 }
 
-RBox RDimRotatedData::getBoundingBox(bool ignoreEmpty) const {
+RBox RDimRotatedData::getBoundingBox(bool ignoreEmpty) const
+{
     boundingBox = RDimensionData::getBoundingBox(ignoreEmpty);
 
     // 20200306: this breaks area selection of dimensions
@@ -59,15 +59,19 @@ RBox RDimRotatedData::getBoundingBox(bool ignoreEmpty) const {
     return boundingBox;
 }
 
-bool RDimRotatedData::isValid() const {
+bool RDimRotatedData::isValid() const
+{
     return RDimLinearData::isValid() && RMath::isNormal(rotation);
 }
 
-bool RDimRotatedData::isSane() const {
+bool RDimRotatedData::isSane() const
+{
     return RDimLinearData::isSane() && RMath::isSane(rotation);
 }
 
-QList<RRefPoint> RDimRotatedData::getReferencePoints(RS::ProjectionRenderingHint hint) const {
+QList<RRefPoint>
+RDimRotatedData::getReferencePoints(RS::ProjectionRenderingHint hint) const
+{
     QList<RRefPoint> ret = RDimLinearData::getReferencePoints(hint);
 
     ret.append(extensionPoint1);
@@ -76,24 +80,34 @@ QList<RRefPoint> RDimRotatedData::getReferencePoints(RS::ProjectionRenderingHint
     return ret;
 }
 
-bool RDimRotatedData::moveReferencePoint(const RVector& referencePoint, const RVector& targetPoint, Qt::KeyboardModifiers modifiers) {
+bool RDimRotatedData::moveReferencePoint(const RVector &referencePoint,
+                                         const RVector &targetPoint,
+                                         Qt::KeyboardModifiers modifiers)
+{
     // if definition point and extension points are on one line,
     // move the extension points together with the definition point:
     bool moveExtensionPoints = false;
-    if (referencePoint.equalsFuzzy(definitionPoint)) {
-        if (RLine(extensionPoint1, extensionPoint2).isOnShape(definitionPoint, false)) {
+    if (referencePoint.equalsFuzzy(definitionPoint))
+    {
+        if (RLine(extensionPoint1, extensionPoint2)
+                    .isOnShape(definitionPoint, false))
+        {
             moveExtensionPoints = true;
         }
     }
 
-    bool ret = RDimLinearData::moveReferencePoint(referencePoint, targetPoint, modifiers);
+    bool ret = RDimLinearData::moveReferencePoint(referencePoint, targetPoint,
+                                                  modifiers);
 
-    if (moveExtensionPoints) {
+    if (moveExtensionPoints)
+    {
         // move extension points with definition point:
         RVector dir = RVector::createPolar(1.0, rotation);
         RLine dimLine = RLine(targetPoint, targetPoint + dir);
-        extensionPoint1 = dimLine.getClosestPointOnShape(extensionPoint1, false);
-        extensionPoint2 = dimLine.getClosestPointOnShape(extensionPoint2, false);
+        extensionPoint1 =
+                dimLine.getClosestPointOnShape(extensionPoint1, false);
+        extensionPoint2 =
+                dimLine.getClosestPointOnShape(extensionPoint2, false);
         definitionPoint = RVector::getAverage(extensionPoint1, extensionPoint2);
         //recomputeDefinitionPoint(referencePoint, targetPoint);
     }
@@ -101,7 +115,8 @@ bool RDimRotatedData::moveReferencePoint(const RVector& referencePoint, const RV
     return ret;
 }
 
-QList<RVector> RDimRotatedData::getDimPoints() const {
+QList<RVector> RDimRotatedData::getDimPoints() const
+{
     QList<RVector> ret;
 
     RVector dirDim = RVector::createPolar(1.0, rotation);
@@ -117,9 +132,11 @@ QList<RVector> RDimRotatedData::getDimPoints() const {
 /**
  * Recompute definition point if extension point(s) have changed.
  */
-void RDimRotatedData::recomputeDefinitionPoint(
-    const RVector& oldExtPoint1, const RVector& oldExtPoint2,
-    const RVector& newExtPoint1, const RVector& newExtPoint2) {
+void RDimRotatedData::recomputeDefinitionPoint(const RVector &oldExtPoint1,
+                                               const RVector &oldExtPoint2,
+                                               const RVector &newExtPoint1,
+                                               const RVector &newExtPoint2)
+{
 
     Q_UNUSED(oldExtPoint1)
     Q_UNUSED(oldExtPoint2)
@@ -134,25 +151,26 @@ void RDimRotatedData::recomputeDefinitionPoint(
     RVector dimP2 = dimLine.getClosestPointOnShape(newExtPoint2, false);
 
     // make sure the dimension line is movable if dimension point == extension point
-    if (dimP1.equalsFuzzy(newExtPoint1) || dimP1.equalsFuzzy(newExtPoint2)) {
+    if (dimP1.equalsFuzzy(newExtPoint1) || dimP1.equalsFuzzy(newExtPoint2))
+    {
         dimP1 = RVector::getAverage(dimP1, dimP2);
     }
 
-    if (dimP1.isValid()) {
-        definitionPoint = dimP1;
-    }
+    if (dimP1.isValid()) { definitionPoint = dimP1; }
 }
 
-bool RDimRotatedData::rotate(double rotation, const RVector& center) {
+bool RDimRotatedData::rotate(double rotation, const RVector &center)
+{
     RDimLinearData::rotate(rotation, center);
     //extensionPoint1.rotate(rotation, center);
     //extensionPoint2.rotate(rotation, center);
-    this->rotation = RMath::getNormalizedAngle(this->rotation+rotation);
+    this->rotation = RMath::getNormalizedAngle(this->rotation + rotation);
     update();
     return true;
 }
 
-bool RDimRotatedData::mirror(const RLine& axis) {
+bool RDimRotatedData::mirror(const RLine &axis)
+{
     RDimLinearData::mirror(axis);
     //extensionPoint1.mirror(axis);
     //extensionPoint2.mirror(axis);
@@ -230,7 +248,8 @@ QList<QSharedPointer<RShape> > RDimRotatedData::getShapes(const RBox& queryBox, 
 }
 */
 
-double RDimRotatedData::getMeasuredValue() const {
+double RDimRotatedData::getMeasuredValue() const
+{
     // direction of dimension line
     RVector dirDim;
     dirDim.setPolar(1.0, rotation);
@@ -244,7 +263,8 @@ double RDimRotatedData::getMeasuredValue() const {
     return dimP1.getDistanceTo(dimP2);
 }
 
-QString RDimRotatedData::getAutoLabel() const {
+QString RDimRotatedData::getAutoLabel() const
+{
     double distance = getMeasuredValue();
     distance *= getDimlfac();
 

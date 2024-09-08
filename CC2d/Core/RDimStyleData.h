@@ -22,9 +22,9 @@
 
 #include "CC2dCoreExport.h"
 
-#include "RS.h"
 #include "RColor.h"
 #include "RPropertyTypeId.h"
+#include "RS.h"
 
 /**
  * Dimension style data class.
@@ -33,7 +33,8 @@
  * \scriptable
  * \copyable
  */
-class QCADCORE_EXPORT RDimStyleData {
+class QCADCORE_EXPORT RDimStyleData
+{
 
 public:
     RDimStyleData(bool override = false);
@@ -49,150 +50,130 @@ public:
 
     void initFromSettings();
 
-    bool hasOverride(RS::KnownVariable key) const {
-        return mapBool.contains(key) || mapDouble.contains(key) || mapInt.contains(key) || mapColor.contains(key);
+    bool hasOverride(RS::KnownVariable key) const
+    {
+        return mapBool.contains(key) || mapDouble.contains(key) ||
+               mapInt.contains(key) || mapColor.contains(key);
     }
 
-    bool isValid() const {
-        return !mapBool.isEmpty() || !mapDouble.isEmpty() || !mapInt.isEmpty() || !mapColor.isEmpty();
+    bool isValid() const
+    {
+        return !mapBool.isEmpty() || !mapDouble.isEmpty() ||
+               !mapInt.isEmpty() || !mapColor.isEmpty();
     }
 
-    void clear() {
+    void clear()
+    {
         mapBool.clear();
         mapInt.clear();
         mapDouble.clear();
         mapColor.clear();
     }
 
-    static RS::KnownVariableType getVariableType(RS::KnownVariable key) {
-        if (dimXTypes.contains(key)) {
-            return dimXTypes[key];
-        }
-        else {
-            return RS::VarTypeUnknown;
-        }
+    static RS::KnownVariableType getVariableType(RS::KnownVariable key)
+    {
+        if (dimXTypes.contains(key)) { return dimXTypes[key]; }
+        else { return RS::VarTypeUnknown; }
     }
 
-    QVariant getVariant(RS::KnownVariable key) const {
-        if (mapDouble.contains(key)) {
-            return mapDouble[key];
-        }
-        else if (mapInt.contains(key)) {
-            return mapInt[key];
-        }
-        else if (mapBool.contains(key)) {
-            return mapBool[key];
-        }
-        else if (mapColor.contains(key)) {
+    QVariant getVariant(RS::KnownVariable key) const
+    {
+        if (mapDouble.contains(key)) { return mapDouble[key]; }
+        else if (mapInt.contains(key)) { return mapInt[key]; }
+        else if (mapBool.contains(key)) { return mapBool[key]; }
+        else if (mapColor.contains(key))
+        {
             QVariant v;
             v.setValue<RColor>(mapColor[key]);
             return v;
         }
-        else {
-            return getVariantDefault(key);
-        }
+        else { return getVariantDefault(key); }
     }
 
-    void setVariant(RS::KnownVariable key, const QVariant& val) {
-        if (!dimXTypes.contains(key)) {
+    void setVariant(RS::KnownVariable key, const QVariant &val)
+    {
+        if (!dimXTypes.contains(key))
+        {
             qWarning() << "unregistered dim x type:" << key;
             return;
         }
 
         RS::KnownVariableType type = dimXTypes[key];
-        switch (type) {
-        case RS::VarTypeDouble:
-            setDouble(key, val.toDouble());
-            break;
+        switch (type)
+        {
+            case RS::VarTypeDouble:
+                setDouble(key, val.toDouble());
+                break;
 
-        case RS::VarTypeInt:
-            setInt(key, val.toInt());
-            break;
+            case RS::VarTypeInt:
+                setInt(key, val.toInt());
+                break;
 
-        case RS::VarTypeBool:
-            setBool(key, val.toBool());
-            break;
+            case RS::VarTypeBool:
+                setBool(key, val.toBool());
+                break;
 
-        case RS::VarTypeColor:
-            {
-                RColor col = val.value<RColor>();
-                setColor(key, col);
-            }
-            break;
+            case RS::VarTypeColor:
+                {
+                    RColor col = val.value<RColor>();
+                    setColor(key, col);
+                }
+                break;
 
-        default:
-            qWarning() << "unknown type:" << type;
-            break;
+            default:
+                qWarning() << "unknown type:" << type;
+                break;
         }
     }
 
-    double getDouble(RS::KnownVariable key) const {
-        if (mapDouble.contains(key)) {
-            return mapDouble[key];
-        }
-        else {
-            return getDoubleDefault(key);
-        }
+    double getDouble(RS::KnownVariable key) const
+    {
+        if (mapDouble.contains(key)) { return mapDouble[key]; }
+        else { return getDoubleDefault(key); }
     }
 
-    virtual void setDouble(RS::KnownVariable key, double val) {
+    virtual void setDouble(RS::KnownVariable key, double val)
+    {
         mapDouble[key] = val;
     }
 
-    void removeDouble(RS::KnownVariable key) {
-        mapDouble.remove(key);
+    void removeDouble(RS::KnownVariable key) { mapDouble.remove(key); }
+
+    int getInt(RS::KnownVariable key) const
+    {
+        if (mapInt.contains(key)) { return mapInt[key]; }
+        else { return getIntDefault(key); }
     }
 
-    int getInt(RS::KnownVariable key) const {
-        if (mapInt.contains(key)) {
-            return mapInt[key];
-        }
-        else {
-            return getIntDefault(key);
-        }
+    virtual void setInt(RS::KnownVariable key, int val) { mapInt[key] = val; }
+
+    void removeInt(RS::KnownVariable key) { mapInt.remove(key); }
+
+    bool getBool(RS::KnownVariable key) const
+    {
+        if (mapBool.contains(key)) { return mapBool[key]; }
+        else { return getBoolDefault(key); }
     }
 
-    virtual void setInt(RS::KnownVariable key, int val) {
-        mapInt[key] = val;
-    }
-
-    void removeInt(RS::KnownVariable key) {
-        mapInt.remove(key);
-    }
-
-    bool getBool(RS::KnownVariable key) const {
-        if (mapBool.contains(key)) {
-            return mapBool[key];
-        }
-        else {
-            return getBoolDefault(key);
-        }
-    }
-
-    virtual void setBool(RS::KnownVariable key, bool val) {
+    virtual void setBool(RS::KnownVariable key, bool val)
+    {
         mapBool[key] = val;
     }
 
-    void removeBool(RS::KnownVariable key) {
-        mapBool.remove(key);
+    void removeBool(RS::KnownVariable key) { mapBool.remove(key); }
+
+    RColor getColor(RS::KnownVariable key) const
+    {
+        if (mapColor.contains(key)) { return mapColor[key]; }
+        else { return getColorDefault(key); }
     }
 
-    RColor getColor(RS::KnownVariable key) const {
-        if (mapColor.contains(key)) {
-            return mapColor[key];
-        }
-        else {
-            return getColorDefault(key);
-        }
-    }
-
-    virtual void setColor(RS::KnownVariable key, const RColor& val) {
+    virtual void setColor(RS::KnownVariable key, const RColor &val)
+    {
         mapColor[key] = val;
     }
 
-    void removeColor(RS::KnownVariable key) {
-        mapColor.remove(key);
-    }
+    void removeColor(RS::KnownVariable key) { mapColor.remove(key); }
 
 public:
     static QMap<RS::KnownVariable, RS::KnownVariableType> dimXTypes;

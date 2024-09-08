@@ -34,7 +34,8 @@ class RDocument;
  * \scriptable
  * \sharedPointerSupport
  */
-class QCADCORE_EXPORT RLayerState: public RObject {
+class QCADCORE_EXPORT RLayerState : public RObject
+{
 public:
     static RPropertyTypeId PropertyCustom;
     static RPropertyTypeId PropertyType;
@@ -46,68 +47,51 @@ public:
 public:
     RLayerState();
 
-    RLayerState(RDocument* document, const QString& name);
+    RLayerState(RDocument *document, const QString &name);
 
     virtual ~RLayerState();
 
     static void init();
 
-    static RS::EntityType getRtti() {
-        return RS::ObjectLayerState;
-    }
+    static RS::EntityType getRtti() { return RS::ObjectLayerState; }
 
-    virtual RS::EntityType getType() const {
-        return RS::ObjectLayerState;
-    }
+    virtual RS::EntityType getType() const { return RS::ObjectLayerState; }
 
-    virtual RLayerState* clone() const;
+    virtual RLayerState *clone() const;
 
-    virtual bool mustAlwaysClone() const {
-        return true;
-    }
+    virtual bool mustAlwaysClone() const { return true; }
 
-    virtual QPair<QVariant, RPropertyAttributes> getProperty(
-            RPropertyTypeId& propertyTypeId,
-            bool humanReadable = false, bool noAttributes = false, bool showOnRequest = false);
+    virtual QPair<QVariant, RPropertyAttributes>
+    getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
+                bool noAttributes = false, bool showOnRequest = false);
     virtual bool setProperty(RPropertyTypeId propertyTypeId,
-            const QVariant& value, RTransaction* transaction=NULL);
+                             const QVariant &value,
+                             RTransaction *transaction = NULL);
 
-    QString getName() const {
-        return name;
-    }
+    QString getName() const { return name; }
 
-    void setName(const QString& n) {
-        name = n.trimmed();
-    }
+    void setName(const QString &n) { name = n.trimmed(); }
 
-    QString getDescription() const {
-        return description;
-    }
+    QString getDescription() const { return description; }
 
-    void setDescription(const QString& d) {
-        description = d;
-    }
+    void setDescription(const QString &d) { description = d; }
 
-    QString getCurrentLayerName() const {
-        return currentLayer;
-    }
+    QString getCurrentLayerName() const { return currentLayer; }
 
-    void setCurrentLayerName(const QString& l) {
-        currentLayer = l;
-    }
+    void setCurrentLayerName(const QString &l) { currentLayer = l; }
 
     void addLayer(QSharedPointer<RLayer> layer);
 
-    QList<QSharedPointer<RLayer> > getLayers() const;
+    QList<QSharedPointer<RLayer>> getLayers() const;
 
     QStringList getLayerNames() const;
-    QSharedPointer<RLayer> getLayer(const QString& layerName) const;
+    QSharedPointer<RLayer> getLayer(const QString &layerName) const;
 
 private:
     QString name;
     QString description;
     QString currentLayer;
-    QList<QSharedPointer<RLayer> > layers;
+    QList<QSharedPointer<RLayer>> layers;
 };
 
 

@@ -22,12 +22,11 @@
 
 #include "CC2dCoreExport.h"
 
-#include <QSet>
 #include <QList>
+#include <QSet>
 
-#include "RSpatialIndex.h"
 #include "RMath.h"
-
+#include "RSpatialIndex.h"
 
 
 /**
@@ -36,52 +35,42 @@
  * \ingroup core
  * \scriptable
  */
-class QCADCORE_EXPORT RSpatialIndexSimple: public RSpatialIndex {
+class QCADCORE_EXPORT RSpatialIndexSimple : public RSpatialIndex
+{
 public:
     RSpatialIndexSimple();
     virtual ~RSpatialIndexSimple();
 
-    virtual RSpatialIndex* create();
+    virtual RSpatialIndex *create();
     virtual void clear();
 
     /**
      * \nonscriptable
      */
-    virtual void addToIndex(
-        int id, int pos,
-        double x1, double y1, double z1,
-        double x2, double y2, double z2
-    );
+    virtual void addToIndex(int id, int pos, double x1, double y1, double z1,
+                            double x2, double y2, double z2);
 
     //virtual void removeFromIndex(int id);
-    virtual bool removeFromIndex(
-            int id, int pos,
-            double x1, double y1, double z1,
-            double x2, double y2, double z2);
+    virtual bool removeFromIndex(int id, int pos, double x1, double y1,
+                                 double z1, double x2, double y2, double z2);
 
-    virtual bool removeFromIndex(int id, const QList<RBox>& bb);
+    virtual bool removeFromIndex(int id, const QList<RBox> &bb);
 
-    virtual QMap<int, QSet<int> > queryIntersected(
-        double x1, double y1, double z1,
-        double x2, double y2, double z2,
-        RSpatialIndexVisitor* dataVisitor=NULL
-    );
+    virtual QMap<int, QSet<int>>
+    queryIntersected(double x1, double y1, double z1, double x2, double y2,
+                     double z2, RSpatialIndexVisitor *dataVisitor = NULL);
 
-    virtual QMap<int, QSet<int> > queryContained(
-        double x1, double y1, double z1,
-        double x2, double y2, double z2,
-        RSpatialIndexVisitor* dataVisitor=NULL
-    );
+    virtual QMap<int, QSet<int>>
+    queryContained(double x1, double y1, double z1, double x2, double y2,
+                   double z2, RSpatialIndexVisitor *dataVisitor = NULL);
 
-    virtual QMap<int, QSet<int> > queryNearestNeighbor(
-        uint k,
-        double x, double y, double z,
-        RSpatialIndexVisitor* dataVisitor=NULL
-    );
+    virtual QMap<int, QSet<int>>
+    queryNearestNeighbor(uint k, double x, double y, double z,
+                         RSpatialIndexVisitor *dataVisitor = NULL);
 
 protected:
     //QMultiHash<RBox, int> si;
-    QMap<int, QList<RBox> > si;
+    QMap<int, QList<RBox>> si;
 };
 
 

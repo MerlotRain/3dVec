@@ -34,7 +34,7 @@ class QCADCORE_EXPORT RLinetypeListMetric : public RLinetypeList
 {
 public:
     static void init();
-    static void uninit() {  }
+    static void uninit() {}
 
     static QStringList getNames() { return QStringList(); }
 

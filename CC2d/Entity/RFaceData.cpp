@@ -18,18 +18,17 @@
  */
 #include "RFaceData.h"
 
-RFaceData::RFaceData() {
-}
+RFaceData::RFaceData() {}
 
-RFaceData::RFaceData(RDocument* document, const RFaceData& data)
-    : RSolidData() {
+RFaceData::RFaceData(RDocument *document, const RFaceData &data) : RSolidData()
+{
     *this = data;
     this->document = document;
-    if (document!=NULL) {
-        linetypeId = document->getLinetypeByLayerId();
-    }
+    if (document != NULL) { linetypeId = document->getLinetypeByLayerId(); }
 }
 
-RFaceData::RFaceData(const RVector& p1, const RVector& p2, const RVector& p3, const RVector& p4) :
-    RSolidData(p1, p2, p3, p4) {
+RFaceData::RFaceData(const RVector &p1, const RVector &p2, const RVector &p3,
+                     const RVector &p4)
+    : RSolidData(p1, p2, p3, p4)
+{
 }

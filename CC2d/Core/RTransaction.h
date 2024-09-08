@@ -27,14 +27,14 @@
 #include <QSet>
 #include <QSharedPointer>
 
-#include "RObject.h"
 #include "REntity.h"
-#include "RPropertyTypeId.h"
+#include "RObject.h"
 #include "RPropertyChange.h"
+#include "RPropertyTypeId.h"
 
 class RStorage;
 
-#define RDEFAULT_QSET_RPROPERTYTYPEID QSet<RPropertyTypeId> ()
+#define RDEFAULT_QSET_RPROPERTYTYPEID QSet<RPropertyTypeId>()
 
 /**
  * Transaction implementation.
@@ -70,12 +70,14 @@ class RStorage;
  * \scriptable
  * \copyable
  */
-class QCADCORE_EXPORT RTransaction {
+class QCADCORE_EXPORT RTransaction
+{
 public:
     /**
      * Transaction type for optimizations.
      */
-    enum Type {
+    enum Type
+    {
         Generic = 0x0000,
         CurrentLayerChange = 0x0001,
         CurrentLayerSelectionChange = 0x0002,
@@ -91,89 +93,71 @@ public:
 public:
     RTransaction();
 
-    RTransaction(RStorage& storage);
+    RTransaction(RStorage &storage);
 
-    RTransaction(RStorage& storage, int transactionId, const QString& text,
-            const QList<RObject::Id>& affectedObjectIds,
-            //const QSet<RObject::Id>& affectedEntities,
-            const QMap<RObject::Id, QList<RPropertyChange> >& propertyChanges);
-            //RTransaction* parent = NULL);
+    RTransaction(
+            RStorage &storage, int transactionId, const QString &text,
+            const QList<RObject::Id> &affectedObjectIds,
+            const QMap<RObject::Id, QList<RPropertyChange>> &propertyChanges);
 
-    RTransaction(RStorage& storage, const QString& text, bool undoable = true);
-            //RTransaction* parent = NULL);
+    RTransaction(RStorage &storage, const QString &text, bool undoable = true);
 
     virtual ~RTransaction();
 
-    void setRecordAffectedObjects(bool on) {
-        recordAffectedObjects = on;
-    }
+    void setRecordAffectedObjects(bool on) { recordAffectedObjects = on; }
 
-    void setAllowAll(bool on) {
-        allowAll = on;
-    }
+    void setAllowAll(bool on) { allowAll = on; }
 
-    void setAllowInvisible(bool on) {
-        allowInvisible = on;
-    }
+    void setAllowInvisible(bool on) { allowInvisible = on; }
 
-    void setSpatialIndexDisabled(bool on) {
-        spatialIndexDisabled = on;
-    }
+    void setSpatialIndexDisabled(bool on) { spatialIndexDisabled = on; }
 
-    void setExistingBlockDetectionDisabled(bool on) {
+    void setExistingBlockDetectionDisabled(bool on)
+    {
         existingBlockDetectionDisabled = on;
     }
 
-    void setExistingLayerDetectionDisabled(bool on) {
+    void setExistingLayerDetectionDisabled(bool on)
+    {
         existingLayerDetectionDisabled = on;
     }
 
-    void setExistingLinetypeDetectionDisabled(bool on) {
+    void setExistingLinetypeDetectionDisabled(bool on)
+    {
         existingLinetypeDetectionDisabled = on;
     }
 
-    void setBlockRecursionDetectionDisabled(bool on) {
+    void setBlockRecursionDetectionDisabled(bool on)
+    {
         blockRecursionDetectionDisabled = on;
     }
 
-    void setKeepHandles(bool on) {
-        keepHandles = on;
-    }
+    void setKeepHandles(bool on) { keepHandles = on; }
 
     /**
      * Keep child entities (e.g. keep block attributes when deleting block references)
      */
-    void setKeepChildren(bool on) {
-        keepChildren = on;
-    }
+    void setKeepChildren(bool on) { keepChildren = on; }
 
-//    void setUndoing(bool on) {
-//        undoing = on;
-//    }
+    //    void setUndoing(bool on) {
+    //        undoing = on;
+    //    }
 
-    bool isUndoing() {
-        return undoing;
-    }
+    bool isUndoing() { return undoing; }
 
-//    void setRedoing(bool on) {
-//        redoing = on;
-//    }
+    //    void setRedoing(bool on) {
+    //        redoing = on;
+    //    }
 
-    bool isRedoing() {
-        return redoing;
-    }
+    bool isRedoing() { return redoing; }
 
     /**
      * \return True if this transaction should store undo / redo information
      *      for later undo / redo functionality.
      */
-    bool isUndoable() const {
-        return undoable;
-    }
+    bool isUndoable() const { return undoable; }
 
-    bool isFailed() const {
-        return failed;
-    }
+    bool isFailed() const { return failed; }
 
     /**
      * Redo undone changes.
@@ -194,47 +178,37 @@ public:
      * Sets the ID of this transaction. Typically called by a storage which manages
      * transaction IDs.
      */
-    void setId(int id) {
-        transactionId = id;
-    }
+    void setId(int id) { transactionId = id; }
 
     /**
      * \return Unique ID of this transaction.
      */
-    int getId() const {
-        return transactionId;
-    }
+    int getId() const { return transactionId; }
 
     /**
      * Set group.
      */
-    void setGroup(int group) {
-        transactionGroup = group;
-    }
+    void setGroup(int group) { transactionGroup = group; }
 
     /**
      * \return Group of this transaction.
      */
-    int getGroup() const {
-        return transactionGroup;
-    }
+    int getGroup() const { return transactionGroup; }
 
     /**
      * \return Logged text for this transaction.
      */
-    QString getText() const {
-        return text;
-    }
+    QString getText() const { return text; }
 
     bool overwriteBlock(QSharedPointer<RBlock> block);
 
     bool addObject(QSharedPointer<RObject> obj,
-                   bool useCurrentAttributes = true,
-                   bool forceNew = false,
-                   const QSet<RPropertyTypeId>& modifiedPropertyTypeIds = RDEFAULT_QSET_RPROPERTYTYPEID);
+                   bool useCurrentAttributes = true, bool forceNew = false,
+                   const QSet<RPropertyTypeId> &modifiedPropertyTypeIds =
+                           RDEFAULT_QSET_RPROPERTYTYPEID);
 
     void addAffectedObject(RObject::Id objectId);
-    void addAffectedObjects(const QSet<RObject::Id>& objectIds);
+    void addAffectedObjects(const QSet<RObject::Id> &objectIds);
     void addAffectedObject(QSharedPointer<RObject> object);
 
     void deleteObject(RObject::Id objectId, bool force = false);
@@ -244,26 +218,24 @@ public:
      * \return List of object IDs of objects that are affected by
      *      this transaction.
      */
-    QList<RObject::Id> getAffectedObjects() const {
-        return affectedObjectIds;
-    }
+    QList<RObject::Id> getAffectedObjects() const { return affectedObjectIds; }
 
     /**
      * \return Set of object IDs of objects that have been created or
      *      deleted by this transaction.
      */
-    QSet<RObject::Id> getStatusChanges() const {
-        return statusChanges;
-    }
+    QSet<RObject::Id> getStatusChanges() const { return statusChanges; }
 
-    bool hasStatusChange(RObject::Id id) const {
+    bool hasStatusChange(RObject::Id id) const
+    {
         return statusChanges.contains(id);
     }
 
     /**
      * \return Map of properties that are changed by this transaction.
      */
-    QMap<RObject::Id, QList<RPropertyChange> > getPropertyChanges() const {
+    QMap<RObject::Id, QList<RPropertyChange>> getPropertyChanges() const
+    {
         return propertyChanges;
     }
 
@@ -271,9 +243,7 @@ public:
 
     QList<RPropertyChange> getPropertyChanges(RObject::Id id) const;
 
-    bool hasOnlyChanges() const {
-        return onlyChanges;
-    }
+    bool hasOnlyChanges() const { return onlyChanges; }
 
     void fail();
 
@@ -281,18 +251,14 @@ public:
 
     bool isPreview() const;
 
-    void setTypes(RTransaction::Types t) {
-        types = t;
-    }
-    RTransaction::Types getTypes() const {
-        return types;
-    }
+    void setTypes(RTransaction::Types t) { types = t; }
+    RTransaction::Types getTypes() const { return types; }
     void setType(RTransaction::Type type, bool on = true);
     bool isType(RTransaction::Type type) const;
 
 protected:
-    bool addPropertyChange(RObject::Id objectId, const RPropertyChange& propertyChange);
-    //void appendChild(RTransaction& t);
+    bool addPropertyChange(RObject::Id objectId,
+                           const RPropertyChange &propertyChange);
 
     void commit();
     void rollback();
@@ -303,7 +269,7 @@ protected:
     /**
      * A transaction always belongs to the storage of a document.
      */
-    RStorage* storage;
+    RStorage *storage;
 
     /**
      * Unique ID of this transaction.
@@ -337,7 +303,7 @@ protected:
      * undoable, a whole list of properties might have changed in a fixed
      * order.
      */
-    QMap<RObject::Id, QList<RPropertyChange> > propertyChanges;
+    QMap<RObject::Id, QList<RPropertyChange>> propertyChanges;
 
     /**
      * Contains affected objects that have been created or deleted

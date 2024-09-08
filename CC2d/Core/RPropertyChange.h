@@ -35,31 +35,21 @@ class RStorage;
  * \scriptable
  * \copyable
  */
-class QCADCORE_EXPORT RPropertyChange {
+class QCADCORE_EXPORT RPropertyChange
+{
 public:
     RPropertyChange() {}
-    RPropertyChange(RPropertyTypeId propertyTypeId, QVariant oldValue, QVariant newValue);
+    RPropertyChange(RPropertyTypeId propertyTypeId, QVariant oldValue,
+                    QVariant newValue);
 
-    void setOldValue(const QVariant& v) {
-        oldValue = v;
-    }
-    QVariant getOldValue() const {
-        return oldValue;
-    }
+    void setOldValue(const QVariant &v) { oldValue = v; }
+    QVariant getOldValue() const { return oldValue; }
 
-    void setNewValue(const QVariant& v) {
-        newValue = v;
-    }
-    QVariant getNewValue() const {
-        return newValue;
-    }
+    void setNewValue(const QVariant &v) { newValue = v; }
+    QVariant getNewValue() const { return newValue; }
 
-    void setPropertyTypeId(const RPropertyTypeId& id) {
-        propertyTypeId = id;
-    }
-    RPropertyTypeId getPropertyTypeId() const {
-        return propertyTypeId;
-    }
+    void setPropertyTypeId(const RPropertyTypeId &id) { propertyTypeId = id; }
+    RPropertyTypeId getPropertyTypeId() const { return propertyTypeId; }
 
 public:
     RPropertyTypeId propertyTypeId;

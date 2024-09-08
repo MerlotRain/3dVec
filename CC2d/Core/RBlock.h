@@ -22,13 +22,13 @@
 
 #include "CC2dCoreExport.h"
 
-#include <QString>
 #include <QDebug>
+#include <QString>
 
 #include "RGlobal.h"
 #include "RObject.h"
-#include "RVector.h"
 #include "RPropertyTypeId.h"
+#include "RVector.h"
 
 class RDocument;
 class RTransaction;
@@ -40,7 +40,8 @@ class RTransaction;
  * \scriptable
  * \sharedPointerSupport
  */
-class QCADCORE_EXPORT RBlock: public RObject {
+class QCADCORE_EXPORT RBlock : public RObject
+{
 public:
     static RPropertyTypeId PropertyCustom;
     static RPropertyTypeId PropertyType;
@@ -55,75 +56,59 @@ public:
 public:
     RBlock();
 
-    RBlock(RDocument* document, const QString& name, const RVector& origin);
+    RBlock(RDocument *document, const QString &name, const RVector &origin);
 
     virtual ~RBlock();
 
     static void init();
 
-    static RS::EntityType getRtti() {
-        return RS::ObjectBlock;
+    static RS::EntityType getRtti() { return RS::ObjectBlock; }
+
+    virtual RS::EntityType getType() const { return RS::ObjectBlock; }
+
+    virtual RBlock *clone() const;
+
+    QString getName() const { return name; }
+
+    void setName(const QString &n);
+
+    bool isFrozen() const { return frozen; }
+
+    void setFrozen(bool on)
+    {
+        if (!isModelSpace()) { frozen = on; }
     }
 
-    virtual RS::EntityType getType() const {
-        return RS::ObjectBlock;
+    bool isAnonymous() const { return anonymous; }
+
+    void setAnonymous(bool on)
+    {
+        if (!isModelSpace()) { anonymous = on; }
     }
 
-    virtual RBlock* clone() const;
+    bool isPixelUnit() const { return pixelUnit; }
 
-    QString getName() const {
-        return name;
-    }
+    void setPixelUnit(bool on) { pixelUnit = on; }
 
-    void setName(const QString& n);
+    void setOrigin(const RVector &origin) { this->origin = origin; }
 
-    bool isFrozen() const {
-        return frozen;
-    }
+    RVector getOrigin() const { return origin; }
 
-    void setFrozen(bool on) {
-        if (!isModelSpace()) {
-            frozen = on;
-        }
-    }
-
-    bool isAnonymous() const {
-        return anonymous;
-    }
-
-    void setAnonymous(bool on) {
-        if (!isModelSpace()) {
-            anonymous = on;
-        }
-    }
-
-    bool isPixelUnit() const {
-        return pixelUnit;
-    }
-
-    void setPixelUnit(bool on) {
-        pixelUnit = on;
-    }
-
-    void setOrigin(const RVector& origin) {
-        this->origin = origin;
-    }
-
-    RVector getOrigin() const {
-        return origin;
-    }
-
-    bool isModelSpace() const {
-        return QString::compare(name, modelSpaceName, Qt::CaseInsensitive)==0;
+    bool isModelSpace() const
+    {
+        return QString::compare(name, modelSpaceName, Qt::CaseInsensitive) == 0;
     }
 
 
-    virtual QPair<QVariant, RPropertyAttributes> getProperty(RPropertyTypeId& propertyTypeId,
-            bool humanReadable = false, bool noAttributes = false, bool showOnRequest = false);
+    virtual QPair<QVariant, RPropertyAttributes>
+    getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
+                bool noAttributes = false, bool showOnRequest = false);
     virtual bool setProperty(RPropertyTypeId propertyTypeId,
-            const QVariant& value, RTransaction* transaction=NULL);
+                             const QVariant &value,
+                             RTransaction *transaction = NULL);
 
-    virtual void setCustomProperty(const QString& title, const QString& key, const QVariant& value);
+    virtual void setCustomProperty(const QString &title, const QString &key,
+                                   const QVariant &value);
 
 public:
     static const QString modelSpaceName;

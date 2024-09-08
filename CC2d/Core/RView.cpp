@@ -24,56 +24,65 @@ RPropertyTypeId RView::PropertyCenterPoint;
 RPropertyTypeId RView::PropertyWidth;
 RPropertyTypeId RView::PropertyHeight;
 
-RView::RView() : RObject(), width(0.0), height(0.0) {
+RView::RView() : RObject(), width(0.0), height(0.0) {}
+
+RView::RView(RDocument *document, const QString &name, RVector centerPoint,
+             double width, double height)
+    : RObject(document), name(name), centerPoint(centerPoint), width(width),
+      height(height)
+{
 }
 
-RView::RView(RDocument* document, const QString& name, RVector centerPoint,
-        double width, double height) :
-    RObject(document), name(name), centerPoint(centerPoint), width(width), height(height) {
 
-}
+RView::~RView() {}
 
-
-RView::~RView() {
-}
-
-void RView::init() {
+void RView::init()
+{
     RView::PropertyName.generateId(RView::getRtti(), "", "Name");
     RView::PropertyCenterPoint.generateId(RView::getRtti(), "", "Center Point");
     RView::PropertyWidth.generateId(RView::getRtti(), "", "Width");
     RView::PropertyHeight.generateId(RView::getRtti(), "", "Height");
 }
 
-RView* RView::clone() const {
-    return new RView(*this);
-}
+RView *RView::clone() const { return new RView(*this); }
 
-bool RView::setProperty(RPropertyTypeId propertyTypeId,
-    const QVariant& value, RTransaction* transaction) {
+bool RView::setProperty(RPropertyTypeId propertyTypeId, const QVariant &value,
+                        RTransaction *transaction)
+{
     bool ret = RObject::setProperty(propertyTypeId, value, transaction);
     ret = RObject::setMember(name, value, PropertyName == propertyTypeId);
-    ret = ret || RObject::setMember(centerPoint, value, PropertyCenterPoint == propertyTypeId);
-    ret = ret || RObject::setMember(width, value, PropertyWidth == propertyTypeId);
-    ret = ret || RObject::setMember(height, value, PropertyHeight == propertyTypeId);
+    ret = ret || RObject::setMember(centerPoint, value,
+                                    PropertyCenterPoint == propertyTypeId);
+    ret = ret ||
+          RObject::setMember(width, value, PropertyWidth == propertyTypeId);
+    ret = ret ||
+          RObject::setMember(height, value, PropertyHeight == propertyTypeId);
     return ret;
 }
 
-QPair<QVariant, RPropertyAttributes> RView::getProperty(
-        RPropertyTypeId& propertyTypeId, bool humanReadable,
-        bool noAttributes, bool showOnRequest) {
+QPair<QVariant, RPropertyAttributes>
+RView::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
+                   bool noAttributes, bool showOnRequest)
+{
 
-    if (propertyTypeId == PropertyName) {
+    if (propertyTypeId == PropertyName)
+    {
         return qMakePair(QVariant(name), RPropertyAttributes());
     }
-    if (propertyTypeId == PropertyCenterPoint) {
-        return qMakePair( QVariant::fromValue(centerPoint), RPropertyAttributes());
+    if (propertyTypeId == PropertyCenterPoint)
+    {
+        return qMakePair(QVariant::fromValue(centerPoint),
+                         RPropertyAttributes());
     }
-    if (propertyTypeId == PropertyWidth) {
+    if (propertyTypeId == PropertyWidth)
+    {
         return qMakePair(QVariant(width), RPropertyAttributes());
     }
-    if (propertyTypeId == PropertyHeight) {
+    if (propertyTypeId == PropertyHeight)
+    {
         return qMakePair(QVariant(height), RPropertyAttributes());
     }
 
-    return RObject::getProperty(propertyTypeId, humanReadable, noAttributes, showOnRequest);
+    return RObject::getProperty(propertyTypeId, humanReadable, noAttributes,
+                                showOnRequest);
 }

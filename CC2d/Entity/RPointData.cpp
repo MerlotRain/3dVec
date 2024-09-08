@@ -19,23 +19,21 @@
 #include "RPointData.h"
 #include "RPointEntity.h"
 
-RPointData::RPointData() {
-}
+RPointData::RPointData() {}
 
-RPointData::RPointData(RDocument* document, const RPointData& data)
-    : REntityData(document) {
+RPointData::RPointData(RDocument *document, const RPointData &data)
+    : REntityData(document)
+{
     *this = data;
     this->document = document;
-    if (document!=NULL) {
-        linetypeId = document->getLinetypeByLayerId();
-    }
+    if (document != NULL) { linetypeId = document->getLinetypeByLayerId(); }
 }
 
-RPointData::RPointData(const RVector& point) :
-    RPoint(point) {
-}
+RPointData::RPointData(const RVector &point) : RPoint(point) {}
 
-QList<RRefPoint> RPointData::getReferencePoints(RS::ProjectionRenderingHint hint) const {
+QList<RRefPoint>
+RPointData::getReferencePoints(RS::ProjectionRenderingHint hint) const
+{
     Q_UNUSED(hint)
 
     QList<RRefPoint> ret;
@@ -43,11 +41,15 @@ QList<RRefPoint> RPointData::getReferencePoints(RS::ProjectionRenderingHint hint
     return ret;
 }
 
-bool RPointData::moveReferencePoint(const RVector& referencePoint, const RVector& targetPoint, Qt::KeyboardModifiers modifiers) {
+bool RPointData::moveReferencePoint(const RVector &referencePoint,
+                                    const RVector &targetPoint,
+                                    Qt::KeyboardModifiers modifiers)
+{
     Q_UNUSED(modifiers)
 
     bool ret = false;
-    if (referencePoint.equalsFuzzy(position)) {
+    if (referencePoint.equalsFuzzy(position))
+    {
         position = targetPoint;
         ret = true;
     }

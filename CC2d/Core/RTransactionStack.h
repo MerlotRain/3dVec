@@ -34,9 +34,10 @@
  *
  * \ingroup core
  */
-class QCADCORE_EXPORT RTransactionStack : RNonCopyable {
+class QCADCORE_EXPORT RTransactionStack : RNonCopyable
+{
 public:
-    RTransactionStack(RStorage& storage);
+    RTransactionStack(RStorage &storage);
     ~RTransactionStack();
 
     void reset();
@@ -49,7 +50,7 @@ public:
     QString getRedoableTransactionText() const;
 
 private:
-    RStorage& storage;
+    RStorage &storage;
 };
 
 #endif

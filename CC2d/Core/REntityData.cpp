@@ -204,7 +204,7 @@ REntityData::getLineweight(bool resolve,
                        << l->getName() << "' is ByLayer";
             return RLineweight::Weight000;
         }
-        
+
         {
             // never inherit from viewport:
             if (blockRefStack.isEmpty() ||
@@ -262,7 +262,7 @@ REntityData::getLinetypeId(bool resolve,
                               "line type is ByLayer but layer is invalid";
                 return RLinetype::INVALID_ID;
             }
-            
+
             {
                 // never inherit from viewport:
                 if (blockRefStack.isEmpty() ||
@@ -693,7 +693,7 @@ QList<RVector> REntityData::getIntersectionPoints(
     QList<QSharedPointer<RShape>> shapes1 =
             getShapes(queryBox, ignoreComplex, true, &entityIds1);
 
-//    if (RMouseEvent::hasMouseMoved()) { return QList<RVector>(); }
+    //    if (RMouseEvent::hasMouseMoved()) { return QList<RVector>(); }
 
     QList<REntity::Id> entityIds2;
     QList<QSharedPointer<RShape>> shapes2 =
@@ -705,7 +705,7 @@ QList<RVector> REntityData::getIntersectionPoints(
         if (same) { kStart = i + 1; }
         for (int k = kStart; k < shapes2.size(); k++)
         {
-           // if (RMouseEvent::hasMouseMoved()) { return QList<RVector>(); }
+            // if (RMouseEvent::hasMouseMoved()) { return QList<RVector>(); }
             //            if (same) {
             //                if (abs(i-k)<=1) {
             //                    // same or connecting segment of same entity

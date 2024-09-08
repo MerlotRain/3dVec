@@ -47,48 +47,138 @@ RPropertyTypeId RDimStyle::PropertyDimblk;
 RPropertyTypeId RDimStyle::PropertyDimblk1;
 RPropertyTypeId RDimStyle::PropertyDimblk2;
 
-QList<QPair<RPropertyTypeId, RS::KnownVariable> > RDimStyle::propertyVariables;
+QList<QPair<RPropertyTypeId, RS::KnownVariable>> RDimStyle::propertyVariables;
 
-RDimStyle::RDimStyle() : RObject(), RDimStyleData(false) {
+RDimStyle::RDimStyle() : RObject(), RDimStyleData(false) {}
+
+RDimStyle::RDimStyle(RDocument *document)
+    : RObject(document), RDimStyleData(false)
+{
 }
 
-RDimStyle::RDimStyle(RDocument* document)
-    : RObject(document), RDimStyleData(false) {
+RDimStyle::~RDimStyle() {}
 
-}
-
-RDimStyle::~RDimStyle() {
-}
-
-void RDimStyle::init() {
-    RDimStyle::PropertyCustom.generateId(RDimStyle::getRtti(), RObject::PropertyCustom);
-    RDimStyle::PropertyHandle.generateId(RDimStyle::getRtti(), RObject::PropertyHandle);
-    RDimStyle::PropertyProtected.generateId(RDimStyle::getRtti(), RObject::PropertyProtected);
+void RDimStyle::init()
+{
+    RDimStyle::PropertyCustom.generateId(RDimStyle::getRtti(),
+                                         RObject::PropertyCustom);
+    RDimStyle::PropertyHandle.generateId(RDimStyle::getRtti(),
+                                         RObject::PropertyHandle);
+    RDimStyle::PropertyProtected.generateId(RDimStyle::getRtti(),
+                                            RObject::PropertyProtected);
 
     QString tsStyle = QT_TRANSLATE_NOOP("REntity", "Style");
-    RDimStyle::PropertyDimscale.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Overall scale"));
-    RDimStyle::PropertyDimlfac.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Linear measurement factor"));
-    RDimStyle::PropertyDimtxt.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Text height"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyDimgap.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Dimension line gap"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyDimasz.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Arrow size"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyDimdli.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Dimension line increment"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyDimexe.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Extension line extension"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyDimexo.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Extension line offset"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyDimtad.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Text position vertical"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyDimtih.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Text horizontal"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyDimtsz.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Tick size"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyDimlunit.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Linear format"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyDimdec.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Decimal places"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyDimdsep.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Decimal separator"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyDimzin.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Zero suppression"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyDimaunit.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Angular format"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyDimadec.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Angular decimal places"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyDimazin.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Angular zero suppression"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyArchTick.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Architectur tick"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyDimclrt.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Text color"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyDimblk.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Arrow block"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyDimblk1.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Arrow block 1"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
-    RDimStyle::PropertyDimblk2.generateId(RDimStyle::getRtti(), tsStyle, QT_TRANSLATE_NOOP("REntity", "Arrow block 2"), false, RPropertyAttributes::DimStyleOverride|RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimscale.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Overall scale"));
+    RDimStyle::PropertyDimlfac.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Linear measurement factor"));
+    RDimStyle::PropertyDimtxt.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Text height"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimgap.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Dimension line gap"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimasz.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Arrow size"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimdli.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Dimension line increment"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimexe.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Extension line extension"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimexo.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Extension line offset"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimtad.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Text position vertical"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimtih.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Text horizontal"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimtsz.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Tick size"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimlunit.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Linear format"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimdec.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Decimal places"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimdsep.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Decimal separator"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimzin.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Zero suppression"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimaunit.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Angular format"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimadec.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Angular decimal places"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimazin.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Angular zero suppression"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyArchTick.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Architectur tick"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimclrt.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Text color"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimblk.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Arrow block"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimblk1.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Arrow block 1"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
+    RDimStyle::PropertyDimblk2.generateId(
+            RDimStyle::getRtti(), tsStyle,
+            QT_TRANSLATE_NOOP("REntity", "Arrow block 2"), false,
+            RPropertyAttributes::DimStyleOverride |
+                    RPropertyAttributes::Geometry);
 
     RDimStyleData::init();
 
@@ -116,61 +206,82 @@ void RDimStyle::init() {
     initDimX(PropertyDimblk2, RS::DIMBLK2, RS::VarTypeInt);
 }
 
-void RDimStyle::initDimX(const RPropertyTypeId& propertyTypeId, RS::KnownVariable var, RS::KnownVariableType type) {
-    propertyVariables.append(QPair<RPropertyTypeId, RS::KnownVariable>(propertyTypeId, var));
+void RDimStyle::initDimX(const RPropertyTypeId &propertyTypeId,
+                         RS::KnownVariable var, RS::KnownVariableType type)
+{
+    propertyVariables.append(
+            QPair<RPropertyTypeId, RS::KnownVariable>(propertyTypeId, var));
     RDimStyleData::dimXTypes[var] = type;
 }
 
-void RDimStyle::updateDocumentVariables() {
-    RDocument* doc = getDocument();
+void RDimStyle::updateDocumentVariables()
+{
+    RDocument *doc = getDocument();
 
-    for (int i=0; i<propertyVariables.length(); i++) {
-        doc->setKnownVariable(propertyVariables[i].second, getVariant(propertyVariables[i].second));
+    for (int i = 0; i < propertyVariables.length(); i++)
+    {
+        doc->setKnownVariable(propertyVariables[i].second,
+                              getVariant(propertyVariables[i].second));
     }
 }
 
-void RDimStyle::updateFromDocumentVariables() {
-    RDocument* doc = getDocument();
+void RDimStyle::updateFromDocumentVariables()
+{
+    RDocument *doc = getDocument();
 
-    for (int i=0; i<propertyVariables.length(); i++) {
+    for (int i = 0; i < propertyVariables.length(); i++)
+    {
         QVariant v = doc->getKnownVariable(propertyVariables[i].second);
         setVariant(propertyVariables[i].second, v);
     }
 }
 
-QPair<QVariant, RPropertyAttributes> RDimStyle::getProperty(RPropertyTypeId& propertyTypeId, bool humanReadable, bool noAttributes, bool showOnRequest) {
+QPair<QVariant, RPropertyAttributes>
+RDimStyle::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
+                       bool noAttributes, bool showOnRequest)
+{
 
-    for (int i=0; i<propertyVariables.length(); i++) {
-        if (propertyTypeId==propertyVariables[i].first) {
-            return qMakePair(getVariant(propertyVariables[i].second), RPropertyAttributes());
+    for (int i = 0; i < propertyVariables.length(); i++)
+    {
+        if (propertyTypeId == propertyVariables[i].first)
+        {
+            return qMakePair(getVariant(propertyVariables[i].second),
+                             RPropertyAttributes());
         }
     }
 
-    if (propertyTypeId==PropertyArchTick) {
-        return qMakePair(QVariant(getDouble(RS::DIMTSZ) > 0.0), RPropertyAttributes());
+    if (propertyTypeId == PropertyArchTick)
+    {
+        return qMakePair(QVariant(getDouble(RS::DIMTSZ) > 0.0),
+                         RPropertyAttributes());
     }
 
-    return RObject::getProperty(propertyTypeId, humanReadable, noAttributes, showOnRequest);
+    return RObject::getProperty(propertyTypeId, humanReadable, noAttributes,
+                                showOnRequest);
 }
 
-bool RDimStyle::setProperty(RPropertyTypeId propertyTypeId, const QVariant& value, RTransaction* transaction) {
+bool RDimStyle::setProperty(RPropertyTypeId propertyTypeId,
+                            const QVariant &value, RTransaction *transaction)
+{
 
     bool ret = false;
 
-    for (int i=0; i<propertyVariables.length(); i++) {
-        if (propertyTypeId==propertyVariables[i].first) {
+    for (int i = 0; i < propertyVariables.length(); i++)
+    {
+        if (propertyTypeId == propertyVariables[i].first)
+        {
             setVariant(propertyVariables[i].second, value);
             ret = true;
         }
     }
 
-    if (propertyTypeId==PropertyArchTick) {
-        if (value.toBool()==true) {
+    if (propertyTypeId == PropertyArchTick)
+    {
+        if (value.toBool() == true)
+        {
             setDouble(RS::DIMTSZ, getDouble(RS::DIMASZ));
         }
-        else {
-            setDouble(RS::DIMTSZ, 0.0);
-        }
+        else { setDouble(RS::DIMTSZ, 0.0); }
     }
 
     ret = ret || RObject::setProperty(propertyTypeId, value, transaction);

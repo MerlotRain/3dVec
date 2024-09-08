@@ -23,9 +23,7 @@
 /**
  * Creates and empty matrix (zero columns and zero rows).
  */
-RMatrix::RMatrix() :
-    m(NULL), rows(0), cols(0) {
-}
+RMatrix::RMatrix() : m(NULL), rows(0), cols(0) {}
 
 /**
  * Creates a matrix with \c r rows and \c c columns.
@@ -36,41 +34,33 @@ RMatrix::RMatrix() :
  * \param c number of columns
  *
  */
-RMatrix::RMatrix(int r, int c) :
-    m(NULL), rows(0), cols(0) {
-    init(r, c);
-}
+RMatrix::RMatrix(int r, int c) : m(NULL), rows(0), cols(0) { init(r, c); }
 
 /**
  * Copy constructor.
  */
-RMatrix::RMatrix(const RMatrix& other) :
-    m(NULL), rows(0), cols(0) {
+RMatrix::RMatrix(const RMatrix &other) : m(NULL), rows(0), cols(0)
+{
     (*this) = other;
 }
 
 /**
  * Deletes the matrix.
  */
-RMatrix::~RMatrix() {
-    clear();
-}
+RMatrix::~RMatrix() { clear(); }
 
 /**
  * \return True if this matrix is a valid matrix (more than 0 columns and rows).
  */
-bool RMatrix::isValid() const {
-    if (cols<=0 || rows<=0) {
-        return false;
-    }
-    if (m==NULL) {
-        return false;
-    }
-    for (int rc = 0; rc < rows; ++rc) {
-        for (int cc = 0; cc < cols; ++cc) {
-            if (RMath::isNaN(m[rc][cc])) {
-                return false;
-            }
+bool RMatrix::isValid() const
+{
+    if (cols <= 0 || rows <= 0) { return false; }
+    if (m == NULL) { return false; }
+    for (int rc = 0; rc < rows; ++rc)
+    {
+        for (int cc = 0; cc < cols; ++cc)
+        {
+            if (RMath::isNaN(m[rc][cc])) { return false; }
         }
     }
     return true;
@@ -85,9 +75,7 @@ bool RMatrix::isValid() const {
  *   \end{array} \right)
  * \f$
  */
-RMatrix RMatrix::createIdentity2x2() {
-    return createIdentity(2);
-}
+RMatrix RMatrix::createIdentity2x2() { return createIdentity(2); }
 
 /**
  * \return An identity matrix with 3 rows and 3 columns:
@@ -99,9 +87,7 @@ RMatrix RMatrix::createIdentity2x2() {
  *   \end{array} \right)
  * \f$
  */
-RMatrix RMatrix::createIdentity3x3() {
-    return createIdentity(3);
-}
+RMatrix RMatrix::createIdentity3x3() { return createIdentity(3); }
 
 /**
  * \return An identity matrix with \c size rows and \c size columns:
@@ -114,19 +100,16 @@ RMatrix RMatrix::createIdentity3x3() {
  *   \end{array} \right)
  * \f$
  */
-RMatrix RMatrix::createIdentity(int size) {
+RMatrix RMatrix::createIdentity(int size)
+{
     RMatrix ret(size, size);
-    for (int i = 0; i < size; ++i) {
-        ret.set(i, i, 1);
-    }
+    for (int i = 0; i < size; ++i) { ret.set(i, i, 1); }
     return ret;
 }
 
-RMatrix RMatrix::createRotation(double angle) {
-    return RMatrix::create2x2(
-        cos(angle), -sin(angle),
-        sin(angle), cos(angle)
-    );
+RMatrix RMatrix::createRotation(double angle)
+{
+    return RMatrix::create2x2(cos(angle), -sin(angle), sin(angle), cos(angle));
 }
 
 /**
@@ -138,8 +121,8 @@ RMatrix RMatrix::createRotation(double angle) {
  *   \end{array} \right)
  * \f$
  */
-RMatrix RMatrix::create2x2(double a11, double a12,
-                           double a21, double a22) {
+RMatrix RMatrix::create2x2(double a11, double a12, double a21, double a22)
+{
     RMatrix ret(2, 2);
 
     ret.set(0, 0, a11);
@@ -162,7 +145,9 @@ RMatrix RMatrix::create2x2(double a11, double a12,
  * \f$
  */
 RMatrix RMatrix::create3x3(double a11, double a12, double a13, double a21,
-        double a22, double a23, double a31, double a32, double a33) {
+                           double a22, double a23, double a31, double a32,
+                           double a33)
+{
     RMatrix ret(3, 3);
 
     ret.set(0, 0, a11);
@@ -190,7 +175,8 @@ RMatrix RMatrix::create3x3(double a11, double a12, double a13, double a21,
  *   \end{array} \right)
  * \f$
  */
-RMatrix RMatrix::create3x1(double a11, double a21, double a31) {
+RMatrix RMatrix::create3x1(double a11, double a21, double a31)
+{
     RMatrix ret(3, 1);
 
     ret.set(0, 0, a11);
@@ -209,9 +195,9 @@ RMatrix RMatrix::create3x1(double a11, double a21, double a31) {
  *   \end{array} \right)
  * \f$
  */
-RMatrix RMatrix::create2x3(
-    double a11, double a12, double a13,
-    double a21, double a22, double a23) {
+RMatrix RMatrix::create2x3(double a11, double a12, double a13, double a21,
+                           double a22, double a23)
+{
     RMatrix ret(2, 3);
 
     ret.set(0, 0, a11);
@@ -228,17 +214,15 @@ RMatrix RMatrix::create2x3(
 /**
  * Assignment operator.
  */
-RMatrix& RMatrix::operator =(const RMatrix& other) {
-    if (this == &other) {
-        return *this;
-    }
+RMatrix &RMatrix::operator=(const RMatrix &other)
+{
+    if (this == &other) { return *this; }
 
     init(other.rows, other.cols);
 
-    for (int rc = 0; rc < rows; ++rc) {
-        for (int cc = 0; cc < cols; ++cc) {
-            m[rc][cc] = other.m[rc][cc];
-        }
+    for (int rc = 0; rc < rows; ++rc)
+    {
+        for (int cc = 0; cc < cols; ++cc) { m[rc][cc] = other.m[rc][cc]; }
     }
     return *this;
 }
@@ -247,16 +231,15 @@ RMatrix& RMatrix::operator =(const RMatrix& other) {
  * Comparison. All elements of the matrix as well as the matrix
  * dimensions have to match for the two matrices to be equal.
  */
-bool RMatrix::operator ==(const RMatrix& other) const {
-    if (rows != other.rows || cols != other.cols) {
-        return false;
-    }
+bool RMatrix::operator==(const RMatrix &other) const
+{
+    if (rows != other.rows || cols != other.cols) { return false; }
 
-    for (int rc = 0; rc < rows; ++rc) {
-        for (int cc = 0; cc < cols; ++cc) {
-            if (m[rc][cc] != other.m[rc][cc]) {
-                return false;
-            }
+    for (int rc = 0; rc < rows; ++rc)
+    {
+        for (int cc = 0; cc < cols; ++cc)
+        {
+            if (m[rc][cc] != other.m[rc][cc]) { return false; }
         }
     }
 
@@ -267,7 +250,8 @@ bool RMatrix::operator ==(const RMatrix& other) const {
  * Multiplies all elements of this matrix with the given factor
  * and returns this matrix.
  */
-RMatrix RMatrix::operator *=(double f) {
+RMatrix RMatrix::operator*=(double f)
+{
     *this = *this * f;
     return *this;
 }
@@ -275,7 +259,8 @@ RMatrix RMatrix::operator *=(double f) {
 /**
  * Multiplies two matrices.
  */
-RMatrix RMatrix::operator *(const RMatrix& other) const {
+RMatrix RMatrix::operator*(const RMatrix &other) const
+{
     return multiplyWith(other);
 }
 
@@ -283,12 +268,16 @@ RMatrix RMatrix::operator *(const RMatrix& other) const {
  * \return \f$A \cdot W\f$
  * This matrix is not affected.
  */
-RMatrix RMatrix::multiplyWith(const RMatrix& w) const {
+RMatrix RMatrix::multiplyWith(const RMatrix &w) const
+{
     RMatrix r(rows, w.cols);
 
-    for (int cc = 0; cc < r.cols; ++cc) {
-        for (int rc = 0; rc < r.rows; ++rc) {
-            for (int i = 0; i < cols; ++i) {
+    for (int cc = 0; cc < r.cols; ++cc)
+    {
+        for (int rc = 0; rc < r.rows; ++rc)
+        {
+            for (int i = 0; i < cols; ++i)
+            {
                 r.set(rc, cc, r.get(rc, cc) + get(rc, i) * w.get(i, cc));
             }
         }
@@ -297,16 +286,14 @@ RMatrix RMatrix::multiplyWith(const RMatrix& w) const {
     return r;
 }
 
-RMatrix RMatrix::multiplyWith(double f) const {
-    return *this * f;
-}
+RMatrix RMatrix::multiplyWith(double f) const { return *this * f; }
 
-RVector RMatrix::multiplyWith(const RVector& v) const {
-    if (getRows()==2 && getCols()==2) {
-        return RVector(
-            get(0,0)*v.x + get(0,1)*v.y,
-            get(1,0)*v.x + get(1,1)*v.y
-        );
+RVector RMatrix::multiplyWith(const RVector &v) const
+{
+    if (getRows() == 2 && getCols() == 2)
+    {
+        return RVector(get(0, 0) * v.x + get(0, 1) * v.y,
+                       get(1, 0) * v.x + get(1, 1) * v.y);
     }
 
     return RVector::invalid;
@@ -316,12 +303,11 @@ RVector RMatrix::multiplyWith(const RVector& v) const {
  * Initializes the matrix for the given size and resets
  * all elements to 0.
  */
-void RMatrix::init(int r, int c) {
+void RMatrix::init(int r, int c)
+{
     clear();
-    m = new double*[r];
-    for (int i = 0; i < r; i++) {
-        m[i] = new double[c];
-    }
+    m = new double *[r];
+    for (int i = 0; i < r; i++) { m[i] = new double[c]; }
     rows = r;
     cols = c;
     reset();
@@ -330,23 +316,23 @@ void RMatrix::init(int r, int c) {
 /**
  * Resets all elements to 0.
  */
-void RMatrix::reset() {
-    for (int rc = 0; rc < rows; ++rc) {
-        for (int cc = 0; cc < cols; ++cc) {
-            m[rc][cc] = 0.0;
-        }
+void RMatrix::reset()
+{
+    for (int rc = 0; rc < rows; ++rc)
+    {
+        for (int cc = 0; cc < cols; ++cc) { m[rc][cc] = 0.0; }
     }
 }
 
 /**
  * Deletes the elements of this matrix and resets the matrix size to 0/0.
  */
-void RMatrix::clear() {
-    if (m == NULL) {
-        return;
-    }
+void RMatrix::clear()
+{
+    if (m == NULL) { return; }
 
-    for (int rc = 0; rc < rows; ++rc) {
+    for (int rc = 0; rc < rows; ++rc)
+    {
         delete[] m[rc];
         m[rc] = NULL;
     }
@@ -361,8 +347,9 @@ void RMatrix::clear() {
  * Sets the dimension of this matrix to 3x3 and the elements
  * to the given elements.
  */
-void RMatrix::set3x3(double a11, double a12, double a13, double a21,
-        double a22, double a23, double a31, double a32, double a33) {
+void RMatrix::set3x3(double a11, double a12, double a13, double a21, double a22,
+                     double a23, double a31, double a32, double a33)
+{
     *this = create3x3(a11, a12, a13, a21, a22, a23, a31, a32, a33);
 }
 
@@ -370,7 +357,8 @@ void RMatrix::set3x3(double a11, double a12, double a13, double a21,
  * Sets the dimension of this matrix to 3x1 and the elements
  * to the given elements.
  */
-void RMatrix::set3x1(double a11, double a21, double a31) {
+void RMatrix::set3x1(double a11, double a21, double a31)
+{
     *this = create3x1(a11, a21, a31);
 }
 
@@ -378,8 +366,9 @@ void RMatrix::set3x1(double a11, double a21, double a31) {
  * Sets the dimension of this matrix to 2x3 and the elements
  * to the given elements.
  */
-void RMatrix::set2x3(double a11, double a12, double a13, double a21,
-        double a22, double a23) {
+void RMatrix::set2x3(double a11, double a12, double a13, double a21, double a22,
+                     double a23)
+{
     *this = create2x3(a11, a12, a13, a21, a22, a23);
 }
 
@@ -392,9 +381,10 @@ void RMatrix::set2x3(double a11, double a12, double a13, double a21,
  *
  * \param v the new value at the given row / column position
  */
-void RMatrix::set(int r, int c, double v) {
-    assert(r<rows);
-    assert(c<cols);
+void RMatrix::set(int r, int c, double v)
+{
+    assert(r < rows);
+    assert(c < cols);
 
     m[r][c] = v;
 }
@@ -406,9 +396,10 @@ void RMatrix::set(int r, int c, double v) {
  *
  * \return The element at the given row/column.
  */
-double RMatrix::get(int r, int c) const {
-    assert(r<rows);
-    assert(c<cols);
+double RMatrix::get(int r, int c) const
+{
+    assert(r < rows);
+    assert(c < cols);
 
     return m[r][c];
 }
@@ -421,27 +412,23 @@ double RMatrix::get(int r, int c) const {
  *
  * \return True on success.
  */
-bool RMatrix::ref(int startRow) {
+bool RMatrix::ref(int startRow)
+{
     int pr, pc;
 
     // row which has elements most left becomes first row
-    if ((pr = getPivotRow(startRow)) == -1) {
-        return false;
-    }
+    if ((pr = getPivotRow(startRow)) == -1) { return false; }
     swapRows(startRow, pr);
     // where is the pivot element in the 1st row?
-    if ((pc = getPivotCol(startRow)) == -1) {
-        return false;
-    }
+    if ((pc = getPivotCol(startRow)) == -1) { return false; }
     multiplyRow(startRow, 1.0 / m[startRow][pc]);
 
-    for (int rc = startRow + 1; rc < rows; ++rc) {
+    for (int rc = startRow + 1; rc < rows; ++rc)
+    {
         addRow(rc, -m[rc][pc], startRow);
     }
 
-    if (startRow < rows) {
-        ref(startRow + 1);
-    }
+    if (startRow < rows) { ref(startRow + 1); }
     return true;
 }
 
@@ -452,13 +439,17 @@ bool RMatrix::ref(int startRow) {
  *
  * \return True on success.
  */
-bool RMatrix::rref() {
+bool RMatrix::rref()
+{
     bool ret = ref(0);
 
-    for (int rc = 0; rc < rows; ++rc) {
+    for (int rc = 0; rc < rows; ++rc)
+    {
         int i = 1;
-        for (int cc = getPivotCol(rc) + 1; cc < cols; ++cc, ++i) {
-            if (rc + i < rows && fabs(m[rc + i][cc]) > RMATRIX_TOLERANCE) {
+        for (int cc = getPivotCol(rc) + 1; cc < cols; ++cc, ++i)
+        {
+            if (rc + i < rows && fabs(m[rc + i][cc]) > RMATRIX_TOLERANCE)
+            {
                 addRow(rc, -m[rc][cc] / m[rc + i][cc], rc + i);
             }
         }
@@ -477,10 +468,9 @@ bool RMatrix::rref() {
  * \param factor the factor to apply to the row
  *
  */
-void RMatrix::multiplyRow(int r, double factor) {
-    for (int cc = 0; cc < cols; ++cc) {
-        m[r][cc] *= factor;
-    }
+void RMatrix::multiplyRow(int r, double factor)
+{
+    for (int cc = 0; cc < cols; ++cc) { m[r][cc] *= factor; }
 }
 
 /**
@@ -494,10 +484,9 @@ void RMatrix::multiplyRow(int r, double factor) {
  *
  * \param factor The factor to apply to \c r2 before it is added to row \c r.
  */
-void RMatrix::addRow(int r, double factor, int r2) {
-    for (int cc = 0; cc < cols; ++cc) {
-        m[r][cc] += factor * m[r2][cc];
-    }
+void RMatrix::addRow(int r, double factor, int r2)
+{
+    for (int cc = 0; cc < cols; ++cc) { m[r][cc] += factor * m[r2][cc]; }
 }
 
 /**
@@ -510,13 +499,13 @@ void RMatrix::addRow(int r, double factor, int r2) {
  * \param r2 the row 2
  *
  */
-void RMatrix::swapRows(int r1, int r2) {
-    if (r1 == r2) {
-        return;
-    }
+void RMatrix::swapRows(int r1, int r2)
+{
+    if (r1 == r2) { return; }
 
     double t;
-    for (int cc = 0; cc < cols; ++cc) {
+    for (int cc = 0; cc < cols; ++cc)
+    {
         t = m[r1][cc];
         m[r1][cc] = m[r2][cc];
         m[r2][cc] = t;
@@ -530,12 +519,13 @@ void RMatrix::swapRows(int r1, int r2) {
  *
  * \return The pivot row of this matrix, starting with the given row \c startRow.
  */
-int RMatrix::getPivotRow(int startRow) {
-    for (int cc = 0; cc < cols; ++cc) {
-        for (int rc = startRow; rc < rows; ++rc) {
-            if (fabs(m[rc][cc]) > RMATRIX_TOLERANCE) {
-                return rc;
-            }
+int RMatrix::getPivotRow(int startRow)
+{
+    for (int cc = 0; cc < cols; ++cc)
+    {
+        for (int rc = startRow; rc < rows; ++rc)
+        {
+            if (fabs(m[rc][cc]) > RMATRIX_TOLERANCE) { return rc; }
         }
     }
 
@@ -549,11 +539,11 @@ int RMatrix::getPivotRow(int startRow) {
  *
  * \return The pivot column of the given matrix row \c r.
  */
-int RMatrix::getPivotCol(int r) {
-    for (int cc = 0; cc < cols; ++cc) {
-        if (fabs(m[r][cc]) > RMATRIX_TOLERANCE) {
-            return cc;
-        }
+int RMatrix::getPivotCol(int r)
+{
+    for (int cc = 0; cc < cols; ++cc)
+    {
+        if (fabs(m[r][cc]) > RMATRIX_TOLERANCE) { return cc; }
     }
 
     return -1;
@@ -563,21 +553,17 @@ int RMatrix::getPivotCol(int r) {
  * \return The inverse matrix of this matrix \f$A^{-1}\f$ or
  * an empty matrix if this matrix is not invertible.
  */
-RMatrix RMatrix::getInverse() const {
-    if (cols != rows) {
-        return RMatrix();
-    }
+RMatrix RMatrix::getInverse() const
+{
+    if (cols != rows) { return RMatrix(); }
 
     RMatrix a = getAppended(createIdentity(cols));
-    if (!a.rref()) {
-        return RMatrix();
-    }
+    if (!a.rref()) { return RMatrix(); }
 
     RMatrix ret(rows, cols);
-    for (int r = 0; r < rows; r++) {
-        for (int c = 0; c < cols; c++) {
-            ret.set(r, c, a.get(r, c + cols));
-        }
+    for (int r = 0; r < rows; r++)
+    {
+        for (int c = 0; c < cols; c++) { ret.set(r, c, a.get(r, c + cols)); }
     }
 
     return ret;
@@ -587,13 +573,13 @@ RMatrix RMatrix::getInverse() const {
  * \return The transposed matrix \f$A^T\f$.
  * This matrix is not affected.
  */
-RMatrix RMatrix::getTransposed() const {
+RMatrix RMatrix::getTransposed() const
+{
     RMatrix t(cols, rows);
 
-    for (int cc = 0; cc < cols; ++cc) {
-        for (int rc = 0; rc < rows; ++rc) {
-            t.set(cc, rc, m[rc][cc]);
-        }
+    for (int cc = 0; cc < cols; ++cc)
+    {
+        for (int rc = 0; rc < rows; ++rc) { t.set(cc, rc, m[rc][cc]); }
     }
 
     return t;
@@ -606,18 +592,17 @@ RMatrix RMatrix::getTransposed() const {
  * \param v the matrix to append to this matrix
  *
  */
-RMatrix RMatrix::getAppended(const RMatrix& v) const {
-    if (rows != v.rows) {
-        return RMatrix();
-    }
+RMatrix RMatrix::getAppended(const RMatrix &v) const
+{
+    if (rows != v.rows) { return RMatrix(); }
 
     RMatrix r(rows, cols + v.cols);
 
-    for (int rc = 0; rc < rows; ++rc) {
-        for (int cc = 0; cc < cols; ++cc) {
-            r.set(rc, cc, get(rc, cc));
-        }
-        for (int cc = cols; cc < cols + v.cols; ++cc) {
+    for (int rc = 0; rc < rows; ++rc)
+    {
+        for (int cc = 0; cc < cols; ++cc) { r.set(rc, cc, get(rc, cc)); }
+        for (int cc = cols; cc < cols + v.cols; ++cc)
+        {
             r.set(rc, cc, v.get(rc, cc - cols));
         }
     }
@@ -625,55 +610,54 @@ RMatrix RMatrix::getAppended(const RMatrix& v) const {
     return r;
 }
 
-bool RMatrix::isRotationAndUniformScale() const {
+bool RMatrix::isRotationAndUniformScale() const
+{
     double a = getRotationAngle();
 
-    if (RMath::isNaN(a)) {
-        return false;
+    if (RMath::isNaN(a)) { return false; }
+
+    if (fabs(cos(a)) < RS::PointTolerance)
+    {
+        return RMath::fuzzyCompare(get(0, 1) / -sin(a), get(1, 0) / sin(a)) &&
+               RMath::fuzzyCompare(get(0, 0), get(1, 1));
+    }
+    if (fabs(sin(a)) < RS::PointTolerance)
+    {
+        return RMath::fuzzyCompare(get(0, 0) / cos(a), get(1, 1) / cos(a)) &&
+               RMath::fuzzyCompare(-get(0, 1), get(1, 0));
     }
 
-    if (fabs(cos(a))<RS::PointTolerance) {
-        return RMath::fuzzyCompare(get(0,1) / -sin(a), get(1,0) / sin(a)) &&
-               RMath::fuzzyCompare(get(0,0), get(1,1));
-    }
-    if (fabs(sin(a))<RS::PointTolerance) {
-        return RMath::fuzzyCompare(get(0,0) / cos(a), get(1,1) / cos(a)) &&
-               RMath::fuzzyCompare(-get(0,1), get(1,0));
-    }
+    double s00 = get(0, 0) / cos(a);
+    double s01 = get(0, 1) / -sin(a);
+    double s10 = get(1, 0) / sin(a);
+    double s11 = get(1, 1) / cos(a);
 
-    double s00 = get(0,0) / cos(a);
-    double s01 = get(0,1) / -sin(a);
-    double s10 = get(1,0) / sin(a);
-    double s11 = get(1,1) / cos(a);
-
-    return (RMath::fuzzyCompare(s00, s01) &&
-        RMath::fuzzyCompare(s00, s10) &&
-        RMath::fuzzyCompare(s00, s11));
+    return (RMath::fuzzyCompare(s00, s01) && RMath::fuzzyCompare(s00, s10) &&
+            RMath::fuzzyCompare(s00, s11));
 }
 
-double RMatrix::getUniformScaleFactor() const {
-    if (getRows()!=2 || getCols()!=2) {
-        return RNANDOUBLE;
-    }
+double RMatrix::getUniformScaleFactor() const
+{
+    if (getRows() != 2 || getCols() != 2) { return RNANDOUBLE; }
     double a = getRotationAngle();
-    if (RMath::isNaN(a)) {
-        return RNANDOUBLE;
-    }
-    return get(0,0) / cos(a);
+    if (RMath::isNaN(a)) { return RNANDOUBLE; }
+    return get(0, 0) / cos(a);
 }
 
-double RMatrix::getRotationAngle() const {
-    if (getRows()!=2 || getCols()!=2) {
-        return RNANDOUBLE;
-    }
-    return atan2(get(1,0), get(0,0));
+double RMatrix::getRotationAngle() const
+{
+    if (getRows() != 2 || getCols() != 2) { return RNANDOUBLE; }
+    return atan2(get(1, 0), get(0, 0));
 }
 
-RMatrix RMatrix::operator *(double s) const {
+RMatrix RMatrix::operator*(double s) const
+{
     RMatrix ret = *this;
 
-    for (int rc = 0; rc < ret.getRows(); ++rc) {
-        for (int cc = 0; cc < ret.getCols(); ++cc) {
+    for (int rc = 0; rc < ret.getRows(); ++rc)
+    {
+        for (int cc = 0; cc < ret.getCols(); ++cc)
+        {
             ret.set(rc, cc, ret.get(rc, cc) * s);
         }
     }
@@ -684,6 +668,7 @@ RMatrix RMatrix::operator *(double s) const {
 /**
  * \return \f$matrix \cdot factor\f$.
  */
-RMatrix operator *(double factor, const RMatrix& matrix) {
+RMatrix operator*(double factor, const RMatrix &matrix)
+{
     return matrix * factor;
 }

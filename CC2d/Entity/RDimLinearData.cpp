@@ -19,17 +19,16 @@
 #include "RDimLinearData.h"
 #include "RUnit.h"
 
-RDimLinearData::RDimLinearData(RDocument* document) :
-    RDimensionData(document) {
+RDimLinearData::RDimLinearData(RDocument *document) : RDimensionData(document)
+{
 }
 
-RDimLinearData::RDimLinearData(RDocument* document, const RDimLinearData& data)
-    : RDimensionData(document) {
+RDimLinearData::RDimLinearData(RDocument *document, const RDimLinearData &data)
+    : RDimensionData(document)
+{
     *this = data;
     this->document = document;
-    if (document!=NULL) {
-        linetypeId = document->getLinetypeByLayerId();
-    }
+    if (document != NULL) { linetypeId = document->getLinetypeByLayerId(); }
 }
 
 /**
@@ -38,44 +37,50 @@ RDimLinearData::RDimLinearData(RDocument* document, const RDimLinearData& data)
  * \param extensionPoint2 Definition point. Startpoint of the
  *         second extension line.
  */
-RDimLinearData::RDimLinearData(const RDimensionData& dimData,
-                                 const RVector& extensionPoint1,
-                                 const RVector& extensionPoint2)
-    : RDimensionData(dimData),
-      extensionPoint1(extensionPoint1),
-      extensionPoint2(extensionPoint2) {
-
+RDimLinearData::RDimLinearData(const RDimensionData &dimData,
+                               const RVector &extensionPoint1,
+                               const RVector &extensionPoint2)
+    : RDimensionData(dimData), extensionPoint1(extensionPoint1),
+      extensionPoint2(extensionPoint2)
+{
 }
 
-bool RDimLinearData::isValid() const {
-    return RDimensionData::isValid() &&
-            extensionPoint1.isValid() &&
-            extensionPoint2.isValid();
+bool RDimLinearData::isValid() const
+{
+    return RDimensionData::isValid() && extensionPoint1.isValid() &&
+           extensionPoint2.isValid();
 }
 
-bool RDimLinearData::isSane() const {
-    return RDimensionData::isSane() &&
-            extensionPoint1.isSane() &&
-            extensionPoint2.isSane();
+bool RDimLinearData::isSane() const
+{
+    return RDimensionData::isSane() && extensionPoint1.isSane() &&
+           extensionPoint2.isSane();
 }
 
-bool RDimLinearData::moveReferencePoint(const RVector& referencePoint, const RVector& targetPoint, Qt::KeyboardModifiers modifiers) {
+bool RDimLinearData::moveReferencePoint(const RVector &referencePoint,
+                                        const RVector &targetPoint,
+                                        Qt::KeyboardModifiers modifiers)
+{
     bool recomputeDefPoint = false;
-    if (referencePoint.equalsFuzzy(definitionPoint)) {
+    if (referencePoint.equalsFuzzy(definitionPoint))
+    {
         recomputeDefPoint = true;
     }
 
-    bool ret = RDimensionData::moveReferencePoint(referencePoint, targetPoint, modifiers);
+    bool ret = RDimensionData::moveReferencePoint(referencePoint, targetPoint,
+                                                  modifiers);
 
-    if (referencePoint.equalsFuzzy(extensionPoint1)) {
-        recomputeDefinitionPoint(extensionPoint1, extensionPoint2,
-                                 targetPoint, extensionPoint2);
+    if (referencePoint.equalsFuzzy(extensionPoint1))
+    {
+        recomputeDefinitionPoint(extensionPoint1, extensionPoint2, targetPoint,
+                                 extensionPoint2);
         extensionPoint1 = targetPoint;
         autoTextPos = true;
         update();
         return true;
     }
-    else if (referencePoint.equalsFuzzy(extensionPoint2)) {
+    else if (referencePoint.equalsFuzzy(extensionPoint2))
+    {
         recomputeDefinitionPoint(extensionPoint1, extensionPoint2,
                                  extensionPoint1, targetPoint);
         extensionPoint2 = targetPoint;
@@ -83,19 +88,19 @@ bool RDimLinearData::moveReferencePoint(const RVector& referencePoint, const RVe
         update();
         return true;
     }
-    else if (recomputeDefPoint) {
+    else if (recomputeDefPoint)
+    {
         recomputeDefinitionPoint(extensionPoint1, extensionPoint2,
                                  extensionPoint1, extensionPoint2);
     }
 
-    if (ret) {
-        update();
-    }
+    if (ret) { update(); }
 
     return ret;
 }
 
-bool RDimLinearData::move(const RVector& offset) {
+bool RDimLinearData::move(const RVector &offset)
+{
     RDimensionData::move(offset);
     extensionPoint1.move(offset);
     extensionPoint2.move(offset);
@@ -103,7 +108,8 @@ bool RDimLinearData::move(const RVector& offset) {
     return true;
 }
 
-bool RDimLinearData::rotate(double rotation, const RVector& center) {
+bool RDimLinearData::rotate(double rotation, const RVector &center)
+{
     RDimensionData::rotate(rotation, center);
     extensionPoint1.rotate(rotation, center);
     extensionPoint2.rotate(rotation, center);
@@ -111,7 +117,8 @@ bool RDimLinearData::rotate(double rotation, const RVector& center) {
     return true;
 }
 
-bool RDimLinearData::scale(const RVector& scaleFactors, const RVector& center) {
+bool RDimLinearData::scale(const RVector &scaleFactors, const RVector &center)
+{
     RDimensionData::scale(scaleFactors, center);
     extensionPoint1.scale(scaleFactors, center);
     extensionPoint2.scale(scaleFactors, center);
@@ -119,7 +126,8 @@ bool RDimLinearData::scale(const RVector& scaleFactors, const RVector& center) {
     return true;
 }
 
-bool RDimLinearData::mirror(const RLine& axis) {
+bool RDimLinearData::mirror(const RLine &axis)
+{
     RDimensionData::mirror(axis);
     extensionPoint1.mirror(axis);
     extensionPoint2.mirror(axis);
@@ -127,7 +135,8 @@ bool RDimLinearData::mirror(const RLine& axis) {
     return true;
 }
 
-bool RDimLinearData::stretch(const RPolyline& area, const RVector& offset) {
+bool RDimLinearData::stretch(const RPolyline &area, const RVector &offset)
+{
     RDimensionData::stretch(area, offset);
     extensionPoint1.stretch(area, offset);
     extensionPoint2.stretch(area, offset);
@@ -139,8 +148,6 @@ bool RDimLinearData::stretch(const RPolyline& area, const RVector& offset) {
 //void RDimLinearData::updateTextData() const {
 //    initTextData();
 //    return;
-
-
 
 
 //    double dimgap = getDimgap();

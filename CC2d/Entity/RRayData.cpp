@@ -19,27 +19,26 @@
 #include "RRayData.h"
 #include "RLineEntity.h"
 
-RRayData::RRayData() {
-}
+RRayData::RRayData() {}
 
-RRayData::RRayData(RDocument* document, const RRayData& data)
-    : REntityData(document), fixedAngle(false) {
+RRayData::RRayData(RDocument *document, const RRayData &data)
+    : REntityData(document), fixedAngle(false)
+{
     *this = data;
     this->document = document;
-    if (document!=NULL) {
-        linetypeId = document->getLinetypeByLayerId();
-    }
+    if (document != NULL) { linetypeId = document->getLinetypeByLayerId(); }
 }
 
-RRayData::RRayData(const RRay &ray) :
-    RRay(ray), fixedAngle(false) {
+RRayData::RRayData(const RRay &ray) : RRay(ray), fixedAngle(false) {}
+
+RRayData::RRayData(const RVector &basePoint, const RVector &dir)
+    : RRay(basePoint, dir), fixedAngle(false)
+{
 }
 
-RRayData::RRayData(const RVector& basePoint, const RVector& dir) :
-    RRay(basePoint, dir), fixedAngle(false) {
-}
-
-QList<RRefPoint> RRayData::getReferencePoints(RS::ProjectionRenderingHint hint) const {
+QList<RRefPoint>
+RRayData::getReferencePoints(RS::ProjectionRenderingHint hint) const
+{
     Q_UNUSED(hint)
 
     QList<RRefPoint> ret;
@@ -48,15 +47,20 @@ QList<RRefPoint> RRayData::getReferencePoints(RS::ProjectionRenderingHint hint) 
     return ret;
 }
 
-bool RRayData::moveReferencePoint(const RVector& referencePoint, const RVector& targetPoint, Qt::KeyboardModifiers modifiers) {
+bool RRayData::moveReferencePoint(const RVector &referencePoint,
+                                  const RVector &targetPoint,
+                                  Qt::KeyboardModifiers modifiers)
+{
     Q_UNUSED(modifiers)
 
     bool ret = false;
-    if (referencePoint.equalsFuzzy(basePoint)) {
+    if (referencePoint.equalsFuzzy(basePoint))
+    {
         basePoint = targetPoint;
         ret = true;
     }
-    if (referencePoint.equalsFuzzy(getSecondPoint())) {
+    if (referencePoint.equalsFuzzy(getSecondPoint()))
+    {
         setSecondPoint(targetPoint);
         ret = true;
     }

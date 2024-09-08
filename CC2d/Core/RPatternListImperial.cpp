@@ -24,6 +24,4 @@ RResourceList<RPattern> RPatternListImperial::res;
  * Initializes the pattern list by creating empty QPainterPath
  * objects, one for each pattern that could be found.
  */
-void RPatternListImperial::init() {
-    RPatternList::init(false, res);
-}
+void RPatternListImperial::init() { RPatternList::init(false, res); }

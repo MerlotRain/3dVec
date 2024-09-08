@@ -28,14 +28,15 @@
  *
  * \ingroup core
  */
-class QCADCORE_EXPORT RNonCopyable {
+class QCADCORE_EXPORT RNonCopyable
+{
 protected:
     RNonCopyable() {}
     virtual ~RNonCopyable() {}
 
 private:
-    RNonCopyable(const RNonCopyable&);
-    const RNonCopyable& operator=(const RNonCopyable&);
+    RNonCopyable(const RNonCopyable &);
+    const RNonCopyable &operator=(const RNonCopyable &);
 };
 
 #endif

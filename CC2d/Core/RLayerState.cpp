@@ -27,38 +27,46 @@ RPropertyTypeId RLayerState::PropertyProtected;
 RPropertyTypeId RLayerState::PropertyName;
 
 
-RLayerState::RLayerState() : RObject() {
+RLayerState::RLayerState() : RObject() {}
+
+RLayerState::RLayerState(RDocument *document, const QString &name)
+    : RObject(document), name(name.trimmed())
+{
 }
 
-RLayerState::RLayerState(RDocument* document, const QString& name)
-    : RObject(document), name(name.trimmed()) {
+RLayerState::~RLayerState() {}
+
+void RLayerState::init()
+{
+    RLayerState::PropertyCustom.generateId(RLayerState::getRtti(),
+                                           RObject::PropertyCustom);
+    RLayerState::PropertyType.generateId(RLayerState::getRtti(),
+                                         RObject::PropertyType);
+    RLayerState::PropertyHandle.generateId(RLayerState::getRtti(),
+                                           RObject::PropertyHandle);
+    RLayerState::PropertyProtected.generateId(RLayerState::getRtti(),
+                                              RObject::PropertyProtected);
+
+    RLayerState::PropertyName.generateId(RLayerState::getRtti(), "",
+                                         QT_TRANSLATE_NOOP("REntity", "Name"));
 }
 
-RLayerState::~RLayerState() {
-}
+RLayerState *RLayerState::clone() const { return new RLayerState(*this); }
 
-void RLayerState::init() {
-    RLayerState::PropertyCustom.generateId(RLayerState::getRtti(), RObject::PropertyCustom);
-    RLayerState::PropertyType.generateId(RLayerState::getRtti(), RObject::PropertyType);
-    RLayerState::PropertyHandle.generateId(RLayerState::getRtti(), RObject::PropertyHandle);
-    RLayerState::PropertyProtected.generateId(RLayerState::getRtti(), RObject::PropertyProtected);
-
-    RLayerState::PropertyName.generateId(RLayerState::getRtti(), "", QT_TRANSLATE_NOOP("REntity", "Name"));
-}
-
-RLayerState* RLayerState::clone() const {
-    return new RLayerState(*this);
-}
-
-void RLayerState::addLayer(QSharedPointer<RLayer> layer) {
-    if (layer.isNull()) {
+void RLayerState::addLayer(QSharedPointer<RLayer> layer)
+{
+    if (layer.isNull())
+    {
         qWarning() << "layer is NULL";
         return;
     }
 
     // remove existing layer with same name:
-    for (int i=0; i<layers.length(); i++) {
-        if (QString::compare(layers[i]->getName(), layer->getName(), Qt::CaseInsensitive)==0) {
+    for (int i = 0; i < layers.length(); i++)
+    {
+        if (QString::compare(layers[i]->getName(), layer->getName(),
+                             Qt::CaseInsensitive) == 0)
+        {
             layers.removeAt(i);
             break;
         }
@@ -66,39 +74,51 @@ void RLayerState::addLayer(QSharedPointer<RLayer> layer) {
     layers.append(layer);
 }
 
-QList<QSharedPointer<RLayer> > RLayerState::getLayers() const {
-    return layers;
-}
+QList<QSharedPointer<RLayer>> RLayerState::getLayers() const { return layers; }
 
-QStringList RLayerState::getLayerNames() const {
+QStringList RLayerState::getLayerNames() const
+{
     QStringList ret;
-    for (int i=0; i<layers.length(); i++) {
+    for (int i = 0; i < layers.length(); i++)
+    {
         ret.append(layers[i]->getName());
     }
     return ret;
 }
 
-QSharedPointer<RLayer> RLayerState::getLayer(const QString& layerName) const {
-    for (int i=0; i<layers.length(); i++) {
-        if (QString::compare(layers[i]->getName(), layerName, Qt::CaseInsensitive)==0) {
+QSharedPointer<RLayer> RLayerState::getLayer(const QString &layerName) const
+{
+    for (int i = 0; i < layers.length(); i++)
+    {
+        if (QString::compare(layers[i]->getName(), layerName,
+                             Qt::CaseInsensitive) == 0)
+        {
             return layers[i];
         }
     }
     return QSharedPointer<RLayer>();
 }
 
-bool RLayerState::setProperty(RPropertyTypeId propertyTypeId, const QVariant& value, RTransaction* transaction) {
+bool RLayerState::setProperty(RPropertyTypeId propertyTypeId,
+                              const QVariant &value, RTransaction *transaction)
+{
     bool ret = RObject::setProperty(propertyTypeId, value, transaction);
 
-    ret = ret || RObject::setMember(name, value.toString().trimmed(), PropertyName == propertyTypeId);
+    ret = ret || RObject::setMember(name, value.toString().trimmed(),
+                                    PropertyName == propertyTypeId);
 
     return ret;
 }
 
-QPair<QVariant, RPropertyAttributes> RLayerState::getProperty(RPropertyTypeId& propertyTypeId, bool humanReadable, bool noAttributes, bool showOnRequest) {
-    if (propertyTypeId == PropertyName) {
+QPair<QVariant, RPropertyAttributes>
+RLayerState::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
+                         bool noAttributes, bool showOnRequest)
+{
+    if (propertyTypeId == PropertyName)
+    {
         return qMakePair(QVariant(name), RPropertyAttributes());
     }
 
-    return RObject::getProperty(propertyTypeId, humanReadable, noAttributes, showOnRequest);
+    return RObject::getProperty(propertyTypeId, humanReadable, noAttributes,
+                                showOnRequest);
 }

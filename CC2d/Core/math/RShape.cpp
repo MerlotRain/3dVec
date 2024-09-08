@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with QCAD.
  */
+#include <QSet>
 #include <qmath.h>
 #include <typeinfo>
-#include <QSet>
 
 #include "RArc.h"
 #include "RBox.h"
@@ -2054,7 +2054,7 @@ QList<QSharedPointer<RShape>> RShape::getOffsetArcs(const RShape &shape,
                                                     RS::Side side,
                                                     const RVector &position)
 {
-       QList<QSharedPointer<RShape>> ret;
+    QList<QSharedPointer<RShape>> ret;
 
     const RArc *arc = dynamic_cast<const RArc *>(&shape);
     const RCircle *circle = dynamic_cast<const RCircle *>(&shape);
@@ -2119,19 +2119,13 @@ QList<QSharedPointer<RShape>> RShape::getOffsetArcs(const RShape &shape,
             {
                 QSharedPointer<RArc> concentric = s.dynamicCast<RArc>();
                 concentric->setRadius(concentric->getRadius() + d * n);
-                if (concentric->getRadius() < 0.0)
-                {
-                    break;
-                }
+                if (concentric->getRadius() < 0.0) { break; }
             }
             if (circle != NULL)
             {
                 QSharedPointer<RCircle> concentric = s.dynamicCast<RCircle>();
                 concentric->setRadius(concentric->getRadius() + d * n);
-                if (concentric->getRadius() < 0.0)
-                {
-                    break;
-                }
+                if (concentric->getRadius() < 0.0) { break; }
             }
             //            if (concentric->getRadius()<0.0) {
             //                if (isCircleShape(shape)) {

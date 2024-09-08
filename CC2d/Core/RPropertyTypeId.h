@@ -30,8 +30,8 @@
 #include <QSharedPointer>
 #include <QString>
 
-#include "RS.h"
 #include "RPropertyAttributes.h"
+#include "RS.h"
 
 /**
  * Represents unique property type IDs. Every property type an object can have
@@ -55,7 +55,8 @@
  * \scriptable
  * \copyable
  */
-class QCADCORE_EXPORT RPropertyTypeId {
+class QCADCORE_EXPORT RPropertyTypeId
+{
 public:
     /**
      * \ nonscriptable
@@ -67,55 +68,61 @@ public:
      */
     //RPropertyTypeId(const std::type_info& classInfo, const RPropertyTypeId& other);
 
-    RPropertyTypeId(const QString& customPropertyTitle, const QString& customPropertyName);
-    RPropertyTypeId(const QString& customPropertyName);
+    RPropertyTypeId(const QString &customPropertyTitle,
+                    const QString &customPropertyName);
+    RPropertyTypeId(const QString &customPropertyName);
 
-    RPropertyTypeId(const RPropertyTypeId& other);
+    RPropertyTypeId(const RPropertyTypeId &other);
     RPropertyTypeId(long int id = INVALID_ID);
 
-    RPropertyTypeId& operator=(const RPropertyTypeId& other);
+    RPropertyTypeId &operator=(const RPropertyTypeId &other);
 
     long int getId() const;
     void setId(long int id);
     QString getCustomPropertyTitle() const;
-    void setCustomPropertyTitle(const QString& t);
+    void setCustomPropertyTitle(const QString &t);
     QString getCustomPropertyName() const;
-    void setCustomPropertyName(const QString& n);
+    void setCustomPropertyName(const QString &n);
 
     bool isValid() const;
     bool isCustom() const;
     //bool isBlockAttribute() const;
 
-//    QString getBlockAttributeTag() const;
-//    QString getBlockAttributePrompt() const;
-//    QString getBlockAttributeId() const;
+    //    QString getBlockAttributeTag() const;
+    //    QString getBlockAttributePrompt() const;
+    //    QString getBlockAttributeId() const;
 
-    void generateId(RS::EntityType type,
-        const QString& groupTitle, const QString& title, bool forceNew = false,
-        RPropertyAttributes::Options options = RPropertyAttributes::NoOptions);
-
-    /**
-     * \nonscriptable
-     */
-    void generateId(RS::EntityType type, const RPropertyTypeId& other);
+    void generateId(RS::EntityType type, const QString &groupTitle,
+                    const QString &title, bool forceNew = false,
+                    RPropertyAttributes::Options options =
+                            RPropertyAttributes::NoOptions);
 
     /**
      * \nonscriptable
      */
-    static QSet<RPropertyTypeId> getPropertyTypeIds(RS::EntityType type, RPropertyAttributes::Option = RPropertyAttributes::NoOptions);
+    void generateId(RS::EntityType type, const RPropertyTypeId &other);
 
     /**
      * \nonscriptable
      */
-    static bool hasPropertyType(RS::EntityType type, RPropertyTypeId propertyTypeId);
+    static QSet<RPropertyTypeId> getPropertyTypeIds(
+            RS::EntityType type,
+            RPropertyAttributes::Option = RPropertyAttributes::NoOptions);
+
+    /**
+     * \nonscriptable
+     */
+    static bool hasPropertyType(RS::EntityType type,
+                                RPropertyTypeId propertyTypeId);
 
     QString getPropertyGroupTitle() const;
     QString getPropertyTitle() const;
-    static RPropertyTypeId getPropertyTypeId(const QString& groupTitle, const QString& title);
+    static RPropertyTypeId getPropertyTypeId(const QString &groupTitle,
+                                             const QString &title);
 
-    bool operator ==(const RPropertyTypeId& other) const;
-    bool operator !=(const RPropertyTypeId& other) const;
-    bool operator <(const RPropertyTypeId& other) const;
+    bool operator==(const RPropertyTypeId &other) const;
+    bool operator!=(const RPropertyTypeId &other) const;
+    bool operator<(const RPropertyTypeId &other) const;
 
 public:
     const static long int INVALID_ID;
@@ -130,21 +137,23 @@ private:
     static long int counter;
 
     // maps class ID to set of property IDs:
-    static QMap<RS::EntityType, QSet<RPropertyTypeId> > propertyTypeByObjectMap;
+    static QMap<RS::EntityType, QSet<RPropertyTypeId>> propertyTypeByObjectMap;
 
     // maps class ID / option combinations to set of property IDs:
-    static QMap<QPair<RS::EntityType, RPropertyAttributes::Option>, QSet<RPropertyTypeId> > propertyTypeByObjectOptionMap;
+    static QMap<QPair<RS::EntityType, RPropertyAttributes::Option>,
+                QSet<RPropertyTypeId>>
+            propertyTypeByObjectOptionMap;
 
     // maps property type IDs to group title / title:
-    static QMap<long int, QPair<QString, QString> > idToTitleMap;
+    static QMap<long int, QPair<QString, QString>> idToTitleMap;
 
     // maps group title / title to property ID:
-    static QMap<QString, QMap<QString, RPropertyTypeId> > titleToIdMap;
+    static QMap<QString, QMap<QString, RPropertyTypeId>> titleToIdMap;
 
     static QList<RPropertyAttributes::Option> cachedOptionList;
 };
 
-QCADCORE_EXPORT uint qHash(const RPropertyTypeId& propertyTypeId);
+QCADCORE_EXPORT uint qHash(const RPropertyTypeId &propertyTypeId);
 
 
 #endif /* RPROPERTYTYPEID_H_ */

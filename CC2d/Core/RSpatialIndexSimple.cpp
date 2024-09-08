@@ -19,32 +19,28 @@
 #include "RSpatialIndexSimple.h"
 #include "RBox.h"
 
-RSpatialIndexSimple::RSpatialIndexSimple() {
-}
+RSpatialIndexSimple::RSpatialIndexSimple() {}
 
-RSpatialIndexSimple::~RSpatialIndexSimple() {
-}
+RSpatialIndexSimple::~RSpatialIndexSimple() {}
 
-RSpatialIndex* RSpatialIndexSimple::create() {
+RSpatialIndex *RSpatialIndexSimple::create()
+{
     return new RSpatialIndexSimple();
 }
 
-void RSpatialIndexSimple::clear() {
-    si.clear();
-}
+void RSpatialIndexSimple::clear() { si.clear(); }
 
-void RSpatialIndexSimple::addToIndex(
-    int id, int pos,
-    double x1, double y1, double z1,
-    double x2, double y2, double z2) {
-    
-    Q_ASSERT(si[id].size()==pos);
-    si[id].insert(pos, RBox(RVector(x1,y1,z1), RVector(x2,y2,z2)));
+void RSpatialIndexSimple::addToIndex(int id, int pos, double x1, double y1,
+                                     double z1, double x2, double y2, double z2)
+{
+
+    Q_ASSERT(si[id].size() == pos);
+    si[id].insert(pos, RBox(RVector(x1, y1, z1), RVector(x2, y2, z2)));
     //si.insert(id, RBox(RVector(x1,y1,z1), RVector(x2,y2,z2)));
 }
 
 //void RSpatialIndexSimple::removeFromIndex(int id) {
-    /*
+/*
     QList<RBox> keys = si.keys(id);
     for (int i = 0; i < keys.size(); ++i) {
         si.remove(keys.at(i), id);
@@ -53,10 +49,10 @@ void RSpatialIndexSimple::addToIndex(
 //    si.remove(id);
 //}
 
-bool RSpatialIndexSimple::removeFromIndex(
-        int id, int pos,
-        double x1, double y1, double z1,
-        double x2, double y2, double z2) {
+bool RSpatialIndexSimple::removeFromIndex(int id, int pos, double x1, double y1,
+                                          double z1, double x2, double y2,
+                                          double z2)
+{
 
     Q_UNUSED(id)
     Q_UNUSED(pos)
@@ -66,32 +62,37 @@ bool RSpatialIndexSimple::removeFromIndex(
     Q_UNUSED(x2)
     Q_UNUSED(y2)
     Q_UNUSED(z2)
-    
+
     qFatal("not implemented");
     //RBox box(RVector(x1,y1,z1),RVector(x2,y2,z2));
     //si.remove(id);
     return true;
 }
 
-bool RSpatialIndexSimple::removeFromIndex(int id, const QList<RBox>& bb) {
+bool RSpatialIndexSimple::removeFromIndex(int id, const QList<RBox> &bb)
+{
     Q_UNUSED(bb)
 
     si.remove(id);
     return true;
 }
 
-QMap<int, QSet<int> > RSpatialIndexSimple::queryIntersected(
-    double x1, double y1, double z1,
-    double x2, double y2, double z2,
-    RSpatialIndexVisitor* /*dataVisitor*/) {
-    
-    RBox box(RVector(x1,y1,z1),RVector(x2,y2,z2));
-    QMap<int, QSet<int> > res;
-    QMap<int, QList<RBox> >::iterator it;
-    for (it=si.begin(); it!=si.end(); it++) {
+QMap<int, QSet<int>>
+RSpatialIndexSimple::queryIntersected(double x1, double y1, double z1,
+                                      double x2, double y2, double z2,
+                                      RSpatialIndexVisitor * /*dataVisitor*/)
+{
+
+    RBox box(RVector(x1, y1, z1), RVector(x2, y2, z2));
+    QMap<int, QSet<int>> res;
+    QMap<int, QList<RBox>>::iterator it;
+    for (it = si.begin(); it != si.end(); it++)
+    {
         QList<RBox> bbs = it.value();
-        for (int i=0; i<bbs.size(); i++) {
-            if (box.intersects(bbs.at(i))) {
+        for (int i = 0; i < bbs.size(); i++)
+        {
+            if (box.intersects(bbs.at(i)))
+            {
                 //res.insert(it.key());
                 res[it.key()].insert(i);
             }
@@ -101,18 +102,22 @@ QMap<int, QSet<int> > RSpatialIndexSimple::queryIntersected(
     return res;
 }
 
-QMap<int, QSet<int> > RSpatialIndexSimple::queryContained(
-    double x1, double y1, double z1,
-    double x2, double y2, double z2,
-    RSpatialIndexVisitor* /*dataVisitor*/) {
+QMap<int, QSet<int>>
+RSpatialIndexSimple::queryContained(double x1, double y1, double z1, double x2,
+                                    double y2, double z2,
+                                    RSpatialIndexVisitor * /*dataVisitor*/)
+{
 
-    RBox box(RVector(x1,y1,z1),RVector(x2,y2,z2));
-    QMap<int, QSet<int> > res;
-    QMap<int, QList<RBox> >::iterator it;
-    for (it=si.begin(); it!=si.end(); it++) {
+    RBox box(RVector(x1, y1, z1), RVector(x2, y2, z2));
+    QMap<int, QSet<int>> res;
+    QMap<int, QList<RBox>>::iterator it;
+    for (it = si.begin(); it != si.end(); it++)
+    {
         QList<RBox> bbs = it.value();
-        for (int i=0; i<bbs.size(); i++) {
-            if (box.contains(bbs.at(i))) {
+        for (int i = 0; i < bbs.size(); i++)
+        {
+            if (box.contains(bbs.at(i)))
+            {
                 //res.insert(it.key());
                 res[it.key()].insert(i);
             }
@@ -122,10 +127,10 @@ QMap<int, QSet<int> > RSpatialIndexSimple::queryContained(
     return res;
 }
 
-QMap<int, QSet<int> > RSpatialIndexSimple::queryNearestNeighbor(
-    uint k,
-    double x, double y, double z,
-    RSpatialIndexVisitor* dataVisitor) {
+QMap<int, QSet<int>>
+RSpatialIndexSimple::queryNearestNeighbor(uint k, double x, double y, double z,
+                                          RSpatialIndexVisitor *dataVisitor)
+{
 
     Q_UNUSED(k)
     Q_UNUSED(x)
@@ -134,5 +139,5 @@ QMap<int, QSet<int> > RSpatialIndexSimple::queryNearestNeighbor(
     Q_UNUSED(dataVisitor)
 
     qFatal("not implemented");
-    return QMap<int, QSet<int> >(); 
+    return QMap<int, QSet<int>>();
 }

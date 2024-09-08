@@ -19,35 +19,39 @@
 #include "REllipseData.h"
 //#include "REllipseEntity.h"
 
-REllipseData::REllipseData() {
-}
+REllipseData::REllipseData() {}
 
-REllipseData::REllipseData(const REllipse& ellipse) : REllipse(ellipse) {
-}
+REllipseData::REllipseData(const REllipse &ellipse) : REllipse(ellipse) {}
 
-REllipseData::REllipseData(RDocument* document, const REllipseData& data) {
+REllipseData::REllipseData(RDocument *document, const REllipseData &data)
+{
     *this = data;
     this->document = document;
 }
 
-REllipseData::REllipseData(const RVector& center, const RVector& majorPoint, 
-        double ratio, double startAngle, double endAngle, bool reversed) :
-    REllipse(center, majorPoint, ratio, startAngle, endAngle, reversed) {
+REllipseData::REllipseData(const RVector &center, const RVector &majorPoint,
+                           double ratio, double startAngle, double endAngle,
+                           bool reversed)
+    : REllipse(center, majorPoint, ratio, startAngle, endAngle, reversed)
+{
 }
 
-QList<RRefPoint> REllipseData::getReferencePoints(RS::ProjectionRenderingHint hint) const {
+QList<RRefPoint>
+REllipseData::getReferencePoints(RS::ProjectionRenderingHint hint) const
+{
     Q_UNUSED(hint)
 
     QList<RRefPoint> ret;
 
     ret.append(RRefPoint(center, RRefPoint::Center));
-    ret.append(RRefPoint(center+majorPoint, RRefPoint::Secondary));
-    ret.append(RRefPoint(center-majorPoint, RRefPoint::Secondary));
-    ret.append(RRefPoint(center+getMinorPoint(), RRefPoint::Secondary));
-    ret.append(RRefPoint(center-getMinorPoint(), RRefPoint::Secondary));
+    ret.append(RRefPoint(center + majorPoint, RRefPoint::Secondary));
+    ret.append(RRefPoint(center - majorPoint, RRefPoint::Secondary));
+    ret.append(RRefPoint(center + getMinorPoint(), RRefPoint::Secondary));
+    ret.append(RRefPoint(center - getMinorPoint(), RRefPoint::Secondary));
     ret.append(RRefPoint::toRefPointList(getFoci(), RRefPoint::Secondary));
 
-    if (!isFullEllipse()) {
+    if (!isFullEllipse())
+    {
         ret.append(RRefPoint(getStartPoint(), RRefPoint::Start));
         ret.append(RRefPoint(getEndPoint(), RRefPoint::End));
     }
@@ -55,47 +59,58 @@ QList<RRefPoint> REllipseData::getReferencePoints(RS::ProjectionRenderingHint hi
     return ret;
 }
 
-bool REllipseData::moveReferencePoint(const RVector& referencePoint, const RVector& targetPoint, Qt::KeyboardModifiers modifiers) {
+bool REllipseData::moveReferencePoint(const RVector &referencePoint,
+                                      const RVector &targetPoint,
+                                      Qt::KeyboardModifiers modifiers)
+{
     Q_UNUSED(modifiers)
 
     RVector startPoint = getStartPoint();
     RVector endPoint = getEndPoint();
 
-    if (!isFullEllipse()) {
-        if (referencePoint.equalsFuzzy(startPoint)) {
+    if (!isFullEllipse())
+    {
+        if (referencePoint.equalsFuzzy(startPoint))
+        {
             moveStartPoint(targetPoint, true);
             return true;
         }
-        if (referencePoint.equalsFuzzy(endPoint)) {
+        if (referencePoint.equalsFuzzy(endPoint))
+        {
             moveEndPoint(targetPoint, true);
             return true;
         }
     }
 
-    if (referencePoint.equalsFuzzy(center+majorPoint)) {
+    if (referencePoint.equalsFuzzy(center + majorPoint))
+    {
         double minorRadius = getMinorRadius();
-        majorPoint = targetPoint-center;
+        majorPoint = targetPoint - center;
         setRatio(minorRadius / getMajorRadius());
         return true;
     }
 
-    if (referencePoint.equalsFuzzy(center-majorPoint)) {
+    if (referencePoint.equalsFuzzy(center - majorPoint))
+    {
         double minorRadius = getMinorRadius();
-        majorPoint = -(targetPoint-center);
+        majorPoint = -(targetPoint - center);
         setRatio(minorRadius / getMajorRadius());
         return true;
     }
 
-    if (referencePoint.equalsFuzzy(center+getMinorPoint())) {
-        setMinorPoint(targetPoint-center);
+    if (referencePoint.equalsFuzzy(center + getMinorPoint()))
+    {
+        setMinorPoint(targetPoint - center);
         return true;
     }
-    if (referencePoint.equalsFuzzy(center-getMinorPoint())) {
-        setMinorPoint(-(targetPoint-center));
+    if (referencePoint.equalsFuzzy(center - getMinorPoint()))
+    {
+        setMinorPoint(-(targetPoint - center));
         return true;
     }
 
-    if (referencePoint.equalsFuzzy(center)) {
+    if (referencePoint.equalsFuzzy(center))
+    {
         center = targetPoint;
         return true;
     }

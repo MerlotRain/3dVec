@@ -19,46 +19,48 @@
 #include "RXLineData.h"
 #include "RLineEntity.h"
 
-RXLineData::RXLineData() {
-}
+RXLineData::RXLineData() {}
 
-RXLineData::RXLineData(RDocument* document, const RXLineData& data)
-    : REntityData(document), fixedAngle(false) {
+RXLineData::RXLineData(RDocument *document, const RXLineData &data)
+    : REntityData(document), fixedAngle(false)
+{
     *this = data;
     this->document = document;
-    if (document!=NULL) {
-        linetypeId = document->getLinetypeByLayerId();
-    }
+    if (document != NULL) { linetypeId = document->getLinetypeByLayerId(); }
 }
 
-RXLineData::RXLineData(const RXLine &line) :
-    RXLine(line), fixedAngle(false) {
+RXLineData::RXLineData(const RXLine &line) : RXLine(line), fixedAngle(false) {}
+
+RXLineData::RXLineData(const RVector &basePoint, const RVector &dir)
+    : RXLine(basePoint, dir), fixedAngle(false)
+{
 }
 
-RXLineData::RXLineData(const RVector& basePoint, const RVector& dir) :
-    RXLine(basePoint, dir), fixedAngle(false) {
-}
-
-QList<RRefPoint> RXLineData::getReferencePoints(RS::ProjectionRenderingHint hint) const {
+QList<RRefPoint>
+RXLineData::getReferencePoints(RS::ProjectionRenderingHint hint) const
+{
     Q_UNUSED(hint)
 
     QList<RRefPoint> ret;
     ret.append(basePoint);
-    if (!hasFixedAngle()) {
-        ret.append(getSecondPoint());
-    }
+    if (!hasFixedAngle()) { ret.append(getSecondPoint()); }
     return ret;
 }
 
-bool RXLineData::moveReferencePoint(const RVector& referencePoint, const RVector& targetPoint, Qt::KeyboardModifiers modifiers) {
+bool RXLineData::moveReferencePoint(const RVector &referencePoint,
+                                    const RVector &targetPoint,
+                                    Qt::KeyboardModifiers modifiers)
+{
     Q_UNUSED(modifiers)
 
     bool ret = false;
-    if (referencePoint.equalsFuzzy(basePoint)) {
+    if (referencePoint.equalsFuzzy(basePoint))
+    {
         basePoint = targetPoint;
         ret = true;
     }
-    if (referencePoint.equalsFuzzy(getSecondPoint())) {
+    if (referencePoint.equalsFuzzy(getSecondPoint()))
+    {
         setSecondPoint(targetPoint);
         ret = true;
     }

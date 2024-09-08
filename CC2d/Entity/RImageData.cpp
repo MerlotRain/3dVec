@@ -25,46 +25,33 @@
 #endif
 #include "RImageData.h"
 
-RImageData::RImageData() :
-    brightness(50),
-    contrast(50),
-    fade(0) {
-}
+RImageData::RImageData() : brightness(50), contrast(50), fade(0) {}
 
-RImageData::RImageData(RDocument* document, const RImageData& data)
-    : REntityData(document) {
+RImageData::RImageData(RDocument *document, const RImageData &data)
+    : REntityData(document)
+{
     *this = data;
     this->document = document;
-    if (document!=NULL) {
-        linetypeId = document->getLinetypeByLayerId();
-    }
+    if (document != NULL) { linetypeId = document->getLinetypeByLayerId(); }
 }
 
-RImageData::RImageData(const RImageData& other) : REntityData(other) {
+RImageData::RImageData(const RImageData &other) : REntityData(other)
+{
     *this = other;
 }
 
-RImageData::RImageData(const QString& fileName,
-        const RVector& insertionPoint,
-        const RVector& uVector,
-        const RVector& vVector,
-        int brightness,
-        int contrast,
-        int fade) :
-        fileName(fileName),
-        insertionPoint(insertionPoint),
-        uVector(uVector),
-        vVector(vVector),
-        brightness(brightness),
-        contrast(contrast),
-        fade(fade) {
-
+RImageData::RImageData(const QString &fileName, const RVector &insertionPoint,
+                       const RVector &uVector, const RVector &vVector,
+                       int brightness, int contrast, int fade)
+    : fileName(fileName), insertionPoint(insertionPoint), uVector(uVector),
+      vVector(vVector), brightness(brightness), contrast(contrast), fade(fade)
+{
 }
 
-RImageData::~RImageData() {
-}
+RImageData::~RImageData() {}
 
-RImageData& RImageData::operator =(const RImageData& other) {
+RImageData &RImageData::operator=(const RImageData &other)
+{
     other.load();
     REntityData::operator=(other);
 
@@ -80,91 +67,91 @@ RImageData& RImageData::operator =(const RImageData& other) {
     return *this;
 }
 
-RBox RImageData::getBoundingBox(bool ignoreEmpty) const {
+RBox RImageData::getBoundingBox(bool ignoreEmpty) const
+{
     Q_UNUSED(ignoreEmpty)
 
     RBox ret;
     QList<RLine> edges = getEdges();
-    for (int i=0; i<edges.size(); i++) {
+    for (int i = 0; i < edges.size(); i++)
+    {
         ret.growToInclude(edges.at(i).getBoundingBox());
     }
     return ret;
 }
 
-RVector RImageData::getPointOnEntity() const {
-    return insertionPoint;
-}
+RVector RImageData::getPointOnEntity() const { return insertionPoint; }
 
-double RImageData::getDistanceTo(const RVector& point, bool limited, double range, bool draft, double strictRange) const {
+double RImageData::getDistanceTo(const RVector &point, bool limited,
+                                 double range, bool draft,
+                                 double strictRange) const
+{
     Q_UNUSED(range)
     Q_UNUSED(draft)
     Q_UNUSED(strictRange)
 
     double minDist = RNANDOUBLE;
     QList<RLine> edges = getEdges();
-    for (int i=0; i<edges.size(); i++) {
+    for (int i = 0; i < edges.size(); i++)
+    {
         //ret.growToInclude(edges.at(i).getBoundingBox());
         double dist = edges.at(i).getDistanceTo(point, limited);
-        if (dist < minDist || RMath::isNaN(minDist)) {
-            minDist = dist;
-        }
+        if (dist < minDist || RMath::isNaN(minDist)) { minDist = dist; }
     }
 
     // point not close to image border:
-    if (RMath::isNaN(minDist) || strictRange<minDist) {
+    if (RMath::isNaN(minDist) || strictRange < minDist)
+    {
         RPolyline pl(getCorners(), true);
-        if (pl.contains(point)) {
-            minDist = strictRange;
-        }
+        if (pl.contains(point)) { minDist = strictRange; }
     }
 
-    if (RMath::isNaN(minDist)) {
-        return RMAXDOUBLE;
-    }
+    if (RMath::isNaN(minDist)) { return RMAXDOUBLE; }
 
     return minDist;
 }
 
-bool RImageData::intersectsWith(const RShape& shape) const {
+bool RImageData::intersectsWith(const RShape &shape) const
+{
     RPolyline plEdge;
     QList<RLine> edges = getEdges();
-    for (int i=0; i<edges.size(); i++) {
-        if (edges.at(i).intersectsWith(shape)) {
-            return true;
-        }
+    for (int i = 0; i < edges.size(); i++)
+    {
+        if (edges.at(i).intersectsWith(shape)) { return true; }
         plEdge.appendShape(edges.at(i));
     }
 
-    if (plEdge.contains(shape.getPointOnShape())) {
-        return true;
-    }
+    if (plEdge.contains(shape.getPointOnShape())) { return true; }
 
     return false;
 }
 
-QList<RRefPoint> RImageData::getReferencePoints(RS::ProjectionRenderingHint hint) const {
+QList<RRefPoint>
+RImageData::getReferencePoints(RS::ProjectionRenderingHint hint) const
+{
     Q_UNUSED(hint)
 
     QList<RRefPoint> ret;
     QList<RVector> corners = getCorners();
-    for (int i=0; i<corners.count(); i++) {
-        ret.append(corners[i]);
-    }
+    for (int i = 0; i < corners.count(); i++) { ret.append(corners[i]); }
     return ret;
 }
 
-bool RImageData::moveReferencePoint(const RVector& referencePoint, const RVector& targetPoint, Qt::KeyboardModifiers modifiers) {
+bool RImageData::moveReferencePoint(const RVector &referencePoint,
+                                    const RVector &targetPoint,
+                                    Qt::KeyboardModifiers modifiers)
+{
     bool ret = false;
 
     // scale image:
     RVector referencePointPx = mapToImage(referencePoint);
     RVector targetPointPx = mapToImage(targetPoint);
 
-//#if QT_VERSION >= 0x050000
-//    Qt::KeyboardModifiers mod = QGuiApplication::queryKeyboardModifiers();
-//#else
-//    Qt::KeyboardModifiers mod = QApplication::queryKeyboardModifiers();
-//#endif
+    //#if QT_VERSION >= 0x050000
+    //    Qt::KeyboardModifiers mod = QGuiApplication::queryKeyboardModifiers();
+    //#else
+    //    Qt::KeyboardModifiers mod = QApplication::queryKeyboardModifiers();
+    //#endif
 
     // shift to keep aspect ratio:
     bool keepAspectRatio = modifiers.testFlag(Qt::ShiftModifier);
@@ -174,18 +161,23 @@ bool RImageData::moveReferencePoint(const RVector& referencePoint, const RVector
 
     QList<RVector> cornersPx = getCornersPx();
     RBox box(cornersPx[0], cornersPx[2]);
-    ret = box.scaleByReference(referencePointPx, targetPointPx, keepAspectRatio, fromCenter);
+    ret = box.scaleByReference(referencePointPx, targetPointPx, keepAspectRatio,
+                               fromCenter);
 
-    if (ret) {
+    if (ret)
+    {
         cornersPx = box.getCorners2d();
         int wpx = getPixelWidth();
         int hpx = getPixelHeight();
-        if (wpx!=0 && hpx!=0) {
+        if (wpx != 0 && hpx != 0)
+        {
             RVector ip = mapFromImage(cornersPx[0]);
-            RVector uv = mapFromImage(cornersPx[1])-mapFromImage(cornersPx[0]);
-            uv.setMagnitude2D(uv.getMagnitude2D()/wpx);
-            RVector vv = mapFromImage(cornersPx[3])-mapFromImage(cornersPx[0]);
-            vv.setMagnitude2D(vv.getMagnitude2D()/getPixelHeight());
+            RVector uv =
+                    mapFromImage(cornersPx[1]) - mapFromImage(cornersPx[0]);
+            uv.setMagnitude2D(uv.getMagnitude2D() / wpx);
+            RVector vv =
+                    mapFromImage(cornersPx[3]) - mapFromImage(cornersPx[0]);
+            vv.setMagnitude2D(vv.getMagnitude2D() / getPixelHeight());
             setInsertionPoint(ip);
             setUVector(uv);
             setVVector(vv);
@@ -195,100 +187,105 @@ bool RImageData::moveReferencePoint(const RVector& referencePoint, const RVector
     return ret;
 }
 
-bool RImageData::move(const RVector& offset) {
+bool RImageData::move(const RVector &offset)
+{
     insertionPoint.move(offset);
     return true;
 }
 
-bool RImageData::rotate(double rotation, const RVector& center) {
+bool RImageData::rotate(double rotation, const RVector &center)
+{
     insertionPoint.rotate(rotation, center);
     uVector.rotate(rotation);
     vVector.rotate(rotation);
     return true;
 }
 
-bool RImageData::scale(const RVector& scaleFactors, const RVector& center) {
+bool RImageData::scale(const RVector &scaleFactors, const RVector &center)
+{
     insertionPoint.scale(scaleFactors, center);
     uVector.scale(scaleFactors);
     vVector.scale(scaleFactors);
     return true;
 }
 
-bool RImageData::mirror(const RLine& axis) {
+bool RImageData::mirror(const RLine &axis)
+{
     insertionPoint.mirror(axis);
-    uVector.mirror(RVector(0.0,0.0), axis.getEndPoint()-axis.getStartPoint());
-    vVector.mirror(RVector(0.0,0.0), axis.getEndPoint()-axis.getStartPoint());
+    uVector.mirror(RVector(0.0, 0.0),
+                   axis.getEndPoint() - axis.getStartPoint());
+    vVector.mirror(RVector(0.0, 0.0),
+                   axis.getEndPoint() - axis.getStartPoint());
     return true;
 }
 
-QList<QSharedPointer<RShape> > RImageData::getShapes(const RBox& queryBox, bool ignoreComplex, bool segment, QList<RObject::Id>* entityIds) const {
+QList<QSharedPointer<RShape>>
+RImageData::getShapes(const RBox &queryBox, bool ignoreComplex, bool segment,
+                      QList<RObject::Id> *entityIds) const
+{
     Q_UNUSED(queryBox)
     Q_UNUSED(ignoreComplex)
     Q_UNUSED(segment)
     Q_UNUSED(entityIds)
 
-    QList<QSharedPointer<RShape> > ret;
+    QList<QSharedPointer<RShape>> ret;
     return ret;
 }
 
-void RImageData::reload() {
+void RImageData::reload()
+{
     image = QImage();
     load();
 }
 
-QString RImageData::getFullFilePath() const {
+QString RImageData::getFullFilePath() const
+{
     // file name might be empty during import:
-    if (fileName.isEmpty()) {
-        return "";
-    }
+    if (fileName.isEmpty()) { return ""; }
 
     // QFileInfo does not correctly handle paths with mixed slash / backslash notation:
     fileName = fileName.replace('\\', '/');
 
     // load image from absolute path:
-    if (QFileInfo(fileName).exists()) {
-        return fileName;
-    }
+    if (QFileInfo(fileName).exists()) { return fileName; }
 
     QString docPath;
-    const RDocument* document = getDocument();
-    if (document!=NULL) {
+    const RDocument *document = getDocument();
+    if (document != NULL)
+    {
         QString docFileName = document->getFileName();
-        if (!docFileName.isEmpty()) {
+        if (!docFileName.isEmpty())
+        {
             docPath = QFileInfo(docFileName).absolutePath();
         }
     }
 
     // load image from relative path:
-    if (QFileInfo(fileName).isRelative()) {
+    if (QFileInfo(fileName).isRelative())
+    {
         QString absPath = docPath + QDir::separator() + fileName;
-        if (QFileInfo(absPath).exists()) {
-            return absPath;
-        }
+        if (QFileInfo(absPath).exists()) { return absPath; }
     }
 
     // load image from same path as drawing file:
-    QString absPath = docPath + QDir::separator() + QFileInfo(fileName).fileName();
-    if (QFileInfo(absPath).exists()) {
-        return absPath;
-    }
+    QString absPath =
+            docPath + QDir::separator() + QFileInfo(fileName).fileName();
+    if (QFileInfo(absPath).exists()) { return absPath; }
 
     return "";
 }
 
-void RImageData::load() const {
-    if (!image.isNull()) {
-        return;
-    }
+void RImageData::load() const
+{
+    if (!image.isNull()) { return; }
 
     QString fullFilePath = getFullFilePath();
 
     // file name might be empty during import:
-    if (fullFilePath.isEmpty()) {
-        return;
-    }
+    if (fullFilePath.isEmpty()) { return; }
 
-    if (!image.load(fullFilePath)) {
+    if (!image.load(fullFilePath))
+    {
         qWarning() << "RImageData::load: failed: " << fullFilePath;
     }
 
@@ -297,9 +294,13 @@ void RImageData::load() const {
     //fileName = fullFilePath;
 }
 
-RVector RImageData::getScaleVector() const {
-    RVector ret = RVector(getUVector().getMagnitude(), getVVector().getMagnitude());
-    if (RMath::getAngleDifference180(getUVector().getAngle(), getVVector().getAngle()) < 0.0) {
+RVector RImageData::getScaleVector() const
+{
+    RVector ret =
+            RVector(getUVector().getMagnitude(), getVVector().getMagnitude());
+    if (RMath::getAngleDifference180(getUVector().getAngle(),
+                                     getVVector().getAngle()) < 0.0)
+    {
         ret.y *= -1;
     }
     return ret;
@@ -308,13 +309,16 @@ RVector RImageData::getScaleVector() const {
 /**
  * Maps the given drawing coordinates to image pixel coordinates.
  */
-RVector RImageData::mapToImage(const RVector& v) const {
+RVector RImageData::mapToImage(const RVector &v) const
+{
     RVector ret = v;
     RVector scale = getScaleVector();
     ret.move(-getInsertionPoint());
     ret.rotate(-getUVector().getAngle());
-    if (!RMath::fuzzyCompare(scale.x, 0.0) && !RMath::fuzzyCompare(scale.y, 0.0)) {
-        ret.scale(RVector(1/scale.x, 1/scale.y));
+    if (!RMath::fuzzyCompare(scale.x, 0.0) &&
+        !RMath::fuzzyCompare(scale.y, 0.0))
+    {
+        ret.scale(RVector(1 / scale.x, 1 / scale.y));
     }
     return ret;
 }
@@ -322,7 +326,8 @@ RVector RImageData::mapToImage(const RVector& v) const {
 /**
  * Maps the given coordinate from image pixels to drawing coordinates.
  */
-RVector RImageData::mapFromImage(const RVector& v) const {
+RVector RImageData::mapFromImage(const RVector &v) const
+{
     RVector ret = v;
     RVector scale = getScaleVector();
     ret.scale(scale);
@@ -331,95 +336,88 @@ RVector RImageData::mapFromImage(const RVector& v) const {
     return ret;
 }
 
-QList<RVector> RImageData::getCornersPx() const {
+QList<RVector> RImageData::getCornersPx() const
+{
     QList<RVector> ret;
-    ret.append(RVector(0,0));
-    ret.append(RVector(image.width(),0));
-    ret.append(RVector(image.width(),image.height()));
-    ret.append(RVector(0,image.height()));
+    ret.append(RVector(0, 0));
+    ret.append(RVector(image.width(), 0));
+    ret.append(RVector(image.width(), image.height()));
+    ret.append(RVector(0, image.height()));
     return ret;
 }
 
-QList<RVector> RImageData::getCorners() const {
+QList<RVector> RImageData::getCorners() const
+{
     load();
 
     QList<RVector> ret = getCornersPx();
-    for (int i=0; i<ret.size(); i++) {
-        ret[i] = mapFromImage(ret[i]);
-    }
+    for (int i = 0; i < ret.size(); i++) { ret[i] = mapFromImage(ret[i]); }
     return ret;
 }
 
-QList<RLine> RImageData::getEdges() const {
+QList<RLine> RImageData::getEdges() const
+{
     QList<RVector> corners = getCorners();
     QList<RLine> ret;
-    for (int i=0; i<corners.length(); ++i) {
-        ret.append(RLine(corners[i], corners[(i+1)%corners.length()]));
+    for (int i = 0; i < corners.length(); ++i)
+    {
+        ret.append(RLine(corners[i], corners[(i + 1) % corners.length()]));
     }
     return ret;
 }
 
-QImage RImageData::getImage() const {
+QImage RImageData::getImage() const
+{
     load();
     return image;
 }
 
-void RImageData::setWidth(double w, bool keepRatio) {
-    if (w<RS::PointTolerance) {
-        return;
-    }
+void RImageData::setWidth(double w, bool keepRatio)
+{
+    if (w < RS::PointTolerance) { return; }
     double imageWidth = getImage().width();
-    if (fabs(imageWidth)<RS::PointTolerance) {
-        return;
-    }
+    if (fabs(imageWidth) < RS::PointTolerance) { return; }
     double m2 = w / imageWidth;
     uVector.setMagnitude2D(m2);
-    if (keepRatio) {
+    if (keepRatio)
+    {
         double m1 = vVector.getMagnitude2D();
-        if (m1<RS::PointTolerance) {
-            return;
-        }
-        double f = m2/m1;
+        if (m1 < RS::PointTolerance) { return; }
+        double f = m2 / m1;
         vVector.setMagnitude2D(vVector.getMagnitude2D() * f);
     }
 }
 
-void RImageData::setHeight(double h, bool keepRatio) {
-    if (h<RS::PointTolerance) {
-        return;
-    }
+void RImageData::setHeight(double h, bool keepRatio)
+{
+    if (h < RS::PointTolerance) { return; }
     double imageHeight = getImage().height();
-    if (fabs(imageHeight)<RS::PointTolerance) {
-        return;
-    }
+    if (fabs(imageHeight) < RS::PointTolerance) { return; }
     double m2 = h / imageHeight;
     vVector.setMagnitude2D(m2);
-    if (keepRatio) {
+    if (keepRatio)
+    {
         double m1 = uVector.getMagnitude2D();
-        if (m1<RS::PointTolerance) {
-            return;
-        }
-        double f = m2/m1;
+        if (m1 < RS::PointTolerance) { return; }
+        double f = m2 / m1;
         uVector.setMagnitude2D(uVector.getMagnitude2D() * f);
     }
 }
 
-double RImageData::getWidth() const {
+double RImageData::getWidth() const
+{
     double m2 = uVector.getMagnitude2D();
     double imageWidth = getImage().width();
     return m2 * imageWidth;
 }
 
-double RImageData::getHeight() const {
+double RImageData::getHeight() const
+{
     double m2 = vVector.getMagnitude2D();
     double imageHeight = getImage().height();
     return m2 * imageHeight;
 }
 
-int RImageData::getPixelWidth() const {
-    return getImage().width();
-}
+int RImageData::getPixelWidth() const { return getImage().width(); }
 
-int RImageData::getPixelHeight() const {
-    return getImage().height();
-}
+int RImageData::getPixelHeight() const { return getImage().height(); }

@@ -17,57 +17,47 @@
  * along with QCAD.
  */
 #include "RTransactionStack.h"
-#include "RTransaction.h"
 #include "RStorage.h"
+#include "RTransaction.h"
 
 
+RTransactionStack::RTransactionStack(RStorage &storage) : storage(storage) {}
 
-RTransactionStack::RTransactionStack(RStorage& storage)
-    : storage(storage) {
-}
+RTransactionStack::~RTransactionStack() {}
 
-RTransactionStack::~RTransactionStack() {
-}
+void RTransactionStack::reset() { storage.resetTransactionStack(); }
 
-void RTransactionStack::reset() {
-    storage.resetTransactionStack();
-}
-
-bool RTransactionStack::isUndoAvailable() const {
+bool RTransactionStack::isUndoAvailable() const
+{
     int lastTransactionId = storage.getLastTransactionId();
 
-    if (lastTransactionId < 0) {
-        return false;
-    }
+    if (lastTransactionId < 0) { return false; }
     return true;
 }
 
-bool RTransactionStack::isRedoAvailable() const {
+bool RTransactionStack::isRedoAvailable() const
+{
     int lastTransactionId = storage.getLastTransactionId();
     int maxTransactionId = storage.getMaxTransactionId();
-    if (lastTransactionId >= maxTransactionId) {
-        return false;
-    }
+    if (lastTransactionId >= maxTransactionId) { return false; }
     return true;
 }
 
-QString RTransactionStack::getUndoableTransactionText() const {
+QString RTransactionStack::getUndoableTransactionText() const
+{
     int lastTransactionId = storage.getLastTransactionId();
 
-    if (lastTransactionId < 0) {
-        return "";
-    }
+    if (lastTransactionId < 0) { return ""; }
     return storage.getTransaction(lastTransactionId).getText();
 }
 
-QString RTransactionStack::getRedoableTransactionText() const {
+QString RTransactionStack::getRedoableTransactionText() const
+{
     int lastTransactionId = storage.getLastTransactionId();
     int maxTransactionId = storage.getMaxTransactionId();
 
-    if (lastTransactionId >= maxTransactionId) {
-        return "";
-    }
-    return storage.getTransaction(lastTransactionId+1).getText();
+    if (lastTransactionId >= maxTransactionId) { return ""; }
+    return storage.getTransaction(lastTransactionId + 1).getText();
 }
 
 /**
@@ -77,7 +67,8 @@ QString RTransactionStack::getRedoableTransactionText() const {
  *   affected entity IDs. Higher level callers can use
  *   this set to update scenes, views, etc accordingly.
  */
-QList<RTransaction> RTransactionStack::undo() {
+QList<RTransaction> RTransactionStack::undo()
+{
     QList<RTransaction> ret;
     int lastGroup = -2;
     bool done = true;
@@ -85,19 +76,22 @@ QList<RTransaction> RTransactionStack::undo() {
     do {
         int transactionId = storage.getLastTransactionId();
 
-        if (transactionId<0) {
-//            qWarning("RTransactionStack::undo: "
-//                "already at top of transaction stack");
+        if (transactionId < 0)
+        {
+            //            qWarning("RTransactionStack::undo: "
+            //                "already at top of transaction stack");
             return ret;
         }
 
         RTransaction transaction = storage.getTransaction(transactionId);
 
-        done = lastGroup==-1 || (lastGroup!=-2 && transaction.getGroup()!=lastGroup);
+        done = lastGroup == -1 ||
+               (lastGroup != -2 && transaction.getGroup() != lastGroup);
 
-        if (!done) {
+        if (!done)
+        {
             // move up in transaction log:
-            storage.setLastTransactionId(transactionId-1);
+            storage.setLastTransactionId(transactionId - 1);
 
             transaction.undo();
 
@@ -105,11 +99,10 @@ QList<RTransaction> RTransactionStack::undo() {
 
             lastGroup = transaction.getGroup();
         }
-    } while(!done);
+    } while (!done);
 
     return ret;
 }
-
 
 
 /**
@@ -118,7 +111,8 @@ QList<RTransaction> RTransactionStack::undo() {
  * \return Set of affected entity IDs. Higher level callers can use
  *   this set to update scenes, views, etc accordingly.
  */
-QList<RTransaction> RTransactionStack::redo() {
+QList<RTransaction> RTransactionStack::redo()
+{
     QList<RTransaction> ret;
     int lastGroup = -2;
     bool done = true;
@@ -126,20 +120,23 @@ QList<RTransaction> RTransactionStack::redo() {
     do {
         int transactionId = storage.getLastTransactionId();
 
-        if (transactionId >= storage.getMaxTransactionId()) {
-//            qWarning("RTransactionStack::redo: "
-//                "already at bottom of transaction stack");
+        if (transactionId >= storage.getMaxTransactionId())
+        {
+            //            qWarning("RTransactionStack::redo: "
+            //                "already at bottom of transaction stack");
             qDebug() << "nothing to redo anymore";
             return ret;
         }
 
-        RTransaction transaction = storage.getTransaction(transactionId+1);
+        RTransaction transaction = storage.getTransaction(transactionId + 1);
 
-        done = lastGroup==-1 || (lastGroup!=-2 && transaction.getGroup()!=lastGroup);
+        done = lastGroup == -1 ||
+               (lastGroup != -2 && transaction.getGroup() != lastGroup);
 
-        if (!done) {
+        if (!done)
+        {
             // move down in transaction log:
-            storage.setLastTransactionId(transactionId+1);
+            storage.setLastTransactionId(transactionId + 1);
 
             // update entity undo status:
             transaction.redo();
@@ -149,7 +146,7 @@ QList<RTransaction> RTransactionStack::redo() {
 
             lastGroup = transaction.getGroup();
         }
-    } while(!done);
+    } while (!done);
 
     return ret;
 }

@@ -35,7 +35,8 @@ class RExporter;
  * \sharedPointerSupport
  * \ingroup core
  */
-class QCADCORE_EXPORT RViewportEntity: public REntity {
+class QCADCORE_EXPORT RViewportEntity : public REntity
+{
 
 public:
     static RPropertyTypeId PropertyCustom;
@@ -67,139 +68,86 @@ public:
     static RPropertyTypeId PropertyOverall;
 
 public:
-    RViewportEntity(RDocument* document, const RViewportData& data);
+    RViewportEntity(RDocument *document, const RViewportData &data);
     virtual ~RViewportEntity();
 
-    static RS::EntityType getRtti() {
-        return RS::EntityViewport;
-    }
+    static RS::EntityType getRtti() { return RS::EntityViewport; }
 
     static void init();
 
-    static QSet<RPropertyTypeId> getStaticPropertyTypeIds() {
+    static QSet<RPropertyTypeId> getStaticPropertyTypeIds()
+    {
         return RPropertyTypeId::getPropertyTypeIds(RViewportEntity::getRtti());
     }
 
-    virtual RViewportEntity* clone() const {
+    virtual RViewportEntity *clone() const
+    {
         return new RViewportEntity(*this);
     }
 
-    virtual bool setProperty(RPropertyTypeId propertyTypeId, const QVariant& value,
-        RTransaction* transaction=NULL);
-    virtual QPair<QVariant, RPropertyAttributes> getProperty(
-            RPropertyTypeId& propertyTypeId,
-            bool humanReadable = false, bool noAttributes = false, bool showOnRequest = false);
+    virtual bool setProperty(RPropertyTypeId propertyTypeId,
+                             const QVariant &value,
+                             RTransaction *transaction = NULL);
+    virtual QPair<QVariant, RPropertyAttributes>
+    getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
+                bool noAttributes = false, bool showOnRequest = false);
 
 
-    virtual RViewportData& getData() {
-        return data;
-    }
+    virtual RViewportData &getData() { return data; }
 
-    virtual const RViewportData& getData() const {
-        return data;
-    }
+    virtual const RViewportData &getData() const { return data; }
 
-    void setData(RViewportData& d);
+    void setData(RViewportData &d);
 
-    int getViewportId() const {
-       return data.getViewportId();
-    }
+    int getViewportId() const { return data.getViewportId(); }
 
-    void setViewportId(int id) {
-        data.setViewportId(id);
-    }
+    void setViewportId(int id) { data.setViewportId(id); }
 
-    int getStatus() const {
-        return data.getStatus();
-    }
+    int getStatus() const { return data.getStatus(); }
 
-    void setStatus(int s) {
-        data.setStatus(s);
-    }
+    void setStatus(int s) { data.setStatus(s); }
 
-    RVector getCenter() const {
-       return data.getCenter();
-    }
+    RVector getCenter() const { return data.getCenter(); }
 
-    void setCenter(const RVector& c) {
-        data.setCenter(c);
-    }
+    void setCenter(const RVector &c) { data.setCenter(c); }
 
-    RVector getViewCenter() const {
-        return data.getViewCenter();
-    }
+    RVector getViewCenter() const { return data.getViewCenter(); }
 
-    void setViewCenter(const RVector& c) {
-        data.setViewCenter(c);
-    }
+    void setViewCenter(const RVector &c) { data.setViewCenter(c); }
 
-    RVector getViewTarget() const {
-        return data.getViewTarget();
-    }
+    RVector getViewTarget() const { return data.getViewTarget(); }
 
-    void setViewTarget(const RVector& t) {
-        data.setViewTarget(t);
-    }
+    void setViewTarget(const RVector &t) { data.setViewTarget(t); }
 
-    double getWidth() const {
-        return data.getWidth();
-    }
+    double getWidth() const { return data.getWidth(); }
 
-    void setWidth(double w) {
-        data.setWidth(w);
-    }
+    void setWidth(double w) { data.setWidth(w); }
 
-    double getHeight() const {
-        return data.getHeight();
-    }
+    double getHeight() const { return data.getHeight(); }
 
-    void setHeight(double h) {
-        data.setHeight(h);
-    }
+    void setHeight(double h) { data.setHeight(h); }
 
-    double getScale() const {
-        return data.getScale();
-    }
+    double getScale() const { return data.getScale(); }
 
-    void setScale(double s) {
-        data.setScale(s);
-    }
+    void setScale(double s) { data.setScale(s); }
 
-    double getRotation() const {
-        return data.getRotation();
-    }
+    double getRotation() const { return data.getRotation(); }
 
-    void setRotation(double r) {
-        data.setRotation(r);
-    }
+    void setRotation(double r) { data.setRotation(r); }
 
-    bool isOverall() const {
-        return data.isOverall();
-    }
+    bool isOverall() const { return data.isOverall(); }
 
-    void setOverall(bool on) {
-        data.setOverall(on);
-    }
+    void setOverall(bool on) { data.setOverall(on); }
 
-    bool isOff() const {
-        return data.isOff();
-    }
+    bool isOff() const { return data.isOff(); }
 
-    void setOff(bool v) {
-        data.setOff(v);
-    }
+    void setOff(bool v) { data.setOff(v); }
 
-    RVector getViewOffset() const {
-        return data.getViewOffset();
-    }
+    RVector getViewOffset() const { return data.getViewOffset(); }
 
-    RVector getPosition() const {
-        return data.getPosition();
-    }
+    RVector getPosition() const { return data.getPosition(); }
 
-    void setPosition(const RVector& p) {
-        data.setPosition(p);
-    }
+    void setPosition(const RVector &p) { data.setPosition(p); }
 
 protected:
     RViewportData data;

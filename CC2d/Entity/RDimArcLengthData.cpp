@@ -19,52 +19,50 @@
 #include "RDimArcLengthData.h"
 #include "RUnit.h"
 
-RDimArcLengthData::RDimArcLengthData() : arcSymbolType(0) {
-}
+RDimArcLengthData::RDimArcLengthData() : arcSymbolType(0) {}
 
-RDimArcLengthData::RDimArcLengthData(RDocument* document, const RDimArcLengthData& data)
-    : RDimAngularData(document), arcSymbolType(0) {
+RDimArcLengthData::RDimArcLengthData(RDocument *document,
+                                     const RDimArcLengthData &data)
+    : RDimAngularData(document), arcSymbolType(0)
+{
     *this = data;
     this->document = document;
-    if (document!=NULL) {
-        linetypeId = document->getLinetypeByLayerId();
-    }
+    if (document != NULL) { linetypeId = document->getLinetypeByLayerId(); }
 }
 
 /**
  * \param definitionPoint Definition point is extensionLine2End.
  */
-RDimArcLengthData::RDimArcLengthData(const RDimensionData& dimData,
-                                 const RVector& center,
-                                 const RVector& extensionLine1End,
-                                 const RVector& extensionLine2End)
-    : RDimAngularData(dimData),
-      center(center),
+RDimArcLengthData::RDimArcLengthData(const RDimensionData &dimData,
+                                     const RVector &center,
+                                     const RVector &extensionLine1End,
+                                     const RVector &extensionLine2End)
+    : RDimAngularData(dimData), center(center),
       extensionLine1End(extensionLine1End),
-      extensionLine2End(extensionLine2End),
-      arcSymbolType(0) {
-
+      extensionLine2End(extensionLine2End), arcSymbolType(0)
+{
 }
 
-bool RDimArcLengthData::isValid() const {
-    return RDimAngularData::isValid() &&
-            center.isValid() &&
-            extensionLine1End.isValid() &&
-            extensionLine2End.isValid();
+bool RDimArcLengthData::isValid() const
+{
+    return RDimAngularData::isValid() && center.isValid() &&
+           extensionLine1End.isValid() && extensionLine2End.isValid();
 }
 
-bool RDimArcLengthData::isSane() const {
-    return RDimAngularData::isSane() &&
-            center.isSane() &&
-            extensionLine1End.isSane() &&
-            extensionLine2End.isSane();
+bool RDimArcLengthData::isSane() const
+{
+    return RDimAngularData::isSane() && center.isSane() &&
+           extensionLine1End.isSane() && extensionLine2End.isSane();
 }
 
-double RDimArcLengthData::getRadius() const {
+double RDimArcLengthData::getRadius() const
+{
     return center.getDistanceTo(extensionLine1End);
 }
 
-QList<RRefPoint> RDimArcLengthData::getReferencePoints(RS::ProjectionRenderingHint hint) const {
+QList<RRefPoint>
+RDimArcLengthData::getReferencePoints(RS::ProjectionRenderingHint hint) const
+{
     QList<RRefPoint> ret = RDimAngularData::getReferencePoints(hint);
 
     ret.append(center);
@@ -72,29 +70,34 @@ QList<RRefPoint> RDimArcLengthData::getReferencePoints(RS::ProjectionRenderingHi
     return ret;
 }
 
-bool RDimArcLengthData::moveReferencePoint(const RVector& referencePoint, const RVector& targetPoint, Qt::KeyboardModifiers modifiers) {
+bool RDimArcLengthData::moveReferencePoint(const RVector &referencePoint,
+                                           const RVector &targetPoint,
+                                           Qt::KeyboardModifiers modifiers)
+{
     Q_UNUSED(modifiers)
 
     bool ret = false;
 
-    if (referencePoint.equalsFuzzy(center)) {
+    if (referencePoint.equalsFuzzy(center))
+    {
         center = targetPoint;
         autoTextPos = true;
         ret = true;
     }
 
-    if (!ret) {
-        ret = RDimAngularData::moveReferencePoint(referencePoint, targetPoint, modifiers);
+    if (!ret)
+    {
+        ret = RDimAngularData::moveReferencePoint(referencePoint, targetPoint,
+                                                  modifiers);
     }
 
-    if (ret) {
-        update();
-    }
+    if (ret) { update(); }
 
     return ret;
 }
 
-bool RDimArcLengthData::move(const RVector& offset) {
+bool RDimArcLengthData::move(const RVector &offset)
+{
     RDimAngularData::move(offset);
     center.move(offset);
     extensionLine1End.move(offset);
@@ -103,7 +106,8 @@ bool RDimArcLengthData::move(const RVector& offset) {
     return true;
 }
 
-bool RDimArcLengthData::rotate(double rotation, const RVector& center) {
+bool RDimArcLengthData::rotate(double rotation, const RVector &center)
+{
     RDimAngularData::rotate(rotation, center);
     this->center.rotate(rotation, center);
     extensionLine1End.rotate(rotation, center);
@@ -112,7 +116,9 @@ bool RDimArcLengthData::rotate(double rotation, const RVector& center) {
     return true;
 }
 
-bool RDimArcLengthData::scale(const RVector& scaleFactors, const RVector& center) {
+bool RDimArcLengthData::scale(const RVector &scaleFactors,
+                              const RVector &center)
+{
     RDimAngularData::scale(scaleFactors, center);
     this->center.scale(scaleFactors, center);
     extensionLine1End.scale(scaleFactors, center);
@@ -121,7 +127,8 @@ bool RDimArcLengthData::scale(const RVector& scaleFactors, const RVector& center
     return true;
 }
 
-bool RDimArcLengthData::mirror(const RLine& axis) {
+bool RDimArcLengthData::mirror(const RLine &axis)
+{
     RDimAngularData::mirror(axis);
     this->center.mirror(axis);
     extensionLine1End.mirror(axis);
@@ -139,8 +146,9 @@ bool RDimArcLengthData::mirror(const RLine& axis) {
  *
  * \return true: on success
  */
-bool RDimArcLengthData::getAngles(double& ang1, double& ang2, bool& reversed,
-                              RVector& p1, RVector& p2) const {
+bool RDimArcLengthData::getAngles(double &ang1, double &ang2, bool &reversed,
+                                  RVector &p1, RVector &p2) const
+{
 
     double ang = center.getAngleTo(definitionPoint);
 
@@ -150,38 +158,43 @@ bool RDimArcLengthData::getAngles(double& ang1, double& ang2, bool& reversed,
     ang2 = center.getAngleTo(extensionLine2End);
     p2 = extensionLine2End;
 
-    if (RMath::isAngleBetween(ang, ang1, ang2, false)) {
-        reversed = false;
-    }
-    else {
-        reversed = true;
-    }
+    if (RMath::isAngleBetween(ang, ang1, ang2, false)) { reversed = false; }
+    else { reversed = true; }
 
     return true;
 }
 
-double RDimArcLengthData::getMeasuredValue() const {
+double RDimArcLengthData::getMeasuredValue() const
+{
     return getAngle() * getRadius();
 }
 
-QString RDimArcLengthData::getAutoLabel() const {
+QString RDimArcLengthData::getAutoLabel() const
+{
     double distance = getMeasuredValue();
     distance *= getDimlfac();
     return formatLabel(distance);
 }
 
-QString RDimArcLengthData::getMeasurement(bool resolveAutoMeasurement) const {
+QString RDimArcLengthData::getMeasurement(bool resolveAutoMeasurement) const
+{
     QString ret;
-    if (arcSymbolType==0 && resolveAutoMeasurement) {
+    if (arcSymbolType == 0 && resolveAutoMeasurement)
+    {
         // arc symbol in front:
-        ret = QString("{\\Fqcadshp|c0;%1}%2").arg(QChar(0x2312)).arg(RDimAngularData::getMeasurement(resolveAutoMeasurement));
+        ret = QString("{\\Fqcadshp|c0;%1}%2")
+                      .arg(QChar(0x2312))
+                      .arg(RDimAngularData::getMeasurement(
+                              resolveAutoMeasurement));
     }
-    else if (arcSymbolType==1 && resolveAutoMeasurement) {
+    else if (arcSymbolType == 1 && resolveAutoMeasurement)
+    {
         // arc symbol above:
-        ret = QString("{\\Fqcadshp|c0;%1}\\P%2").arg(QChar(0x2322)).arg(RDimAngularData::getMeasurement(resolveAutoMeasurement));
+        ret = QString("{\\Fqcadshp|c0;%1}\\P%2")
+                      .arg(QChar(0x2322))
+                      .arg(RDimAngularData::getMeasurement(
+                              resolveAutoMeasurement));
     }
-    else {
-        ret = RDimAngularData::getMeasurement(resolveAutoMeasurement);
-    }
+    else { ret = RDimAngularData::getMeasurement(resolveAutoMeasurement); }
     return ret;
 }

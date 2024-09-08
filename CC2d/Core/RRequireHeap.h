@@ -25,15 +25,13 @@
 /**
  * \ingroup core
  */
-class QCADCORE_EXPORT RRequireHeap {
+class QCADCORE_EXPORT RRequireHeap
+{
 public:
-    void doDelete() {
-        delete this;
-    }
+    void doDelete() { delete this; }
 
 protected:
-    virtual ~RRequireHeap() {
-    }
+    virtual ~RRequireHeap() {}
 };
 
 #endif /* RREQUIREHEAP_H_ */

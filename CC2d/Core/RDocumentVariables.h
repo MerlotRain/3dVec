@@ -34,7 +34,8 @@ class RDocument;
  * \scriptable
  * \sharedPointerSupport
  */
-class QCADCORE_EXPORT RDocumentVariables : public RObject {
+class QCADCORE_EXPORT RDocumentVariables : public RObject
+{
 public:
     static RPropertyTypeId PropertyCustom;
     static RPropertyTypeId PropertyHandle;
@@ -46,94 +47,80 @@ public:
     static RPropertyTypeId PropertyWorkingSetBlockReferenceId;
 
 public:
-    RDocumentVariables(RDocument* document);
+    RDocumentVariables(RDocument *document);
     virtual ~RDocumentVariables();
 
     static void init();
 
-    static RS::EntityType getRtti() {
+    static RS::EntityType getRtti() { return RS::ObjectDocumentVariable; }
+
+    virtual RS::EntityType getType() const
+    {
         return RS::ObjectDocumentVariable;
     }
 
-    virtual RS::EntityType getType() const {
-        return RS::ObjectDocumentVariable;
-    }
-
-    virtual RDocumentVariables* clone() const {
+    virtual RDocumentVariables *clone() const
+    {
         return new RDocumentVariables(*this);
     }
 
     virtual QPair<QVariant, RPropertyAttributes>
-            getProperty(RPropertyTypeId& propertyTypeId,
-                    bool humanReadable = false,
-                    bool noAttributes = false,
-                    bool showOnRequest = false);
+    getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
+                bool noAttributes = false, bool showOnRequest = false);
 
     virtual bool setProperty(RPropertyTypeId propertyTypeId,
-        const QVariant& value, RTransaction* transaction=NULL);
+                             const QVariant &value,
+                             RTransaction *transaction = NULL);
 
     void clear();
 
-    RLayer::Id getCurrentLayerId() const {
-        return currentLayerId;
-    }
+    RLayer::Id getCurrentLayerId() const { return currentLayerId; }
 
-    void setCurrentLayerId(RLayer::Id id) {
-        currentLayerId = id;
-    }
+    void setCurrentLayerId(RLayer::Id id) { currentLayerId = id; }
 
-    RS::Unit getUnit() const {
-        return unit;
-    }
+    RS::Unit getUnit() const { return unit; }
 
-    void setUnit(RS::Unit u) {
+    void setUnit(RS::Unit u)
+    {
         QVariant v;
-        v.setValue((int)u);
+        v.setValue((int) u);
         knownVariables.insert(RS::INSUNITS, v);
         unit = u;
     }
 
-    RS::Measurement getMeasurement() const {
-        return measurement;
-    }
+    RS::Measurement getMeasurement() const { return measurement; }
 
-    void setMeasurement(RS::Measurement m) {
-        if (m!=RS::Metric && m!=RS::Imperial) {
-            return;
-        }
+    void setMeasurement(RS::Measurement m)
+    {
+        if (m != RS::Metric && m != RS::Imperial) { return; }
 
         QVariant v;
-        v.setValue((int)m);
+        v.setValue((int) m);
         knownVariables.insert(RS::MEASUREMENT, v);
         measurement = m;
     }
 
-    double getLinetypeScale() const {
-        return linetypeScale;
-    }
+    double getLinetypeScale() const { return linetypeScale; }
 
-    void setLinetypeScale(double s) {
+    void setLinetypeScale(double s)
+    {
         QVariant v;
-        v.setValue((double)s);
+        v.setValue((double) s);
         knownVariables.insert(RS::LTSCALE, v);
         linetypeScale = s;
     }
 
-    QString getDimensionFont() const {
-        return dimensionFont;
-    }
+    QString getDimensionFont() const { return dimensionFont; }
 
-    void setDimensionFont(const QString& f) {
-        dimensionFont = f;
-    }
+    void setDimensionFont(const QString &f) { dimensionFont = f; }
 
-//    RObject::Id getWorkingSetBlockReferenceId() const {
-//        return workingSetBlockReferenceId;
-//    }
+    //    RObject::Id getWorkingSetBlockReferenceId() const {
+    //        return workingSetBlockReferenceId;
+    //    }
 
-//    void setWorkingSetBlockReferenceId(RObject::Id id) {
-//        workingSetBlockReferenceId = id;
-//    }
+    //    void setWorkingSetBlockReferenceId(RObject::Id id) {
+    //        workingSetBlockReferenceId = id;
+    //    }
 
     QString addAutoVariable(double value);
     QStringList getAutoVariables() const;

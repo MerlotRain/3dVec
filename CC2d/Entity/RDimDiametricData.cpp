@@ -19,40 +19,40 @@
 #include "RDimDiametricData.h"
 #include "RUnit.h"
 
-RDimDiametricData::RDimDiametricData() {
-}
+RDimDiametricData::RDimDiametricData() {}
 
-RDimDiametricData::RDimDiametricData(RDocument* document, const RDimDiametricData& data)
-    : RDimensionData(document) {
+RDimDiametricData::RDimDiametricData(RDocument *document,
+                                     const RDimDiametricData &data)
+    : RDimensionData(document)
+{
     *this = data;
     this->document = document;
-    if (document!=NULL) {
-        linetypeId = document->getLinetypeByLayerId();
-    }
+    if (document != NULL) { linetypeId = document->getLinetypeByLayerId(); }
 }
 
 /**
  * \param definitionPoint2 Definition point. Startpoint of the
  *         first extension line.
  */
-RDimDiametricData::RDimDiametricData(const RDimensionData& dimData,
-                                 const RVector& choordPoint)
-    : RDimensionData(dimData),
-      chordPoint(choordPoint) {
-
+RDimDiametricData::RDimDiametricData(const RDimensionData &dimData,
+                                     const RVector &choordPoint)
+    : RDimensionData(dimData), chordPoint(choordPoint)
+{
 }
 
-bool RDimDiametricData::isValid() const {
-    return RDimensionData::isValid() &&
-            chordPoint.isValid();
+bool RDimDiametricData::isValid() const
+{
+    return RDimensionData::isValid() && chordPoint.isValid();
 }
 
-bool RDimDiametricData::isSane() const {
-    return RDimensionData::isSane() &&
-            chordPoint.isSane();
+bool RDimDiametricData::isSane() const
+{
+    return RDimensionData::isSane() && chordPoint.isSane();
 }
 
-QList<RRefPoint> RDimDiametricData::getReferencePoints(RS::ProjectionRenderingHint hint) const {
+QList<RRefPoint>
+RDimDiametricData::getReferencePoints(RS::ProjectionRenderingHint hint) const
+{
     QList<RRefPoint> ret = RDimensionData::getReferencePoints(hint);
 
     ret.append(getTextPosition());
@@ -61,13 +61,17 @@ QList<RRefPoint> RDimDiametricData::getReferencePoints(RS::ProjectionRenderingHi
     return ret;
 }
 
-bool RDimDiametricData::moveReferencePoint(const RVector& referencePoint, const RVector& targetPoint, Qt::KeyboardModifiers modifiers) {
+bool RDimDiametricData::moveReferencePoint(const RVector &referencePoint,
+                                           const RVector &targetPoint,
+                                           Qt::KeyboardModifiers modifiers)
+{
     Q_UNUSED(modifiers)
 
     bool ret = false;
 
-    if (referencePoint.equalsFuzzy(chordPoint)) {
-        RVector c = (definitionPoint + chordPoint)/2.0;
+    if (referencePoint.equalsFuzzy(chordPoint))
+    {
+        RVector c = (definitionPoint + chordPoint) / 2.0;
         double d = c.getDistanceTo(chordPoint);
         double a = c.getAngleTo(targetPoint);
 
@@ -78,8 +82,9 @@ bool RDimDiametricData::moveReferencePoint(const RVector& referencePoint, const 
         autoTextPos = true;
         ret = true;
     }
-    else if (referencePoint.equalsFuzzy(definitionPoint)) {
-        RVector c = (definitionPoint + chordPoint)/2.0;
+    else if (referencePoint.equalsFuzzy(definitionPoint))
+    {
+        RVector c = (definitionPoint + chordPoint) / 2.0;
         double d = c.getDistanceTo(definitionPoint);
         double a = c.getAngleTo(targetPoint);
 
@@ -91,39 +96,44 @@ bool RDimDiametricData::moveReferencePoint(const RVector& referencePoint, const 
         ret = true;
     }
 
-    if (!ret) {
-        ret = RDimensionData::moveReferencePoint(referencePoint, targetPoint, modifiers);
+    if (!ret)
+    {
+        ret = RDimensionData::moveReferencePoint(referencePoint, targetPoint,
+                                                 modifiers);
     }
 
-    if (ret) {
-        update();
-    }
+    if (ret) { update(); }
 
     return ret;
 }
 
-bool RDimDiametricData::move(const RVector& offset) {
+bool RDimDiametricData::move(const RVector &offset)
+{
     RDimensionData::move(offset);
     chordPoint.move(offset);
     update();
     return true;
 }
 
-bool RDimDiametricData::rotate(double rotation, const RVector& center) {
+bool RDimDiametricData::rotate(double rotation, const RVector &center)
+{
     RDimensionData::rotate(rotation, center);
     chordPoint.rotate(rotation, center);
     update();
     return true;
 }
 
-bool RDimDiametricData::scale(const RVector& scaleFactors, const RVector& center) {
+bool RDimDiametricData::scale(const RVector &scaleFactors,
+                              const RVector &center)
+{
     RDimensionData::scale(scaleFactors, center);
     chordPoint.scale(scaleFactors, center);
     update();
     return true;
 }
 
-bool RDimDiametricData::mirror(const RLine& axis) {
+bool RDimDiametricData::mirror(const RLine &axis)
+{
     RDimensionData::mirror(axis);
     chordPoint.mirror(axis);
     update();
@@ -154,11 +164,13 @@ QList<QSharedPointer<RShape> > RDimDiametricData::getShapes(const RBox& queryBox
 }
 */
 
-double RDimDiametricData::getMeasuredValue() const {
+double RDimDiametricData::getMeasuredValue() const
+{
     return definitionPoint.getDistanceTo(chordPoint);
 }
 
-QString RDimDiametricData::getAutoLabel() const {
+QString RDimDiametricData::getAutoLabel() const
+{
     double distance = getMeasuredValue();
     distance *= getDimlfac();
     return formatLabel(distance);

@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with QCAD.
  */
+#include "REntity.h"
 #include "RBlockReferenceEntity.h"
 #include "RDocument.h"
-#include "REntity.h"
 #include "RExplodable.h"
 #include "RShape.h"
 #include "RStorage.h"
@@ -46,75 +46,100 @@ RPropertyTypeId REntity::PropertyMaxY;
 RPropertyTypeId REntity::PropertySizeX;
 RPropertyTypeId REntity::PropertySizeY;
 
-REntity::REntity(RDocument* document)
-    : RObject(document) {
+REntity::REntity(RDocument *document) : RObject(document) {}
+
+REntity::REntity(const REntity &other) : RObject(other) {}
+
+REntity::~REntity() {}
+
+bool REntity::isComplex(const RS::EntityType type)
+{
+    return (type == RS::EntityHatch || isTextBased(type) || isDimension(type));
 }
 
-REntity::REntity(const REntity& other) : RObject(other) {
+bool REntity::isDimension(const RS::EntityType type)
+{
+    return (type == RS::EntityDimension || type == RS::EntityDimAligned ||
+            type == RS::EntityDimLinear || type == RS::EntityDimRotated ||
+            type == RS::EntityDimRadial || type == RS::EntityDimDiametric ||
+            type == RS::EntityDimAngular2L || type == RS::EntityDimAngular3P ||
+            type == RS::EntityDimOrdinate);
 }
 
-REntity::~REntity() {
+bool REntity::isTextBased(const RS::EntityType type)
+{
+    return (type == RS::EntityAttributeDefinition ||
+            type == RS::EntityAttribute || type == RS::EntityTextBased ||
+            type == RS::EntityText);
 }
 
-bool REntity::isComplex(const RS::EntityType type) {
-    return (type==RS::EntityHatch ||
-            isTextBased(type) ||
-            isDimension(type));
-}
+void REntity::init()
+{
+    REntity::PropertyCustom.generateId(REntity::getRtti(),
+                                       RObject::PropertyCustom);
+    REntity::PropertyHandle.generateId(REntity::getRtti(),
+                                       RObject::PropertyHandle);
+    REntity::PropertyProtected.generateId(REntity::getRtti(),
+                                          RObject::PropertyProtected);
+    REntity::PropertyWorkingSet.generateId(REntity::getRtti(),
+                                           RObject::PropertyWorkingSet);
+    REntity::PropertyType.generateId(REntity::getRtti(), "",
+                                     QT_TRANSLATE_NOOP("REntity", "Type"));
+    REntity::PropertyBlock.generateId(REntity::getRtti(), "",
+                                      QT_TRANSLATE_NOOP("REntity", "Block"));
+    REntity::PropertyLayer.generateId(REntity::getRtti(), "",
+                                      QT_TRANSLATE_NOOP("REntity", "Layer"));
+    REntity::PropertyLinetype.generateId(
+            REntity::getRtti(), "", QT_TRANSLATE_NOOP("REntity", "Linetype"));
+    REntity::PropertyLinetypeScale.generateId(
+            REntity::getRtti(), "",
+            QT_TRANSLATE_NOOP("REntity", "Linetype Scale"));
+    REntity::PropertyLineweight.generateId(
+            REntity::getRtti(), "", QT_TRANSLATE_NOOP("REntity", "Lineweight"));
+    REntity::PropertyColor.generateId(REntity::getRtti(), "",
+                                      QT_TRANSLATE_NOOP("REntity", "Color"));
+    REntity::PropertyDisplayedColor.generateId(
+            REntity::getRtti(), "",
+            QT_TRANSLATE_NOOP("REntity", "Displayed Color"));
+    REntity::PropertyDrawOrder.generateId(
+            REntity::getRtti(), "", QT_TRANSLATE_NOOP("REntity", "Draw Order"));
 
-bool REntity::isDimension(const RS::EntityType type) {
-    return (type==RS::EntityDimension ||
-            type==RS::EntityDimAligned ||
-            type==RS::EntityDimLinear ||
-            type==RS::EntityDimRotated ||
-            type==RS::EntityDimRadial ||
-            type==RS::EntityDimDiametric ||
-            type==RS::EntityDimAngular2L ||
-            type==RS::EntityDimAngular3P ||
-            type==RS::EntityDimOrdinate);
-}
+    REntity::PropertyParentId.generateId(
+            REntity::getRtti(), "", QT_TRANSLATE_NOOP("REntity", "Parent Id"));
 
-bool REntity::isTextBased(const RS::EntityType type) {
-    return (type==RS::EntityAttributeDefinition ||
-            type==RS::EntityAttribute ||
-            type==RS::EntityTextBased ||
-            type==RS::EntityText);
-}
+    REntity::PropertyMinX.generateId(REntity::getRtti(),
+                                     QT_TRANSLATE_NOOP("REntity", "Boundary"),
+                                     QT_TRANSLATE_NOOP("REntity", "Left"));
+    REntity::PropertyMinY.generateId(REntity::getRtti(),
+                                     QT_TRANSLATE_NOOP("REntity", "Boundary"),
+                                     QT_TRANSLATE_NOOP("REntity", "Bottom"));
+    REntity::PropertyMaxX.generateId(REntity::getRtti(),
+                                     QT_TRANSLATE_NOOP("REntity", "Boundary"),
+                                     QT_TRANSLATE_NOOP("REntity", "Right"));
+    REntity::PropertyMaxY.generateId(REntity::getRtti(),
+                                     QT_TRANSLATE_NOOP("REntity", "Boundary"),
+                                     QT_TRANSLATE_NOOP("REntity", "Top"));
 
-void REntity::init() {
-    REntity::PropertyCustom.generateId(REntity::getRtti(), RObject::PropertyCustom);
-    REntity::PropertyHandle.generateId(REntity::getRtti(), RObject::PropertyHandle);
-    REntity::PropertyProtected.generateId(REntity::getRtti(), RObject::PropertyProtected);
-    REntity::PropertyWorkingSet.generateId(REntity::getRtti(), RObject::PropertyWorkingSet);
-    REntity::PropertyType.generateId(REntity::getRtti(), "", QT_TRANSLATE_NOOP("REntity", "Type"));
-    REntity::PropertyBlock.generateId(REntity::getRtti(), "", QT_TRANSLATE_NOOP("REntity", "Block"));
-    REntity::PropertyLayer.generateId(REntity::getRtti(), "", QT_TRANSLATE_NOOP("REntity", "Layer"));
-    REntity::PropertyLinetype.generateId(REntity::getRtti(), "", QT_TRANSLATE_NOOP("REntity", "Linetype"));
-    REntity::PropertyLinetypeScale.generateId(REntity::getRtti(), "", QT_TRANSLATE_NOOP("REntity", "Linetype Scale"));
-    REntity::PropertyLineweight.generateId(REntity::getRtti(), "", QT_TRANSLATE_NOOP("REntity", "Lineweight"));
-    REntity::PropertyColor.generateId(REntity::getRtti(), "", QT_TRANSLATE_NOOP("REntity", "Color"));
-    REntity::PropertyDisplayedColor.generateId(REntity::getRtti(), "", QT_TRANSLATE_NOOP("REntity", "Displayed Color"));
-    REntity::PropertyDrawOrder.generateId(REntity::getRtti(), "", QT_TRANSLATE_NOOP("REntity", "Draw Order"));
-
-    REntity::PropertyParentId.generateId(REntity::getRtti(), "", QT_TRANSLATE_NOOP("REntity", "Parent Id"));
-
-    REntity::PropertyMinX.generateId(REntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Boundary"), QT_TRANSLATE_NOOP("REntity", "Left"));
-    REntity::PropertyMinY.generateId(REntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Boundary"), QT_TRANSLATE_NOOP("REntity", "Bottom"));
-    REntity::PropertyMaxX.generateId(REntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Boundary"), QT_TRANSLATE_NOOP("REntity", "Right"));
-    REntity::PropertyMaxY.generateId(REntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Boundary"), QT_TRANSLATE_NOOP("REntity", "Top"));
-
-    REntity::PropertySizeX.generateId(REntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Size"), QT_TRANSLATE_NOOP("REntity", "Width"));
-    REntity::PropertySizeY.generateId(REntity::getRtti(), QT_TRANSLATE_NOOP("REntity", "Size"), QT_TRANSLATE_NOOP("REntity", "Height"));
+    REntity::PropertySizeX.generateId(REntity::getRtti(),
+                                      QT_TRANSLATE_NOOP("REntity", "Size"),
+                                      QT_TRANSLATE_NOOP("REntity", "Width"));
+    REntity::PropertySizeY.generateId(REntity::getRtti(),
+                                      QT_TRANSLATE_NOOP("REntity", "Size"),
+                                      QT_TRANSLATE_NOOP("REntity", "Height"));
 }
 
 /**
  * \copydoc REntityData::getLineweight
  */
-RLineweight::Lineweight REntity::getLineweight(bool resolve,
-    const QStack<REntity*>& blockRefStack) const {
+RLineweight::Lineweight
+REntity::getLineweight(bool resolve,
+                       const QStack<REntity *> &blockRefStack) const
+{
 
-    QStack<REntity*> newBlockRefStack = blockRefStack;
-    if (!newBlockRefStack.isEmpty() && this==(REntity*)newBlockRefStack.top()) {
+    QStack<REntity *> newBlockRefStack = blockRefStack;
+    if (!newBlockRefStack.isEmpty() &&
+        this == (REntity *) newBlockRefStack.top())
+    {
         newBlockRefStack.pop();
     }
 
@@ -124,9 +149,13 @@ RLineweight::Lineweight REntity::getLineweight(bool resolve,
 /**
  * \copydoc REntityData::getColor
  */
-RColor REntity::getColor(const RColor& unresolvedColor, const QStack<REntity*>& blockRefStack) {
-    QStack<REntity*> newBlockRefStack = blockRefStack;
-    if (!newBlockRefStack.isEmpty() && this==(REntity*)newBlockRefStack.top()) {
+RColor REntity::getColor(const RColor &unresolvedColor,
+                         const QStack<REntity *> &blockRefStack)
+{
+    QStack<REntity *> newBlockRefStack = blockRefStack;
+    if (!newBlockRefStack.isEmpty() &&
+        this == (REntity *) newBlockRefStack.top())
+    {
         newBlockRefStack.pop();
     }
 
@@ -136,9 +165,12 @@ RColor REntity::getColor(const RColor& unresolvedColor, const QStack<REntity*>& 
 /**
  * \copydoc REntityData::getColor
  */
-RColor REntity::getColor(bool resolve, const QStack<REntity*>& blockRefStack) {
-    QStack<REntity*> newBlockRefStack = blockRefStack;
-    if (!newBlockRefStack.isEmpty() && this==(REntity*)newBlockRefStack.top()) {
+RColor REntity::getColor(bool resolve, const QStack<REntity *> &blockRefStack)
+{
+    QStack<REntity *> newBlockRefStack = blockRefStack;
+    if (!newBlockRefStack.isEmpty() &&
+        this == (REntity *) newBlockRefStack.top())
+    {
         newBlockRefStack.pop();
     }
 
@@ -148,9 +180,13 @@ RColor REntity::getColor(bool resolve, const QStack<REntity*>& blockRefStack) {
 /**
  * \copydoc REntityData::getLineweightInUnits
  */
-double REntity::getLineweightInUnits(const QStack<REntity*>& blockRefStack) const {
-    QStack<REntity*> newBlockRefStack = blockRefStack;
-    if (!newBlockRefStack.isEmpty() && this==(REntity*)newBlockRefStack.top()) {
+double
+REntity::getLineweightInUnits(const QStack<REntity *> &blockRefStack) const
+{
+    QStack<REntity *> newBlockRefStack = blockRefStack;
+    if (!newBlockRefStack.isEmpty() &&
+        this == (REntity *) newBlockRefStack.top())
+    {
         newBlockRefStack.pop();
     }
     return getData().getLineweightInUnits(newBlockRefStack);
@@ -159,9 +195,14 @@ double REntity::getLineweightInUnits(const QStack<REntity*>& blockRefStack) cons
 /**
  * \copydoc REntityData::getLinetypeId
  */
-RLinetype::Id REntity::getLinetypeId(bool resolve, const QStack<REntity*>& blockRefStack) const {
-    QStack<REntity*> newBlockRefStack = blockRefStack;
-    if (!newBlockRefStack.isEmpty() && this==(REntity*)newBlockRefStack.top()) {
+RLinetype::Id
+REntity::getLinetypeId(bool resolve,
+                       const QStack<REntity *> &blockRefStack) const
+{
+    QStack<REntity *> newBlockRefStack = blockRefStack;
+    if (!newBlockRefStack.isEmpty() &&
+        this == (REntity *) newBlockRefStack.top())
+    {
         newBlockRefStack.pop();
     }
     return getData().getLinetypeId(resolve, newBlockRefStack);
@@ -170,202 +211,294 @@ RLinetype::Id REntity::getLinetypeId(bool resolve, const QStack<REntity*>& block
 /**
  * Copies all attributes (layer, block, color, line weight, line style) from the given entity.
  */
-void REntity::copyAttributesFrom(const REntity* entity, bool copyBlockId) {
-    if (entity==NULL) {
+void REntity::copyAttributesFrom(const REntity *entity, bool copyBlockId)
+{
+    if (entity == NULL)
+    {
         qWarning("REntity::copyAttributesFrom: source entity is NULL");
         return;
     }
 
-    if (getDocument()!=entity->getDocument()) {
-        qWarning("REntity::copyAttributesFrom: source entity not from same document");
+    if (getDocument() != entity->getDocument())
+    {
+        qWarning("REntity::copyAttributesFrom: source entity not from same "
+                 "document");
         return;
     }
 
     copyAttributesFrom(entity->getData(), copyBlockId);
 }
 
-void REntity::copyAttributesFrom(const REntityData& entityData, bool copyBlockId) {
+void REntity::copyAttributesFrom(const REntityData &entityData,
+                                 bool copyBlockId)
+{
     getData().copyAttributesFrom(entityData, copyBlockId);
 }
 
 QList<RVector> REntity::getIntersectionPoints(
-        const REntity& other, bool limited, const RBox& queryBox, bool ignoreComplex, QList<QPair<REntity::Id, REntity::Id> >* entityIds) const {
+        const REntity &other, bool limited, const RBox &queryBox,
+        bool ignoreComplex,
+        QList<QPair<REntity::Id, REntity::Id>> *entityIds) const
+{
 
     bool same = false;
 
     // avoid intersection finding for intersections of interpolated entities
     // (e.g. splines) with themselves:
-    if (getId()!=INVALID_ID && getId()==other.getId() && getDocument()==other.getDocument()) {
-        const RShape* shape = getData().castToConstShape();
-        if (shape!=NULL && shape->isInterpolated()) {
-            same = true;
+    if (getId() != INVALID_ID && getId() == other.getId() &&
+        getDocument() == other.getDocument())
+    {
+        const RShape *shape = getData().castToConstShape();
+        if (shape != NULL && shape->isInterpolated()) { same = true; }
+
+        if (shape != NULL && shape->getShapeType() == RShape::Polyline)
+        {
+            const RPolyline *pl = dynamic_cast<const RPolyline *>(shape);
+            if (pl != NULL) { same = true; }
         }
 
-        if (shape!=NULL && shape->getShapeType()==RShape::Polyline) {
-            const RPolyline* pl = dynamic_cast<const RPolyline*>(shape);
-            if (pl!=NULL) {
-                same = true;
-            }
-        }
-
-        if (getType()==RS::EntityBlockRef || getType()==RS::EntityViewport) {
+        if (getType() == RS::EntityBlockRef || getType() == RS::EntityViewport)
+        {
             same = true;
         }
 
         // if entity is not interpolated and not a polyline, there are no intersections in entity self:
-        if (!same) {
-            return QList<RVector>();
-        }
+        if (!same) { return QList<RVector>(); }
     }
 
-    return getData().getIntersectionPoints(other.getData(), limited, same, queryBox, ignoreComplex, entityIds);
+    return getData().getIntersectionPoints(other.getData(), limited, same,
+                                           queryBox, ignoreComplex, entityIds);
 }
 
-QList<RVector> REntity::getIntersectionPoints(const RShape& shape, bool limited, const RBox& queryBox, bool ignoreComplex) const {
-    return getData().getIntersectionPoints(shape, limited, queryBox, ignoreComplex);
+QList<RVector> REntity::getIntersectionPoints(const RShape &shape, bool limited,
+                                              const RBox &queryBox,
+                                              bool ignoreComplex) const
+{
+    return getData().getIntersectionPoints(shape, limited, queryBox,
+                                           ignoreComplex);
 }
 
-QPair<QVariant, RPropertyAttributes> REntity::getProperty(
-        RPropertyTypeId& propertyTypeId,
-        bool humanReadable, bool noAttributes, bool showOnRequest) {
+QPair<QVariant, RPropertyAttributes>
+REntity::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
+                     bool noAttributes, bool showOnRequest)
+{
 
-    if (propertyTypeId == PropertyType) {
+    if (propertyTypeId == PropertyType)
+    {
         return qMakePair(QVariant(getType()), RPropertyAttributes());
     }
-    else if (propertyTypeId == PropertyBlock) {
+    else if (propertyTypeId == PropertyBlock)
+    {
         return qMakePair(QVariant(getData().getBlockId()),
                          RPropertyAttributes());
     }
-    else if (propertyTypeId == PropertyLayer) {
-        if (humanReadable) {
-            RDocument* document = getData().getDocument();
-            if (document != NULL) {
+    else if (propertyTypeId == PropertyLayer)
+    {
+        if (humanReadable)
+        {
+            RDocument *document = getData().getDocument();
+            if (document != NULL)
+            {
                 RPropertyAttributes attr;
-                if (!noAttributes) {
+                if (!noAttributes)
+                {
                     // TODO: filter out locked layers:
                     attr.setChoices(document->getLayerNames());
                 }
                 return qMakePair(QVariant(document->getLayerName(
-                        getData().getLayerId())), attr);
+                                         getData().getLayerId())),
+                                 attr);
             }
         }
-        else {
+        else
+        {
             return qMakePair(QVariant(getData().getLayerId()),
-                    RPropertyAttributes());
+                             RPropertyAttributes());
         }
     }
-    else if (propertyTypeId == PropertyLinetype) {
-        if (humanReadable) {
-            RDocument* document = getData().getDocument();
-            if (document != NULL) {
+    else if (propertyTypeId == PropertyLinetype)
+    {
+        if (humanReadable)
+        {
+            RDocument *document = getData().getDocument();
+            if (document != NULL)
+            {
                 RPropertyAttributes attr;
-//                if (!noAttributes) {
-//                    attr.setChoices(document->getLinetypeNames());
-//                }
-                QString desc = document->getLinetypeLabel(getData().getLinetypeId());
+                //                if (!noAttributes) {
+                //                    attr.setChoices(document->getLinetypeNames());
+                //                }
+                QString desc =
+                        document->getLinetypeLabel(getData().getLinetypeId());
                 return qMakePair(QVariant(desc), attr);
             }
         }
-        else {
+        else
+        {
             return qMakePair(QVariant(getData().getLinetypeId()),
-                    RPropertyAttributes());
+                             RPropertyAttributes());
         }
     }
-    else if (propertyTypeId == PropertyLinetypeScale) {
-        return qMakePair(QVariant(getData().getLinetypeScale()), RPropertyAttributes(RPropertyAttributes::UnitLess));
+    else if (propertyTypeId == PropertyLinetypeScale)
+    {
+        return qMakePair(QVariant(getData().getLinetypeScale()),
+                         RPropertyAttributes(RPropertyAttributes::UnitLess));
     }
-    else if (propertyTypeId == PropertyLineweight) {
+    else if (propertyTypeId == PropertyLineweight)
+    {
         QVariant v;
         v.setValue<RLineweight::Lineweight>(getData().getLineweight());
         return qMakePair(v, RPropertyAttributes());
     }
-    else if (propertyTypeId == PropertyColor) {
+    else if (propertyTypeId == PropertyColor)
+    {
         QVariant var;
-        var.setValue<RColor> (getData().getColor());
+        var.setValue<RColor>(getData().getColor());
         return qMakePair(var, RPropertyAttributes());
     }
-    else if (propertyTypeId == PropertyDrawOrder) {
-        return qMakePair(QVariant(getData().getDrawOrder()), RPropertyAttributes(RPropertyAttributes::UnitLess));
+    else if (propertyTypeId == PropertyDrawOrder)
+    {
+        return qMakePair(QVariant(getData().getDrawOrder()),
+                         RPropertyAttributes(RPropertyAttributes::UnitLess));
     }
-    else if (propertyTypeId == PropertyParentId) {
-        return qMakePair(QVariant(getData().getParentId()), RPropertyAttributes(RPropertyAttributes::UnitLess|RPropertyAttributes::Invisible));
+    else if (propertyTypeId == PropertyParentId)
+    {
+        return qMakePair(QVariant(getData().getParentId()),
+                         RPropertyAttributes(RPropertyAttributes::UnitLess |
+                                             RPropertyAttributes::Invisible));
     }
 
     // human readable properties (not relevant for transactions):
-    if (humanReadable) {
-        if (propertyTypeId == PropertyDisplayedColor) {
+    if (humanReadable)
+    {
+        if (propertyTypeId == PropertyDisplayedColor)
+        {
             QVariant var;
-            var.setValue<RColor> (getDisplayColor());
-            return qMakePair(var, RPropertyAttributes(RPropertyAttributes::ReadOnly));
+            var.setValue<RColor>(getDisplayColor());
+            return qMakePair(
+                    var, RPropertyAttributes(RPropertyAttributes::ReadOnly));
         }
-        else if (propertyTypeId == PropertyMinX) {
-            return qMakePair(QVariant(getBoundingBox().getMinimum().x), RPropertyAttributes(RPropertyAttributes::ReadOnly));
+        else if (propertyTypeId == PropertyMinX)
+        {
+            return qMakePair(
+                    QVariant(getBoundingBox().getMinimum().x),
+                    RPropertyAttributes(RPropertyAttributes::ReadOnly));
         }
-        else if (propertyTypeId == PropertyMinY) {
-            return qMakePair(QVariant(getBoundingBox().getMinimum().y), RPropertyAttributes(RPropertyAttributes::ReadOnly));
+        else if (propertyTypeId == PropertyMinY)
+        {
+            return qMakePair(
+                    QVariant(getBoundingBox().getMinimum().y),
+                    RPropertyAttributes(RPropertyAttributes::ReadOnly));
         }
-        else if (propertyTypeId == PropertyMaxX) {
-            return qMakePair(QVariant(getBoundingBox().getMaximum().x), RPropertyAttributes(RPropertyAttributes::ReadOnly));
+        else if (propertyTypeId == PropertyMaxX)
+        {
+            return qMakePair(
+                    QVariant(getBoundingBox().getMaximum().x),
+                    RPropertyAttributes(RPropertyAttributes::ReadOnly));
         }
-        else if (propertyTypeId == PropertyMaxY) {
-            return qMakePair(QVariant(getBoundingBox().getMaximum().y), RPropertyAttributes(RPropertyAttributes::ReadOnly));
+        else if (propertyTypeId == PropertyMaxY)
+        {
+            return qMakePair(
+                    QVariant(getBoundingBox().getMaximum().y),
+                    RPropertyAttributes(RPropertyAttributes::ReadOnly));
         }
-        else if (propertyTypeId == PropertySizeX) {
-            return qMakePair(QVariant(getBoundingBox().getWidth()), RPropertyAttributes(RPropertyAttributes::ReadOnly));
+        else if (propertyTypeId == PropertySizeX)
+        {
+            return qMakePair(
+                    QVariant(getBoundingBox().getWidth()),
+                    RPropertyAttributes(RPropertyAttributes::ReadOnly));
         }
-        else if (propertyTypeId == PropertySizeY) {
-            return qMakePair(QVariant(getBoundingBox().getHeight()), RPropertyAttributes(RPropertyAttributes::ReadOnly));
+        else if (propertyTypeId == PropertySizeY)
+        {
+            return qMakePair(
+                    QVariant(getBoundingBox().getHeight()),
+                    RPropertyAttributes(RPropertyAttributes::ReadOnly));
         }
     }
 
-    return RObject::getProperty(propertyTypeId, humanReadable, noAttributes, showOnRequest);
+    return RObject::getProperty(propertyTypeId, humanReadable, noAttributes,
+                                showOnRequest);
 }
 
-bool REntity::setProperty(RPropertyTypeId propertyTypeId, const QVariant& value, RTransaction* transaction) {
+bool REntity::setProperty(RPropertyTypeId propertyTypeId, const QVariant &value,
+                          RTransaction *transaction)
+{
 
     bool ret = RObject::setProperty(propertyTypeId, value, transaction);
 
-    if (propertyTypeId == PropertyBlock) {
+    if (propertyTypeId == PropertyBlock)
+    {
         ret = ret || RObject::setMember(getData().blockId, value.toInt(), true);
-    } else if (propertyTypeId == PropertyLayer) {
-        if (value.type() == QVariant::Int || value.type() == QVariant::LongLong) {
-            ret = ret || RObject::setMember(getData().layerId, value.toInt(), true);
-        } else if (value.type() == QVariant::String) {
-            RDocument* document = getData().getDocument();
-            if (document != NULL) {
-                ret = ret || RObject::setMember(getData().layerId,
-                        document->getLayerId(value.toString()), true);
+    }
+    else if (propertyTypeId == PropertyLayer)
+    {
+        if (value.type() == QVariant::Int || value.type() == QVariant::LongLong)
+        {
+            ret = ret ||
+                  RObject::setMember(getData().layerId, value.toInt(), true);
+        }
+        else if (value.type() == QVariant::String)
+        {
+            RDocument *document = getData().getDocument();
+            if (document != NULL)
+            {
+                ret = ret ||
+                      RObject::setMember(getData().layerId,
+                                         document->getLayerId(value.toString()),
+                                         true);
             }
         }
-    } else if (propertyTypeId == PropertyLinetype) {
-        if (value.type() == QVariant::Int || value.type() == QVariant::LongLong) {
-            ret = ret || RObject::setMember(getData().linetypeId, value.toInt(), true);
-        } else {
-            RDocument* document = getData().getDocument();
-            if (document != NULL) {
-                RLinetypePattern t = value.value<RLinetypePattern> ();
+    }
+    else if (propertyTypeId == PropertyLinetype)
+    {
+        if (value.type() == QVariant::Int || value.type() == QVariant::LongLong)
+        {
+            ret = ret ||
+                  RObject::setMember(getData().linetypeId, value.toInt(), true);
+        }
+        else
+        {
+            RDocument *document = getData().getDocument();
+            if (document != NULL)
+            {
+                RLinetypePattern t = value.value<RLinetypePattern>();
                 int id = document->getLinetypeId(t.getName());
                 ret = ret || RObject::setMember(getData().linetypeId, id, true);
             }
         }
-    } else if (propertyTypeId == PropertyLinetypeScale) {
-        ret = ret || RObject::setMember(getData().linetypeScale, value.toDouble(), true);
-    } else if (propertyTypeId == PropertyLineweight) {
-        if (value.type()==QVariant::Int || value.type()==QVariant::Double) {
-            ret = ret || RObject::setMember((int&)getData().lineweight,
-                value.value<int>(), true);
+    }
+    else if (propertyTypeId == PropertyLinetypeScale)
+    {
+        ret = ret || RObject::setMember(getData().linetypeScale,
+                                        value.toDouble(), true);
+    }
+    else if (propertyTypeId == PropertyLineweight)
+    {
+        if (value.type() == QVariant::Int || value.type() == QVariant::Double)
+        {
+            ret = ret || RObject::setMember((int &) getData().lineweight,
+                                            value.value<int>(), true);
         }
-        else {
-            ret = ret || RObject::setMember((int&)getData().lineweight,
-                (int)value.value<RLineweight::Lineweight>(), true);
+        else
+        {
+            ret = ret ||
+                  RObject::setMember(
+                          (int &) getData().lineweight,
+                          (int) value.value<RLineweight::Lineweight>(), true);
         }
-    } else if (propertyTypeId == PropertyColor) {
+    }
+    else if (propertyTypeId == PropertyColor)
+    {
         ret = ret || RObject::setMember(getData().color, value, true);
-    } else if (propertyTypeId == PropertyDrawOrder) {
+    }
+    else if (propertyTypeId == PropertyDrawOrder)
+    {
         ret = ret || RObject::setMember(getData().drawOrder, value, true);
-    } else if (propertyTypeId == PropertyParentId) {
-        RDocument* doc = getDocument();
-        if (doc!=NULL) {
+    }
+    else if (propertyTypeId == PropertyParentId)
+    {
+        RDocument *doc = getDocument();
+        if (doc != NULL)
+        {
             doc->getStorage().setEntityParentId(*this, value.toInt());
         }
     }
@@ -377,13 +510,13 @@ bool REntity::setProperty(RPropertyTypeId propertyTypeId, const QVariant& value,
  * \return true if this entity is visible (i.e. is on current or given block, is not on a frozen or hidden layer
  * or in a frozen block).
  */
-bool REntity::isVisible(RBlock::Id blockId) const {
-    const RDocument* doc = getDocument();
-    if (doc==NULL) {
-        return true;
-    }
+bool REntity::isVisible(RBlock::Id blockId) const
+{
+    const RDocument *doc = getDocument();
+    if (doc == NULL) { return true; }
 
-    if (isInvisible()) {
+    if (isInvisible())
+    {
         // entity is invisible (part of a dynamic block and turned off):
         return false;
     }
@@ -394,40 +527,31 @@ bool REntity::isVisible(RBlock::Id blockId) const {
 /**
  * \return true if this entity can be edited (i.e. is not on a locked layer).
  */
-bool REntity::isEditable(bool allowInvisible) const {
-    const RDocument* doc = getDocument();
-    if (doc==NULL) {
-        return true;
-    }
+bool REntity::isEditable(bool allowInvisible) const
+{
+    const RDocument *doc = getDocument();
+    if (doc == NULL) { return true; }
 
     // entities that are not visible are never editable:
-    if (!allowInvisible && !isVisible()) {
-        return false;
-    }
+    if (!allowInvisible && !isVisible()) { return false; }
 
     // entities on locked layers are not editable:
-    if (doc->isLayerLocked(getLayerId())) {
-        return false;
-    }
+    if (doc->isLayerLocked(getLayerId())) { return false; }
 
     // entity not in the current working set:
-    if (!isInWorkingSet()) {
-        return false;
-    }
+    if (!isInWorkingSet()) { return false; }
 
     return true;
 }
 
-bool REntity::isInWorkingSet() const {
-    const RDocument* doc = getDocument();
-    if (doc==NULL) {
-        return false;
-    }
+bool REntity::isInWorkingSet() const
+{
+    const RDocument *doc = getDocument();
+    if (doc == NULL) { return false; }
     // entity not in the current working set:
-    if (doc->isEditingWorkingSet()) {
-        if (!isWorkingSet()) {
-            return false;
-        }
+    if (doc->isEditingWorkingSet())
+    {
+        if (!isWorkingSet()) { return false; }
     }
     return true;
 }
@@ -435,31 +559,31 @@ bool REntity::isInWorkingSet() const {
 /**
  * \copydoc REntityData::setSelected
  */
-void REntity::setSelected(bool on) {
-    if (isInWorkingSet()) {
-        getData().setSelected(on);
-    }
-    else {
+void REntity::setSelected(bool on)
+{
+    if (isInWorkingSet()) { getData().setSelected(on); }
+    else
+    {
         // special type of selection for block editing tool (?):
         setSelectedWorkingSet(on);
     }
 }
 
-bool REntity::isSelectable() const {
-    const RDocument* doc = getDocument();
-    if (doc==NULL) {
-        return true;
-    }
+bool REntity::isSelectable() const
+{
+    const RDocument *doc = getDocument();
+    if (doc == NULL) { return true; }
 
-    return !doc->isLayerLocked(getLayerId()) && !doc->isLayerOffOrFrozen(getLayerId());
+    return !doc->isLayerLocked(getLayerId()) &&
+           !doc->isLayerOffOrFrozen(getLayerId());
 }
 
-QSharedPointer<REntity> REntity::scaleNonUniform(const RVector& scaleFactors, const RVector& center) {
+QSharedPointer<REntity> REntity::scaleNonUniform(const RVector &scaleFactors,
+                                                 const RVector &center)
+{
     QSharedPointer<REntity> cl(clone());
-    RShape* s = cl->castToShape();
-    if (s==NULL) {
-        return QSharedPointer<REntity>();
-    }
+    RShape *s = cl->castToShape();
+    if (s == NULL) { return QSharedPointer<REntity>(); }
     s->scale(scaleFactors, center);
     return cl;
 }

@@ -185,110 +185,110 @@ bool RHatchEntity::setProperty(RPropertyTypeId propertyTypeId,
 bool RHatchEntity::setBoundaryVector(RObject::XYZ xyz, const QVariant &value,
                                      bool condition)
 {
-    if (!condition) { return false; }
+    // if (!condition) { return false; }
 
-    if (!value.canConvert<QList<QPair<int, double>>>())
-    {
-        qWarning() << QString("RHatchEntity::setBoundaryVector: "
-                              "'%1' is not a QList<QPair<int, double> >")
-                              .arg(value.toString());
-        return false;
-    }
+    // if (!value.canConvert<QList<QPair<int, double>>>())
+    // {
+    //     qWarning() << QString("RHatchEntity::setBoundaryVector: "
+    //                           "'%1' is not a QList<QPair<int, double> >")
+    //                           .arg(value.toString());
+    //     return false;
+    // }
 
     bool ret = false;
 
-    QList<QPair<int, double>> pairList =
-            value.value<QList<QPair<int, double>>>();
-    QList<QPair<int, double>>::iterator it;
-    for (it = pairList.begin(); it != pairList.end(); ++it)
-    {
-        int i = (*it).first;
-        double v = (*it).second;
-        int internalIndex;
+    // QList<QPair<int, double>> pairList =
+    //         value.value<QList<QPair<int, double>>>();
+    // QList<QPair<int, double>>::iterator it;
+    // for (it = pairList.begin(); it != pairList.end(); ++it)
+    // {
+    //     int i = (*it).first;
+    //     double v = (*it).second;
+    //     int internalIndex;
 
-        QPair<QSharedPointer<RShape>, QSharedPointer<RShape>> shapes;
-        shapes = data.getBoundaryElementsAt(i, internalIndex);
+    //     QPair<QSharedPointer<RShape>, QSharedPointer<RShape>> shapes;
+    //     shapes = data.getBoundaryElementsAt(i, internalIndex);
 
-        // move end point of first element (or center):
-        if (!shapes.first.isNull())
-        {
-            QSharedPointer<RLine> line = shapes.first.dynamicCast<RLine>();
-            if (!line.isNull())
-            {
-                line->setEndPoint(setComponent(line->getEndPoint(), v, xyz));
-                ret = true;
-            }
+    //     // move end point of first element (or center):
+    //     if (!shapes.first.isNull())
+    //     {
+    //         QSharedPointer<RLine> line = shapes.first.dynamicCast<RLine>();
+    //         if (!line.isNull())
+    //         {
+    //             line->setEndPoint(setComponent(line->getEndPoint(), v, xyz));
+    //             ret = true;
+    //         }
 
-            QSharedPointer<RArc> arc = shapes.first.dynamicCast<RArc>();
-            if (!arc.isNull())
-            {
-                arc->moveEndPoint(setComponent(arc->getEndPoint(), v, xyz));
-                ret = true;
-            }
+    //         QSharedPointer<RArc> arc = shapes.first.dynamicCast<RArc>();
+    //         if (!arc.isNull())
+    //         {
+    //             arc->moveEndPoint(setComponent(arc->getEndPoint(), v, xyz));
+    //             ret = true;
+    //         }
 
-            QSharedPointer<RCircle> circle =
-                    shapes.first.dynamicCast<RCircle>();
-            if (!circle.isNull())
-            {
-                circle->setCenter(setComponent(circle->getCenter(), v, xyz));
-                Q_ASSERT(shapes.second.isNull());
-                ret = true;
-            }
+    //         QSharedPointer<RCircle> circle =
+    //                 shapes.first.dynamicCast<RCircle>();
+    //         if (!circle.isNull())
+    //         {
+    //             circle->setCenter(setComponent(circle->getCenter(), v, xyz));
+    //             Q_ASSERT(shapes.second.isNull());
+    //             ret = true;
+    //         }
 
-            QSharedPointer<REllipse> ellipse =
-                    shapes.first.dynamicCast<REllipse>();
-            if (!ellipse.isNull())
-            {
-                if (ellipse->isFullEllipse())
-                {
-                    ellipse->setCenter(
-                            setComponent(ellipse->getCenter(), v, xyz));
-                    Q_ASSERT(shapes.second.isNull());
-                    ret = true;
-                }
-                else
-                {
-                    ellipse->moveEndPoint(
-                            setComponent(ellipse->getEndPoint(), v, xyz),
-                            false);
-                    ret = true;
-                }
-            }
-        }
-        else { Q_ASSERT(false); }
+    //         QSharedPointer<REllipse> ellipse =
+    //                 shapes.first.dynamicCast<REllipse>();
+    //         if (!ellipse.isNull())
+    //         {
+    //             if (ellipse->isFullEllipse())
+    //             {
+    //                 ellipse->setCenter(
+    //                         setComponent(ellipse->getCenter(), v, xyz));
+    //                 Q_ASSERT(shapes.second.isNull());
+    //                 ret = true;
+    //             }
+    //             else
+    //             {
+    //                 ellipse->moveEndPoint(
+    //                         setComponent(ellipse->getEndPoint(), v, xyz),
+    //                         false);
+    //                 ret = true;
+    //             }
+    //         }
+    //     }
+    //     else { Q_ASSERT(false); }
 
-        // move start point of second element:
-        if (!shapes.second.isNull())
-        {
-            QSharedPointer<RLine> line = shapes.second.dynamicCast<RLine>();
-            if (!line.isNull())
-            {
-                line->setStartPoint(
-                        setComponent(line->getStartPoint(), v, xyz));
-                ret = true;
-            }
+    //     // move start point of second element:
+    //     if (!shapes.second.isNull())
+    //     {
+    //         QSharedPointer<RLine> line = shapes.second.dynamicCast<RLine>();
+    //         if (!line.isNull())
+    //         {
+    //             line->setStartPoint(
+    //                     setComponent(line->getStartPoint(), v, xyz));
+    //             ret = true;
+    //         }
 
-            QSharedPointer<RArc> arc = shapes.second.dynamicCast<RArc>();
-            if (!arc.isNull())
-            {
-                arc->moveStartPoint(setComponent(arc->getStartPoint(), v, xyz));
-                ret = true;
-            }
+    //         QSharedPointer<RArc> arc = shapes.second.dynamicCast<RArc>();
+    //         if (!arc.isNull())
+    //         {
+    //             arc->moveStartPoint(setComponent(arc->getStartPoint(), v, xyz));
+    //             ret = true;
+    //         }
 
-            QSharedPointer<REllipse> ellipse =
-                    shapes.second.dynamicCast<REllipse>();
-            if (!ellipse.isNull())
-            {
-                if (!ellipse->isFullEllipse())
-                {
-                    ellipse->moveStartPoint(
-                            setComponent(ellipse->getStartPoint(), v, xyz),
-                            false);
-                    ret = true;
-                }
-            }
-        }
-    }
+    //         QSharedPointer<REllipse> ellipse =
+    //                 shapes.second.dynamicCast<REllipse>();
+    //         if (!ellipse.isNull())
+    //         {
+    //             if (!ellipse->isFullEllipse())
+    //             {
+    //                 ellipse->moveStartPoint(
+    //                         setComponent(ellipse->getStartPoint(), v, xyz),
+    //                         false);
+    //                 ret = true;
+    //             }
+    //         }
+    //     }
+    // }
 
     return ret;
 }
@@ -430,7 +430,7 @@ RHatchEntity::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
         }
 
         QVariant v;
-        v.setValue(list);
+        //v.setValue(list);
         return qMakePair(v, RPropertyAttributes(RPropertyAttributes::List));
     }
 

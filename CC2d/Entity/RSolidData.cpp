@@ -20,21 +20,18 @@
 #include "RSolidEntity.h"
 #include "RTriangle.h"
 
-RSolidData::RSolidData()
-    : REntityData() {
-}
+RSolidData::RSolidData() : REntityData() {}
 
-RSolidData::RSolidData(RDocument* document, const RSolidData& data)
-    : REntityData(document) {
+RSolidData::RSolidData(RDocument *document, const RSolidData &data)
+    : REntityData(document)
+{
     *this = data;
     this->document = document;
-    if (document!=NULL) {
-        linetypeId = document->getLinetypeByLayerId();
-    }
+    if (document != NULL) { linetypeId = document->getLinetypeByLayerId(); }
 }
 
-RSolidData::RSolidData(const RTriangle& triangle) :
-    RPolyline() {
+RSolidData::RSolidData(const RTriangle &triangle) : RPolyline()
+{
 
     appendVertex(triangle.corner[0]);
     appendVertex(triangle.corner[1]);
@@ -42,8 +39,9 @@ RSolidData::RSolidData(const RTriangle& triangle) :
     setClosed(true);
 }
 
-RSolidData::RSolidData(const RVector& p1, const RVector& p2, const RVector& p3) :
-    RPolyline() {
+RSolidData::RSolidData(const RVector &p1, const RVector &p2, const RVector &p3)
+    : RPolyline()
+{
 
     appendVertex(p1);
     appendVertex(p2);
@@ -51,8 +49,10 @@ RSolidData::RSolidData(const RVector& p1, const RVector& p2, const RVector& p3) 
     setClosed(true);
 }
 
-RSolidData::RSolidData(const RVector& p1, const RVector& p2, const RVector& p3, const RVector& p4) :
-    RPolyline() {
+RSolidData::RSolidData(const RVector &p1, const RVector &p2, const RVector &p3,
+                       const RVector &p4)
+    : RPolyline()
+{
 
     appendVertex(p1);
     appendVertex(p2);
@@ -61,18 +61,25 @@ RSolidData::RSolidData(const RVector& p1, const RVector& p2, const RVector& p3, 
     setClosed(true);
 }
 
-QList<RRefPoint> RSolidData::getReferencePoints(RS::ProjectionRenderingHint hint) const {
+QList<RRefPoint>
+RSolidData::getReferencePoints(RS::ProjectionRenderingHint hint) const
+{
     Q_UNUSED(hint)
 
     return RRefPoint::toRefPointList(getVertices());
 }
 
-bool RSolidData::moveReferencePoint(const RVector& referencePoint, const RVector& targetPoint, Qt::KeyboardModifiers modifiers) {
+bool RSolidData::moveReferencePoint(const RVector &referencePoint,
+                                    const RVector &targetPoint,
+                                    Qt::KeyboardModifiers modifiers)
+{
     Q_UNUSED(modifiers)
 
     bool ret = false;
-    for (int i=0; i<vertices.count(); i++) {
-        if (referencePoint.equalsFuzzy(getVertexAt(i))) {
+    for (int i = 0; i < vertices.count(); i++)
+    {
+        if (referencePoint.equalsFuzzy(getVertexAt(i)))
+        {
             setVertexAt(i, targetPoint);
             ret = true;
         }

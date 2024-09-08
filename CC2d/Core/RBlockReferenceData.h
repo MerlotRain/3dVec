@@ -37,57 +37,64 @@ class RDocument;
  * \copyable
  * \ingroup core
  */
-class QCADCORE_EXPORT RBlockReferenceData: public REntityData {
+class QCADCORE_EXPORT RBlockReferenceData : public REntityData
+{
 
-friend class RBlockReferenceEntity;
-friend class RViewportEntity;
+    friend class RBlockReferenceEntity;
+    friend class RViewportEntity;
 
 protected:
-    RBlockReferenceData(RDocument* document, const RBlockReferenceData& data);
+    RBlockReferenceData(RDocument *document, const RBlockReferenceData &data);
 
 public:
     RBlockReferenceData();
-    RBlockReferenceData(RBlock::Id referencedBlockId,
-            const RVector& position, const RVector& scaleFactors,
-            double angle,
-            int columnCount=1, int rowCount=1,
-            double columnSpacing=0, double rowSpacing=0,
-            double visualPropertiesScale=1.0);
+    RBlockReferenceData(RBlock::Id referencedBlockId, const RVector &position,
+                        const RVector &scaleFactors, double angle,
+                        int columnCount = 1, int rowCount = 1,
+                        double columnSpacing = 0, double rowSpacing = 0,
+                        double visualPropertiesScale = 1.0);
 
-    static RS::EntityType getRtti() {
-        return RS::EntityBlockRef;
-    }
+    static RS::EntityType getRtti() { return RS::EntityBlockRef; }
 
-    virtual RS::EntityType getType() const {
-        return RS::EntityBlockRef;
-    }
+    virtual RS::EntityType getType() const { return RS::EntityBlockRef; }
 
     virtual bool isPointType() const;
 
-    virtual QList<RBox> getBoundingBoxes(bool ignoreEmpty=false) const;
-    virtual RBox getBoundingBox(bool ignoreEmpty=false) const;
+    virtual QList<RBox> getBoundingBoxes(bool ignoreEmpty = false) const;
+    virtual RBox getBoundingBox(bool ignoreEmpty = false) const;
 
     virtual void to2D();
 
     virtual RVector getPointOnEntity() const;
 
-    virtual QList<RRefPoint> getInternalReferencePoints(RS::ProjectionRenderingHint hint = RS::RenderTop, QList<REntity::Id>* subEntityIds = NULL) const;
-    virtual QList<RRefPoint> getReferencePoints(RS::ProjectionRenderingHint hint = RS::RenderTop) const;
-    virtual RVector getVectorTo(const RVector& point,  bool limited = true, double strictRange = RMAXDOUBLE) const;
-    virtual double getDistanceTo(const RVector& point, bool limited = true, double range = 0.0,
-                                 bool draft = false, double strictRange = RMAXDOUBLE) const;
+    virtual QList<RRefPoint>
+    getInternalReferencePoints(RS::ProjectionRenderingHint hint = RS::RenderTop,
+                               QList<REntity::Id> *subEntityIds = NULL) const;
+    virtual QList<RRefPoint>
+    getReferencePoints(RS::ProjectionRenderingHint hint = RS::RenderTop) const;
+    virtual RVector getVectorTo(const RVector &point, bool limited = true,
+                                double strictRange = RMAXDOUBLE) const;
+    virtual double getDistanceTo(const RVector &point, bool limited = true,
+                                 double range = 0.0, bool draft = false,
+                                 double strictRange = RMAXDOUBLE) const;
 
-    RBox getQueryBoxInBlockCoordinates(const RBox& box) const;
-    virtual QList<QSharedPointer<RShape> > getShapes(const RBox& queryBox = RDEFAULT_RBOX, bool ignoreComplex = false, bool segment = false, QList<RObject::Id>* entityIds = NULL) const;
+    RBox getQueryBoxInBlockCoordinates(const RBox &box) const;
+    virtual QList<QSharedPointer<RShape>>
+    getShapes(const RBox &queryBox = RDEFAULT_RBOX, bool ignoreComplex = false,
+              bool segment = false, QList<RObject::Id> *entityIds = NULL) const;
 
     //virtual void setSelected(bool on);
 
-    virtual bool moveReferencePoint(const RVector& referencePoint, const RVector& targetPoint, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
-    virtual bool move(const RVector& offset);
-    virtual bool rotate(double rotation, const RVector& center = RDEFAULT_RVECTOR);
-    virtual bool mirror(const RLine& axis);
-    virtual bool scale(const RVector& scaleFactors,
-                       const RVector& center = RDEFAULT_RVECTOR);
+    virtual bool
+    moveReferencePoint(const RVector &referencePoint,
+                       const RVector &targetPoint,
+                       Qt::KeyboardModifiers modifiers = Qt::NoModifier);
+    virtual bool move(const RVector &offset);
+    virtual bool rotate(double rotation,
+                        const RVector &center = RDEFAULT_RVECTOR);
+    virtual bool mirror(const RLine &axis);
+    virtual bool scale(const RVector &scaleFactors,
+                       const RVector &center = RDEFAULT_RVECTOR);
 
     virtual void scaleVisualProperties(double scaleFactor);
 
@@ -95,67 +102,47 @@ public:
 
     void groundReferencedBlockId() const;
 
-    RBlock::Id getReferencedBlockId() const {
-        return referencedBlockId;
-    }
+    RBlock::Id getReferencedBlockId() const { return referencedBlockId; }
 
-    void setReferencedBlockName(const QString& blockName);
+    void setReferencedBlockName(const QString &blockName);
     QString getReferencedBlockName() const;
 
-    RVector getPosition() const {
-        return position;
-    }
-    void setPosition(const RVector& p);
+    RVector getPosition() const { return position; }
+    void setPosition(const RVector &p);
 
-    RVector getScaleFactors() const {
-        return scaleFactors;
-    }
-    void setScaleFactors(const RVector& sf);
+    RVector getScaleFactors() const { return scaleFactors; }
+    void setScaleFactors(const RVector &sf);
 
-    double getRotation() const {
-        return rotation;
-    }
+    double getRotation() const { return rotation; }
     void setRotation(double r);
 
-    int getColumnCount() const {
-        return columnCount;
-    }
-    void setColumnCount(int c) {
-        columnCount = c;
-    }
+    int getColumnCount() const { return columnCount; }
+    void setColumnCount(int c) { columnCount = c; }
 
-    int getRowCount() const {
-        return rowCount;
-    }
-    void setRowCount(int c) {
-        rowCount = c;
-    }
+    int getRowCount() const { return rowCount; }
+    void setRowCount(int c) { rowCount = c; }
 
-    double getColumnSpacing() const {
-        return columnSpacing;
-    }
-    void setColumnSpacing(double s) {
-        columnSpacing = s;
-    }
+    double getColumnSpacing() const { return columnSpacing; }
+    void setColumnSpacing(double s) { columnSpacing = s; }
 
-    double getRowSpacing() const {
-        return rowSpacing;
-    }
-    void setRowSpacing(double s) {
-        rowSpacing = s;
-    }
+    double getRowSpacing() const { return rowSpacing; }
+    void setRowSpacing(double s) { rowSpacing = s; }
 
     virtual void update() const;
     virtual void update(RObject::Id entityId) const;
 
-    QSharedPointer<REntity> queryEntity(REntity::Id entityId, bool transform = false, bool ignoreAttDef = true) const;
-    bool applyTransformationTo(REntity& entity) const;
+    QSharedPointer<REntity> queryEntity(REntity::Id entityId,
+                                        bool transform = false,
+                                        bool ignoreAttDef = true) const;
+    bool applyTransformationTo(REntity &entity) const;
     /**
      * \nonscriptable
      */
-    bool applyTransformationTo(QSharedPointer<REntity>& entity) const;
+    bool applyTransformationTo(QSharedPointer<REntity> &entity) const;
 
-    QSharedPointer<REntity> getTransformed(QSharedPointer<REntity>& entity) const {
+    QSharedPointer<REntity>
+    getTransformed(QSharedPointer<REntity> &entity) const
+    {
         applyTransformationTo(entity);
         return entity;
     }
@@ -163,8 +150,9 @@ public:
     RTransform getTransform() const;
 
     RVector getColumnRowOffset(int col, int row, bool rotated = false) const;
-    void applyColumnRowOffsetTo(REntity& entity, int col, int row, bool rotated = false) const;
-    RVector mapToBlock(const RVector& v) const;
+    void applyColumnRowOffsetTo(REntity &entity, int col, int row,
+                                bool rotated = false) const;
+    RVector mapToBlock(const RVector &v) const;
 
     bool isPixelUnit() const;
 
@@ -173,9 +161,7 @@ public:
      * copy function for Qt 6 scripts:
      * \nonscriptable
      */
-    RBlockReferenceData copy() const {
-        return *this;
-    }
+    RBlockReferenceData copy() const { return *this; }
 #endif
 
 private:
@@ -192,7 +178,7 @@ private:
 
     mutable QList<RBox> boundingBoxes;
     mutable QList<RBox> boundingBoxesIgnoreEmpty;
-    mutable QMap<REntity::Id, QSharedPointer<REntity> > cache;
+    mutable QMap<REntity::Id, QSharedPointer<REntity>> cache;
 };
 
 #endif

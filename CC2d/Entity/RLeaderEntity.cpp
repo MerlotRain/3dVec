@@ -228,19 +228,19 @@ RLeaderEntity::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
     else if (propertyTypeId == PropertyVertexNX)
     {
         QVariant v;
-        v.setValue(RVector::getXList(data.vertices));
+        //v.setValue(RVector::getXList(data.vertices));
         return qMakePair(v, RPropertyAttributes(RPropertyAttributes::List));
     }
     else if (propertyTypeId == PropertyVertexNY)
     {
         QVariant v;
-        v.setValue(RVector::getYList(data.vertices));
+        //v.setValue(RVector::getYList(data.vertices));
         return qMakePair(v, RPropertyAttributes(RPropertyAttributes::List));
     }
     else if (propertyTypeId == PropertyVertexNZ)
     {
         QVariant v;
-        v.setValue(RVector::getZList(data.vertices));
+        //v.setValue(RVector::getZList(data.vertices));
         return qMakePair(v, RPropertyAttributes(RPropertyAttributes::List));
     }
     else if (propertyTypeId == PropertyDimscale ||

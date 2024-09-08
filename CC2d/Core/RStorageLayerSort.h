@@ -7,11 +7,12 @@
 
 class RStorage;
 
-class RStorageLayerSort {
+class RStorageLayerSort
+{
 public:
-    RStorageLayerSort(const RStorage* storage) : storage(storage) {}
+    RStorageLayerSort(const RStorage *storage) : storage(storage) {}
     bool operator()(RLayer::Id a, RLayer::Id b) const;
-    const RStorage* storage;
+    const RStorage *storage;
 };
 
 #endif

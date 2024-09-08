@@ -19,29 +19,34 @@
 #include "RWipeoutData.h"
 #include "RWipeoutEntity.h"
 
-RWipeoutData::RWipeoutData() {
-}
+RWipeoutData::RWipeoutData() {}
 
-RWipeoutData::RWipeoutData(RDocument* document, const RWipeoutData& data)
-    : RPolylineData(document), showFrame(false) {
+RWipeoutData::RWipeoutData(RDocument *document, const RWipeoutData &data)
+    : RPolylineData(document), showFrame(false)
+{
 
     *this = data;
     setDocument(document);
     setClosed(true);
 }
 
-RWipeoutData::RWipeoutData(const RPolyline& polyline) :
-    RPolylineData(polyline), showFrame(false) {
+RWipeoutData::RWipeoutData(const RPolyline &polyline)
+    : RPolylineData(polyline), showFrame(false)
+{
     setClosed(true);
 }
 
-QList<RBox> RWipeoutData::getBoundingBoxes(bool ignoreEmpty) const {
+QList<RBox> RWipeoutData::getBoundingBoxes(bool ignoreEmpty) const
+{
     // don't use implementation of polyline which does not allow use to select wipeout in the center:
     return REntityData::getBoundingBoxes(ignoreEmpty);
 }
 
-QList<RRefPoint> RWipeoutData::getReferencePoints(RS::ProjectionRenderingHint hint) const {
-    if (countVertices()==2) {
+QList<RRefPoint>
+RWipeoutData::getReferencePoints(RS::ProjectionRenderingHint hint) const
+{
+    if (countVertices() == 2)
+    {
         // special case: 2 vertices for rectangle wipeout:
         RVector sp = getVertexAt(0);
         RVector ep = getVertexAt(1);
@@ -54,13 +59,15 @@ QList<RRefPoint> RWipeoutData::getReferencePoints(RS::ProjectionRenderingHint hi
 
         return RRefPoint::toRefPointList(corners);
     }
-    else {
-        return RPolylineData::getReferencePoints(hint);
-    }
+    else { return RPolylineData::getReferencePoints(hint); }
 }
 
-bool RWipeoutData::moveReferencePoint(const RVector& referencePoint, const RVector& targetPoint, Qt::KeyboardModifiers modifiers) {
-    if (countVertices()==2) {
+bool RWipeoutData::moveReferencePoint(const RVector &referencePoint,
+                                      const RVector &targetPoint,
+                                      Qt::KeyboardModifiers modifiers)
+{
+    if (countVertices() == 2)
+    {
         // special case: 2 vertices for rectangle wipeout:
 
         RVector sp = getVertexAt(0);
@@ -72,60 +79,68 @@ bool RWipeoutData::moveReferencePoint(const RVector& referencePoint, const RVect
         corners.append(ep);
         corners.append(RVector(sp.x, ep.y));
 
-        if (referencePoint.equalsFuzzy(corners[0])) {
+        if (referencePoint.equalsFuzzy(corners[0]))
+        {
             setVertexAt(0, targetPoint);
             return true;
         }
-        if (referencePoint.equalsFuzzy(corners[1])) {
+        if (referencePoint.equalsFuzzy(corners[1]))
+        {
             setVertexAt(0, RVector(sp.x, targetPoint.y));
             setVertexAt(1, RVector(targetPoint.x, ep.y));
 
-//            setVertexAt(0, RVector(targetPoint.x, corners[3].y));
-//            setVertexAt(1, RVector(corners[3].x, targetPoint.y));
+            //            setVertexAt(0, RVector(targetPoint.x, corners[3].y));
+            //            setVertexAt(1, RVector(corners[3].x, targetPoint.y));
             return true;
         }
-        if (referencePoint.equalsFuzzy(corners[2])) {
+        if (referencePoint.equalsFuzzy(corners[2]))
+        {
             setVertexAt(1, targetPoint);
             return true;
         }
-        if (referencePoint.equalsFuzzy(corners[3])) {
+        if (referencePoint.equalsFuzzy(corners[3]))
+        {
             setVertexAt(0, RVector(targetPoint.x, sp.y));
             setVertexAt(1, RVector(ep.x, targetPoint.y));
 
-//            setVertexAt(0, RVector(corners[1].x, targetPoint.y));
-//            setVertexAt(1, RVector(targetPoint.x, corners[1].y));
+            //            setVertexAt(0, RVector(corners[1].x, targetPoint.y));
+            //            setVertexAt(1, RVector(targetPoint.x, corners[1].y));
             return true;
         }
 
         return false;
     }
-    else {
-        return RPolylineData::moveReferencePoint(referencePoint, targetPoint, modifiers);
+    else
+    {
+        return RPolylineData::moveReferencePoint(referencePoint, targetPoint,
+                                                 modifiers);
     }
 }
 
-double RWipeoutData::getDistanceTo(const RVector& point, bool limited, double range, bool draft, double strictRange) const {
+double RWipeoutData::getDistanceTo(const RVector &point, bool limited,
+                                   double range, bool draft,
+                                   double strictRange) const
+{
     RPolyline boundary = getBoundary();
 
     double minDist = RPolyline::getDistanceTo(point, limited, strictRange);
 
     // point not close to frame:
-    if (RMath::isNaN(minDist) || strictRange<minDist) {
-        if (boundary.contains(point)) {
-            minDist = strictRange;
-        }
+    if (RMath::isNaN(minDist) || strictRange < minDist)
+    {
+        if (boundary.contains(point)) { minDist = strictRange; }
     }
 
-    if (RMath::isNaN(minDist)) {
-        return RMAXDOUBLE;
-    }
+    if (RMath::isNaN(minDist)) { return RMAXDOUBLE; }
 
     return minDist;
 }
 
-RPolyline RWipeoutData::getBoundary() const {
+RPolyline RWipeoutData::getBoundary() const
+{
     // special case: two vertices form a rectangle:
-    if (countVertices()==2 && !hasArcSegments()) {
+    if (countVertices() == 2 && !hasArcSegments())
+    {
         RVector v1 = getVertexAt(0);
         RVector v2 = getVertexAt(1);
 
@@ -137,7 +152,5 @@ RPolyline RWipeoutData::getBoundary() const {
         pl.setClosed(true);
         return pl;
     }
-    else {
-        return *this;
-    }
+    else { return *this; }
 }

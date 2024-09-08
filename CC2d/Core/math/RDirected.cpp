@@ -17,4 +17,3 @@
  * along with QCAD.
  */
 #include "RDirected.h"
-

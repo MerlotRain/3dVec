@@ -24,6 +24,4 @@ RResourceList<RPattern> RPatternListMetric::res;
  * Initializes the pattern list by creating empty QPainterPath
  * objects, one for each pattern that could be found.
  */
-void RPatternListMetric::init() {
-    RPatternList::init(true, res);
-}
+void RPatternListMetric::init() { RPatternList::init(true, res); }

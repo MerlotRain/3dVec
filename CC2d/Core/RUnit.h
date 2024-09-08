@@ -40,49 +40,49 @@ class RDocument;
  *
  * \scriptable
  */
-class QCADCORE_EXPORT RUnit {
+class QCADCORE_EXPORT RUnit
+{
 public:
     //static RS::Unit stringToUnit(const QString& u);
 
     static QString formatLinear(double length, RS::Unit unit,
-                                  RS::LinearFormat format,
-                                  int prec, bool showUnit=false,
-                                  bool showLeadingZeroes=true, 
-                                  bool showTrailingZeroes=false,
-                                  bool onlyPreciseResult=false,
-                                  char decimalSeparator=RDEFAULT_DOT);
-    static QString formatScientific(double length, RS::Unit unit,
-                                  int prec, bool showUnit=false,
-                                  bool showLeadingZeroes=true, 
-                                  bool showTrailingZeroes=false,
-                                  bool onlyPreciseResult=false);
-    static QString formatDecimal(double length, RS::Unit unit,
-                                  int prec, bool showUnit=false,
-                                  bool showLeadingZeroes=true, 
-                                  bool showTrailingZeroes=false,
-                                  bool onlyPreciseResult=false,
-                                  char decimalSeparator=RDEFAULT_DOT);
-    static QString formatEngineering(double length, RS::Unit unit,
-                                  int prec, bool showUnit=false,
-                                  bool showLeadingZeroes=true, 
-                                  bool showTrailingZeroes=false,
-                                  bool onlyPreciseResult=false);
-    static QString formatArchitectural(double length, RS::Unit unit,
-                                  int prec, bool showUnit=false,
-                                  bool showLeadingZeroes=true, 
-                                  bool showTrailingZeroes=false,
-                                  bool onlyPreciseResult=false);
-    static QString formatFractional(double length, RS::Unit unit,
-                                  int prec, bool showUnit=false,
-                                  bool showLeadingZeroes=true, 
-                                  bool showTrailingZeroes=false,
-                                  bool onlyPreciseResult=false);
+                                RS::LinearFormat format, int prec,
+                                bool showUnit = false,
+                                bool showLeadingZeroes = true,
+                                bool showTrailingZeroes = false,
+                                bool onlyPreciseResult = false,
+                                char decimalSeparator = RDEFAULT_DOT);
+    static QString formatScientific(double length, RS::Unit unit, int prec,
+                                    bool showUnit = false,
+                                    bool showLeadingZeroes = true,
+                                    bool showTrailingZeroes = false,
+                                    bool onlyPreciseResult = false);
+    static QString formatDecimal(double length, RS::Unit unit, int prec,
+                                 bool showUnit = false,
+                                 bool showLeadingZeroes = true,
+                                 bool showTrailingZeroes = false,
+                                 bool onlyPreciseResult = false,
+                                 char decimalSeparator = RDEFAULT_DOT);
+    static QString formatEngineering(double length, RS::Unit unit, int prec,
+                                     bool showUnit = false,
+                                     bool showLeadingZeroes = true,
+                                     bool showTrailingZeroes = false,
+                                     bool onlyPreciseResult = false);
+    static QString formatArchitectural(double length, RS::Unit unit, int prec,
+                                       bool showUnit = false,
+                                       bool showLeadingZeroes = true,
+                                       bool showTrailingZeroes = false,
+                                       bool onlyPreciseResult = false);
+    static QString formatFractional(double length, RS::Unit unit, int prec,
+                                    bool showUnit = false,
+                                    bool showLeadingZeroes = true,
+                                    bool showTrailingZeroes = false,
+                                    bool onlyPreciseResult = false);
 
-    static QString formatAngle(double angle, RS::AngleFormat format,
-                               int prec,
-                               bool showLeadingZeroes=true,
-                               bool showTrailingZeroes=false,
-                               char decimalSeparator=RDEFAULT_DOT);
+    static QString formatAngle(double angle, RS::AngleFormat format, int prec,
+                               bool showLeadingZeroes = true,
+                               bool showTrailingZeroes = false,
+                               char decimalSeparator = RDEFAULT_DOT);
 
     /*
     static RVector paperFormatToSize(RS::PaperFormat p);
@@ -94,30 +94,36 @@ public:
 
     static bool isMetric(RS::Unit unit);
     static double convert(double value, RS::Unit source, RS::Unit dest);
-    static RVector convert(const RVector& value, RS::Unit source, RS::Unit dest);
+    static RVector convert(const RVector &value, RS::Unit source,
+                           RS::Unit dest);
     static double getFactorToM(RS::Unit unit);
-    static RS::Unit parseUnit(const QString& str);
-    static QString unitToSymbol(RS::Unit unit, bool asText=false);
-    static QString unitToName(RS::Unit unit, bool tr=true);
-    static QString getLabel(double v, RDocument& document,
-                            int precisionOverride=RDEFAULT_MIN1,
-                            bool forceSuppressTrailingZeroes=false,
-                            bool onlyPreciseResult=false,
-                            char decimalSeparator=RDEFAULT_DOT);
+    static RS::Unit parseUnit(const QString &str);
+    static QString unitToSymbol(RS::Unit unit, bool asText = false);
+    static QString unitToName(RS::Unit unit, bool tr = true);
+    static QString getLabel(double v, RDocument &document,
+                            int precisionOverride = RDEFAULT_MIN1,
+                            bool forceSuppressTrailingZeroes = false,
+                            bool onlyPreciseResult = false,
+                            char decimalSeparator = RDEFAULT_DOT);
 
     static QString doubleToString(double value, double prec,
-        bool showLeadingZeroes=true, bool showTrailingZeroes=false,
-        char decimalSeparator=RDEFAULT_DOT);
+                                  bool showLeadingZeroes = true,
+                                  bool showTrailingZeroes = false,
+                                  char decimalSeparator = RDEFAULT_DOT);
     static QString doubleToString(double value, int prec,
-        bool showLeadingZeroes=true, bool showTrailingZeroes=false,
-        char decimalSeparator=RDEFAULT_DOT);
+                                  bool showLeadingZeroes = true,
+                                  bool showTrailingZeroes = false,
+                                  char decimalSeparator = RDEFAULT_DOT);
 
     // workaround: make the second version also accessible by scripts:
     static QString doubleToStringDec(double value, int prec,
-        bool showLeadingZeroes=true, bool showTrailingZeroes=false,
-        char decimalSeparator=RDEFAULT_DOT) {
+                                     bool showLeadingZeroes = true,
+                                     bool showTrailingZeroes = false,
+                                     char decimalSeparator = RDEFAULT_DOT)
+    {
 
-        return doubleToString(value, prec, showLeadingZeroes, showTrailingZeroes, decimalSeparator);
+        return doubleToString(value, prec, showLeadingZeroes,
+                              showTrailingZeroes, decimalSeparator);
     }
 };
 

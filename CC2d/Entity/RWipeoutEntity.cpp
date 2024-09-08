@@ -156,32 +156,32 @@ RWipeoutEntity::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
     if (propertyTypeId == PropertyVertexNX)
     {
         QVariant v;
-        v.setValue(RVector::getXList(data.vertices));
+        //v.setValue(RVector::getXList(data.vertices));
         return qMakePair(v, RPropertyAttributes(RPropertyAttributes::List));
     }
     else if (propertyTypeId == PropertyVertexNY)
     {
         QVariant v;
-        v.setValue(RVector::getYList(data.vertices));
+        //v.setValue(RVector::getYList(data.vertices));
         return qMakePair(v, RPropertyAttributes(RPropertyAttributes::List));
     }
     else if (propertyTypeId == PropertyVertexNZ)
     {
         QVariant v;
-        v.setValue(RVector::getZList(data.vertices));
+        //v.setValue(RVector::getZList(data.vertices));
         return qMakePair(v, RPropertyAttributes(RPropertyAttributes::List));
     }
     else if (propertyTypeId == PropertyBulgeN)
     {
         QVariant v;
-        v.setValue(data.bulges);
+        //v.setValue(data.bulges);
         return qMakePair(v, RPropertyAttributes(RPropertyAttributes::List |
                                                 RPropertyAttributes::UnitLess));
     }
     else if (propertyTypeId == PropertyFrame)
     {
         QVariant v;
-        v.setValue(data.showFrame);
+        //v.setValue(data.showFrame);
         return qMakePair(v, RPropertyAttributes());
     }
 
@@ -193,7 +193,7 @@ RWipeoutEntity::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
             if (propertyTypeId == PropertyBaseAngle)
             {
                 QVariant v;
-                v.setValue(baseAngle);
+                //v.setValue(baseAngle);
                 return qMakePair(
                         v, RPropertyAttributes(RPropertyAttributes::Angle |
                                                RPropertyAttributes::Redundant |
@@ -202,14 +202,14 @@ RWipeoutEntity::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
             else if (propertyTypeId == PropertySize1)
             {
                 QVariant v;
-                v.setValue(data.getWidth());
+                //v.setValue(data.getWidth());
                 return qMakePair(
                         v, RPropertyAttributes(RPropertyAttributes::Redundant));
             }
             else if (propertyTypeId == PropertySize2)
             {
                 QVariant v;
-                v.setValue(data.getHeight());
+                //v.setValue(data.getHeight());
                 return qMakePair(
                         v, RPropertyAttributes(RPropertyAttributes::Redundant));
             }

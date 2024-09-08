@@ -61,8 +61,7 @@ RDocument::RDocument(RStorage &storage, RSpatialIndex &spatialIndex,
 //        t.addObject(QSharedPointer<RObject>(new RLinetype(this, name)));
 //    }
 //}
-void RDocument::init(bool beforeLoad) 
-{}
+void RDocument::init(bool beforeLoad) {}
 
 void RDocument::initLinetypes(RTransaction *transaction)
 {

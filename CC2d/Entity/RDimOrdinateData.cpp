@@ -19,53 +19,55 @@
 #include "RDimOrdinateData.h"
 #include "RUnit.h"
 
-RDimOrdinateData::RDimOrdinateData() {
-}
+RDimOrdinateData::RDimOrdinateData() {}
 
-RDimOrdinateData::RDimOrdinateData(RDocument* document, const RDimOrdinateData& data)
-    : RDimensionData(document) {
+RDimOrdinateData::RDimOrdinateData(RDocument *document,
+                                   const RDimOrdinateData &data)
+    : RDimensionData(document)
+{
     *this = data;
     this->document = document;
-    if (document!=NULL) {
-        linetypeId = document->getLinetypeByLayerId();
-    }
+    if (document != NULL) { linetypeId = document->getLinetypeByLayerId(); }
 }
 
 /**
  * \param leaderEndPoint End point of leader (where the label is).
  * \param definingPoint The point where the ordinate is measured.
  */
-RDimOrdinateData::RDimOrdinateData(const RDimensionData& dimData,
-                                 const RVector& leaderEndPoint,
-                                 const RVector& definingPoint)
-    : RDimensionData(dimData),
-      definingPoint(definingPoint),
-      leaderEndPoint(leaderEndPoint) {
-
+RDimOrdinateData::RDimOrdinateData(const RDimensionData &dimData,
+                                   const RVector &leaderEndPoint,
+                                   const RVector &definingPoint)
+    : RDimensionData(dimData), definingPoint(definingPoint),
+      leaderEndPoint(leaderEndPoint)
+{
 }
 
-bool RDimOrdinateData::isValid() const {
-    return RDimensionData::isValid() &&
-            leaderEndPoint.isValid() &&
-            definingPoint.isValid();
+bool RDimOrdinateData::isValid() const
+{
+    return RDimensionData::isValid() && leaderEndPoint.isValid() &&
+           definingPoint.isValid();
 }
 
-bool RDimOrdinateData::isSane() const {
-    return RDimensionData::isSane() &&
-            leaderEndPoint.isSane() &&
-            definingPoint.isSane();
+bool RDimOrdinateData::isSane() const
+{
+    return RDimensionData::isSane() && leaderEndPoint.isSane() &&
+           definingPoint.isSane();
 }
 
-RBox RDimOrdinateData::getBoundingBox(bool ignoreEmpty) const {
+RBox RDimOrdinateData::getBoundingBox(bool ignoreEmpty) const
+{
     RBox ret = RDimensionData::getBoundingBox(ignoreEmpty);
-    if (!ignoreEmpty) {
+    if (!ignoreEmpty)
+    {
         // include definition point in bounding box, so the origin can be moved when stretching:
         ret.growToInclude(definitionPoint);
     }
     return ret;
 }
 
-QList<RRefPoint> RDimOrdinateData::getReferencePoints(RS::ProjectionRenderingHint hint) const {
+QList<RRefPoint>
+RDimOrdinateData::getReferencePoints(RS::ProjectionRenderingHint hint) const
+{
     QList<RRefPoint> ret = RDimensionData::getReferencePoints(hint);
 
     ret.append(leaderEndPoint);
@@ -74,29 +76,34 @@ QList<RRefPoint> RDimOrdinateData::getReferencePoints(RS::ProjectionRenderingHin
     return ret;
 }
 
-bool RDimOrdinateData::moveReferencePoint(const RVector& referencePoint, const RVector& targetPoint, Qt::KeyboardModifiers modifiers) {
-    bool ret = RDimensionData::moveReferencePoint(referencePoint, targetPoint, modifiers);
+bool RDimOrdinateData::moveReferencePoint(const RVector &referencePoint,
+                                          const RVector &targetPoint,
+                                          Qt::KeyboardModifiers modifiers)
+{
+    bool ret = RDimensionData::moveReferencePoint(referencePoint, targetPoint,
+                                                  modifiers);
 
-    if (referencePoint.equalsFuzzy(leaderEndPoint)) {
+    if (referencePoint.equalsFuzzy(leaderEndPoint))
+    {
         leaderEndPoint = targetPoint;
         autoTextPos = true;
         ret = true;
     }
-    else if (referencePoint.equalsFuzzy(definingPoint)) {
+    else if (referencePoint.equalsFuzzy(definingPoint))
+    {
         definingPoint = targetPoint;
         autoTextPos = true;
         ret = true;
     }
 
-    if (ret) {
-        update();
-    }
+    if (ret) { update(); }
 
     return ret;
 }
 
 
-bool RDimOrdinateData::move(const RVector& offset) {
+bool RDimOrdinateData::move(const RVector &offset)
+{
     RDimensionData::move(offset);
     leaderEndPoint.move(offset);
     definingPoint.move(offset);
@@ -104,7 +111,8 @@ bool RDimOrdinateData::move(const RVector& offset) {
     return true;
 }
 
-bool RDimOrdinateData::rotate(double rotation, const RVector& center) {
+bool RDimOrdinateData::rotate(double rotation, const RVector &center)
+{
     RDimensionData::rotate(rotation, center);
     leaderEndPoint.rotate(rotation, center);
     definingPoint.rotate(rotation, center);
@@ -112,7 +120,8 @@ bool RDimOrdinateData::rotate(double rotation, const RVector& center) {
     return true;
 }
 
-bool RDimOrdinateData::scale(const RVector& scaleFactors, const RVector& center) {
+bool RDimOrdinateData::scale(const RVector &scaleFactors, const RVector &center)
+{
     RDimensionData::scale(scaleFactors, center);
     leaderEndPoint.scale(scaleFactors, center);
     definingPoint.scale(scaleFactors, center);
@@ -120,7 +129,8 @@ bool RDimOrdinateData::scale(const RVector& scaleFactors, const RVector& center)
     return true;
 }
 
-bool RDimOrdinateData::mirror(const RLine& axis) {
+bool RDimOrdinateData::mirror(const RLine &axis)
+{
     RDimensionData::mirror(axis);
     leaderEndPoint.mirror(axis);
     definingPoint.mirror(axis);
@@ -128,14 +138,13 @@ bool RDimOrdinateData::mirror(const RLine& axis) {
     return true;
 }
 
-bool RDimOrdinateData::stretch(const RPolyline& area, const RVector& offset) {
+bool RDimOrdinateData::stretch(const RPolyline &area, const RVector &offset)
+{
     RDimensionData::stretch(area, offset);
     leaderEndPoint.stretch(area, offset);
     definingPoint.stretch(area, offset);
     definitionPoint.stretch(area, offset);
-    if (!autoTextPos) {
-        textPositionCenter.stretch(area, offset);
-    }
+    if (!autoTextPos) { textPositionCenter.stretch(area, offset); }
     update();
     return true;
 }
@@ -267,16 +276,17 @@ QList<QSharedPointer<RShape> > RDimOrdinateData::getShapes(const RBox& queryBox,
 }
 */
 
-double RDimOrdinateData::getMeasuredValue() const {
-    if (isMeasuringXAxis()) {
-        return qAbs(definingPoint.x-definitionPoint.x) * getDimlfac();
+double RDimOrdinateData::getMeasuredValue() const
+{
+    if (isMeasuringXAxis())
+    {
+        return qAbs(definingPoint.x - definitionPoint.x) * getDimlfac();
     }
-    else {
-        return qAbs(definingPoint.y-definitionPoint.y) * getDimlfac();
-    }
+    else { return qAbs(definingPoint.y - definitionPoint.y) * getDimlfac(); }
 }
 
-QString RDimOrdinateData::getAutoLabel() const {
+QString RDimOrdinateData::getAutoLabel() const
+{
     double distance = getMeasuredValue();
     return formatLabel(distance);
 }

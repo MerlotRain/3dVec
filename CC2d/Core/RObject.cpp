@@ -384,66 +384,66 @@ bool RObject::setMemberVector(QList<RVector> &variable, const QVariant &value,
         return true;
     }
 
-    if (!value.canConvert<QList<QPair<int, double>>>())
-    {
-        qWarning() << "RObject::setMemberVector: '" << value
-                   << "' is not a QList<QPair<int, double> >";
-        return false;
-    }
+    // if (!value.canConvert<QList<QPair<int, double>>>())
+    // {
+    //     qWarning() << "RObject::setMemberVector: '" << value
+    //                << "' is not a QList<QPair<int, double> >";
+    //     return false;
+    // }
 
-    QList<QPair<int, double>> pairList =
-            value.value<QList<QPair<int, double>>>();
-    QList<QPair<int, double>>::iterator it;
-    int offset = 0;
-    for (it = pairList.begin(); it != pairList.end(); ++it)
-    {
-        int i = (*it).first;
-        double v = (*it).second;
+    // QList<QPair<int, double>> pairList =
+    //         value.value<QList<QPair<int, double>>>();
+    // QList<QPair<int, double>>::iterator it;
+    // int offset = 0;
+    // for (it = pairList.begin(); it != pairList.end(); ++it)
+    // {
+    //     int i = (*it).first;
+    //     double v = (*it).second;
 
-        // entry was removed:
-        if (RMath::isNaN(v) && i - offset < variable.size())
-        {
-            variable.removeLast();
-            offset++;
-        }
+    //     // entry was removed:
+    //     if (RMath::isNaN(v) && i - offset < variable.size())
+    //     {
+    //         variable.removeLast();
+    //         offset++;
+    //     }
 
-        // entry was added:
-        else if (i >= variable.size())
-        {
-            switch (xyz)
-            {
-                case RObject::X:
-                    variable.append(RVector(v, 0.0, 0.0));
-                    break;
-                case RObject::Y:
-                    variable.append(RVector(0.0, v, 0.0));
-                    break;
-                case RObject::Z:
-                    variable.append(RVector(0.0, 0.0, v));
-                    break;
-            }
-        }
+    //     // entry was added:
+    //     else if (i >= variable.size())
+    //     {
+    //         switch (xyz)
+    //         {
+    //             case RObject::X:
+    //                 variable.append(RVector(v, 0.0, 0.0));
+    //                 break;
+    //             case RObject::Y:
+    //                 variable.append(RVector(0.0, v, 0.0));
+    //                 break;
+    //             case RObject::Z:
+    //                 variable.append(RVector(0.0, 0.0, v));
+    //                 break;
+    //         }
+    //     }
 
-        // entry was changed:
-        else if (i < variable.size())
-        {
-            switch (xyz)
-            {
-                case RObject::X:
-                    variable[i].x = v;
-                    break;
-                case RObject::Y:
-                    variable[i].y = v;
-                    break;
-                case RObject::Z:
-                    variable[i].z = v;
-                    break;
-            }
-            variable[i].valid = true;
-        }
+    //     // entry was changed:
+    //     else if (i < variable.size())
+    //     {
+    //         switch (xyz)
+    //         {
+    //             case RObject::X:
+    //                 variable[i].x = v;
+    //                 break;
+    //             case RObject::Y:
+    //                 variable[i].y = v;
+    //                 break;
+    //             case RObject::Z:
+    //                 variable[i].z = v;
+    //                 break;
+    //         }
+    //         variable[i].valid = true;
+    //     }
 
-        else { Q_ASSERT(false); }
-    }
+    //     else { Q_ASSERT(false); }
+    // }
 
     return true;
 }
@@ -454,40 +454,40 @@ bool RObject::setMemberVector(QList<RVector> &variable, const QVariant &value,
 bool RObject::setMember(QList<double> &variable, const QVariant &value,
                         bool condition)
 {
-    if (!condition) { return false; }
-    if (!value.canConvert<QList<QPair<int, double>>>())
-    {
-        qWarning() << QString("RObject::setMember: '%1' is not a "
-                              "QList<QPair<int, double> >")
-                              .arg(value.toString());
-        return false;
-    }
+    // if (!condition) { return false; }
+    // if (!value.canConvert<QList<QPair<int, double>>>())
+    // {
+    //     qWarning() << QString("RObject::setMember: '%1' is not a "
+    //                           "QList<QPair<int, double> >")
+    //                           .arg(value.toString());
+    //     return false;
+    // }
 
-    QList<QPair<int, double>> pairList =
-            value.value<QList<QPair<int, double>>>();
-    QList<QPair<int, double>>::iterator it;
+    // QList<QPair<int, double>> pairList =
+    //         value.value<QList<QPair<int, double>>>();
+    // QList<QPair<int, double>>::iterator it;
 
-    int offset = 0;
-    for (it = pairList.begin(); it != pairList.end(); ++it)
-    {
-        int i = (*it).first;
-        double v = (*it).second;
+    // int offset = 0;
+    // for (it = pairList.begin(); it != pairList.end(); ++it)
+    // {
+    //     int i = (*it).first;
+    //     double v = (*it).second;
 
-        // entry was removed:
-        if (RMath::isNaN(v) && i - offset < variable.size())
-        {
-            variable.removeLast();
-            offset++;
-        }
+    //     // entry was removed:
+    //     if (RMath::isNaN(v) && i - offset < variable.size())
+    //     {
+    //         variable.removeLast();
+    //         offset++;
+    //     }
 
-        // entry was added:
-        else if (i >= variable.size()) { variable.append(v); }
+    //     // entry was added:
+    //     else if (i >= variable.size()) { variable.append(v); }
 
-        // entry was changed:
-        else if (i < variable.size()) { variable[i] = v; }
+    //     // entry was changed:
+    //     else if (i < variable.size()) { variable[i] = v; }
 
-        else { Q_ASSERT(false); }
-    }
+    //     else { Q_ASSERT(false); }
+    // }
 
     return true;
 }

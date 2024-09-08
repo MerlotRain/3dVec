@@ -22,12 +22,12 @@
 
 #include "CC2dCoreExport.h"
 
-#include <QString>
 #include <QColor>
+#include <QString>
 
+#include "RBox.h"
 #include "RGlobal.h"
 #include "RObject.h"
-#include "RBox.h"
 
 class RDocument;
 
@@ -38,7 +38,8 @@ class RDocument;
  * \scriptable
  * \sharedPointerSupport
  */
-class QCADCORE_EXPORT RView: public RObject {
+class QCADCORE_EXPORT RView : public RObject
+{
 public:
     static RPropertyTypeId PropertyName;
     static RPropertyTypeId PropertyCenterPoint;
@@ -48,71 +49,54 @@ public:
 public:
     RView();
 
-    RView(RDocument* document, const QString& name, RVector centerPoint,
-        double width, double height);
+    RView(RDocument *document, const QString &name, RVector centerPoint,
+          double width, double height);
 
     virtual ~RView();
 
     static void init();
 
-    static RS::EntityType getRtti() {
-        return RS::ObjectView;
+    static RS::EntityType getRtti() { return RS::ObjectView; }
+
+    virtual RS::EntityType getType() const { return RS::ObjectView; }
+
+    virtual RView *clone() const;
+
+    QString getName() const { return name; }
+
+    void setName(const QString &n) { name = n; }
+
+    RVector getCenterPoint() const { return centerPoint; }
+
+    void setCenterPoint(const RVector &cPoint) { centerPoint = cPoint; }
+
+    double getWidth() const { return width; }
+
+    void setWidth(double w) { width = w; }
+
+    double getHeight() const { return height; }
+
+    void setHeight(double h) { height = h; }
+
+    RBox getBox()
+    {
+        return RBox(centerPoint - RVector(width, height) / 2,
+                    centerPoint + RVector(width, height) / 2);
     }
 
-    virtual RS::EntityType getType() const {
-        return RS::ObjectView;
-    }
-
-    virtual RView* clone() const;
-
-    QString getName() const {
-        return name;
-    }
-
-    void setName(const QString& n) {
-        name = n;
-    }
-
-    RVector getCenterPoint() const {
-        return centerPoint;
-    }
-
-    void setCenterPoint(const RVector& cPoint) {
-        centerPoint = cPoint;
-    }
-
-    double getWidth() const {
-        return width;
-    }
-
-    void setWidth(double w) {
-        width = w;
-    }
-
-    double getHeight() const {
-        return height;
-    }
-
-    void setHeight(double h) {
-        height = h;
-    }
-
-    RBox getBox() {
-        return RBox(centerPoint - RVector(width, height) / 2, centerPoint
-                + RVector(width, height) / 2);
-    }
-
-    void scale(double factor) {
+    void scale(double factor)
+    {
         centerPoint.scale(factor);
-        width*=factor;
-        height*=factor;
+        width *= factor;
+        height *= factor;
     }
 
-    virtual QPair<QVariant, RPropertyAttributes> getProperty(
-            RPropertyTypeId& propertyTypeId,
-            bool humanReadable = false, bool noAttributes = false, bool showOnRequest = false);
+    virtual QPair<QVariant, RPropertyAttributes>
+    getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
+                bool noAttributes = false, bool showOnRequest = false);
     virtual bool setProperty(RPropertyTypeId propertyTypeId,
-            const QVariant& value, RTransaction* transaction=NULL);
+                             const QVariant &value,
+                             RTransaction *transaction = NULL);
 
 private:
     QString name;

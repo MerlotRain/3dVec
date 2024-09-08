@@ -45,7 +45,6 @@ typedef QMap<QString, QString> RQMapQStringQString;
 #endif
 
 
-
 /**
  * Abstract base class for all objects. Objects have
  * an unique ID. Object types may register property types.
@@ -58,7 +57,8 @@ typedef QMap<QString, QString> RQMapQStringQString;
  * \scriptable
  * \sharedPointerSupport
  */
-class QCADCORE_EXPORT RObject {
+class QCADCORE_EXPORT RObject
+{
 
     friend class RStorage;
 
@@ -76,76 +76,66 @@ public:
     static RPropertyTypeId PropertySelected;
     static RPropertyTypeId PropertyInvisible;
 
-    enum XYZ {
-        X, Y, Z
+    enum XYZ
+    {
+        X,
+        Y,
+        Z
     };
 
 public:
-    enum ObjectFlag {
+    enum ObjectFlag
+    {
         NoFlags = 0x000,
-        Undone = 0x001,           //!< object is undone
-        Protect = 0x002,          //!< object is protected
-        Selected = 0x004,         //!< object is selected
-        Invisible = 0x008,        //!< object is invisible
-        WorkingSet = 0x010        //!< object is part of the current working set
+        Undone = 0x001,   //!< object is undone
+        Protect = 0x002,  //!< object is protected
+        Selected = 0x004, //!< object is selected
+        Invisible = 0x008,//!< object is invisible
+        WorkingSet = 0x010//!< object is part of the current working set
     };
     Q_DECLARE_FLAGS(Flags, ObjectFlag)
 
 public:
-    RObject(RDocument* document=NULL);
-    RObject(const RObject& other);
+    RObject(RDocument *document = NULL);
+    RObject(const RObject &other);
     virtual ~RObject();
 
     static void init();
 
-    static RS::EntityType getRtti() {
-        return RS::ObjectUnknown;
-    }
+    static RS::EntityType getRtti() { return RS::ObjectUnknown; }
 
-    virtual RS::EntityType getType() const {
-        return RS::ObjectUnknown;
-    }
+    virtual RS::EntityType getType() const { return RS::ObjectUnknown; }
 
-    virtual RObject* clone() const = 0;
+    virtual RObject *clone() const = 0;
 
     /**
      * \return True to always clone object instead of saving diff when object changes.
      * This can be used for complex object types which cannot be modified using properties.
      */
-    virtual bool mustAlwaysClone() const {
-        return false;
-    }
+    virtual bool mustAlwaysClone() const { return false; }
 
-    RDocument* getDocument() {
-        return document;
-    }
+    RDocument *getDocument() { return document; }
 
-    const RDocument* getDocument() const {
-        return document;
-    }
+    const RDocument *getDocument() const { return document; }
 
-    void setDocument(RDocument* document);
+    void setDocument(RDocument *document);
 
-    void setFlag(int flag, bool on = true) {
-        if (on) {
-            flags |= (ObjectFlag)flag;
-        } else {
-            flags &= ~(ObjectFlag)flag;
-        }
+    void setFlag(int flag, bool on = true)
+    {
+        if (on) { flags |= (ObjectFlag) flag; }
+        else { flags &= ~(ObjectFlag) flag; }
     }
-    bool getFlag(int flag) const {
-        return (int)(flags & flag) == flag;
-    }
+    bool getFlag(int flag) const { return (int) (flags & flag) == flag; }
 
     /**
      * \nonscriptable
      */
     template<class T>
-    static bool setMember(T& variable, const QVariant& value, bool condition = true) {
-        if (!condition) {
-            return false;
-        }
-        variable = value.value<T> ();
+    static bool setMember(T &variable, const QVariant &value,
+                          bool condition = true)
+    {
+        if (!condition) { return false; }
+        variable = value.value<T>();
         return true;
     }
 
@@ -154,59 +144,40 @@ public:
      * An object without ID is not stored in the DB and not part of
      * a document.
      */
-    RObject::Id getId() const {
-        return objectId;
-    }
+    RObject::Id getId() const { return objectId; }
 
-    RObject::Handle getHandle() const {
-        return handle;
-    }
+    RObject::Handle getHandle() const { return handle; }
 
-    bool isProtected() const {
-        return getFlag(RObject::Protect);
-    }
+    bool isProtected() const { return getFlag(RObject::Protect); }
 
-    void setProtected(bool on) {
-        setFlag(RObject::Protect, on);
-    }
+    void setProtected(bool on) { setFlag(RObject::Protect, on); }
 
-    bool isInvisible() const {
-        return getFlag(RObject::Invisible);
-    }
+    bool isInvisible() const { return getFlag(RObject::Invisible); }
 
-    void setInvisible(bool on) {
-        setFlag(RObject::Invisible, on);
-    }
+    void setInvisible(bool on) { setFlag(RObject::Invisible, on); }
 
-    virtual bool isSelected() const {
-        return getFlag(RObject::Selected);
-    }
+    virtual bool isSelected() const { return getFlag(RObject::Selected); }
 
-    virtual void setSelected(bool on) {
-        setFlag(RObject::Selected, on);
-    }
+    virtual void setSelected(bool on) { setFlag(RObject::Selected, on); }
 
-    bool isUndone() const {
-        return getFlag(RObject::Undone);
-    }
+    bool isUndone() const { return getFlag(RObject::Undone); }
 
-    virtual bool isWorkingSet() const {
-        return getFlag(RObject::WorkingSet);
-    }
+    virtual bool isWorkingSet() const { return getFlag(RObject::WorkingSet); }
 
-    virtual void setWorkingSet(bool on) {
-        setFlag(RObject::WorkingSet, on);
-    }
+    virtual void setWorkingSet(bool on) { setFlag(RObject::WorkingSet, on); }
 
-    virtual QSet<RPropertyTypeId> getPropertyTypeIds(RPropertyAttributes::Option option = RPropertyAttributes::NoOptions) const;
+    virtual QSet<RPropertyTypeId>
+    getPropertyTypeIds(RPropertyAttributes::Option option =
+                               RPropertyAttributes::NoOptions) const;
     virtual QSet<RPropertyTypeId> getCustomPropertyTypeIds() const;
 
     /**
      * \return The value and attributes of the given property or an invalid
      *      property if this property owner has no property with the given ID.
      */
-    virtual QPair<QVariant, RPropertyAttributes> getProperty(RPropertyTypeId& propertyTypeId,
-        bool humanReadable = false, bool noAttributes = false, bool showOnRequest = false);
+    virtual QPair<QVariant, RPropertyAttributes>
+    getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
+                bool noAttributes = false, bool showOnRequest = false);
 
     /**
      * Sets the given property to the given value. If this property owner
@@ -217,121 +188,131 @@ public:
      * \return True if the property owner was modified in any way, false otherwise.
      */
     virtual bool setProperty(RPropertyTypeId propertyTypeId,
-        const QVariant& value, RTransaction* transaction=NULL);
+                             const QVariant &value,
+                             RTransaction *transaction = NULL);
 
     /**
      * \return True if this property owner has a property with the given ID,
      *      false otherwise.
      */
-    virtual bool hasPropertyType(RPropertyTypeId propertyTypeId) {
+    virtual bool hasPropertyType(RPropertyTypeId propertyTypeId)
+    {
         return RPropertyTypeId::hasPropertyType(getType(), propertyTypeId);
     }
 
     bool hasCustomProperties() const;
-    bool hasCustomProperty(const QString& title, const QString& key) const;
+    bool hasCustomProperty(const QString &title, const QString &key) const;
 
     /**
      * \nonscriptable
      */
-    bool hasCustomProperty(const QString& title, const QRegularExpression& key) const;
+    bool hasCustomProperty(const QString &title,
+                           const QRegularExpression &key) const;
 
-    virtual QVariant getCustomProperty(const QString& title, const QString& key, const QVariant& defaultValue = RDEFAULT_QVARIANT) const;
-    virtual double getCustomDoubleProperty(const QString& title, const QString& key, double defaultValue) const;
-    virtual int getCustomIntProperty(const QString& title, const QString& key, int defaultValue) const;
-    virtual bool getCustomBoolProperty(const QString& title, const QString& key, bool defaultValue) const;
-    virtual void setCustomProperty(const QString& title, const QString& key, const QVariant& value);
+    virtual QVariant
+    getCustomProperty(const QString &title, const QString &key,
+                      const QVariant &defaultValue = RDEFAULT_QVARIANT) const;
+    virtual double getCustomDoubleProperty(const QString &title,
+                                           const QString &key,
+                                           double defaultValue) const;
+    virtual int getCustomIntProperty(const QString &title, const QString &key,
+                                     int defaultValue) const;
+    virtual bool getCustomBoolProperty(const QString &title, const QString &key,
+                                       bool defaultValue) const;
+    virtual void setCustomProperty(const QString &title, const QString &key,
+                                   const QVariant &value);
 
     /**
      * \nonscriptable
      */
-    virtual void setCustomProperties(const RQMapQStringQString& properties);
-    virtual void removeCustomProperty(const QString& title, const QString& key);
+    virtual void setCustomProperties(const RQMapQStringQString &properties);
+    virtual void removeCustomProperty(const QString &title, const QString &key);
     QStringList getCustomPropertyTitles() const;
-    QStringList getCustomPropertyKeys(const QString& title) const;
+    QStringList getCustomPropertyKeys(const QString &title) const;
     void copyCustomPropertiesFrom(
-            RObject* other,
-            const QString& title = RDEFAULT_QSTRING,
+            RObject *other, const QString &title = RDEFAULT_QSTRING,
             bool overwrite = false,
-            const QStringList& ignoreList = RDEFAULT_QSTRINGLIST,
-            const QString& mapKeyFrom = RDEFAULT_QSTRING,
-            const QString& mapKeyTo = RDEFAULT_QSTRING);
+            const QStringList &ignoreList = RDEFAULT_QSTRINGLIST,
+            const QString &mapKeyFrom = RDEFAULT_QSTRING,
+            const QString &mapKeyTo = RDEFAULT_QSTRING);
 
-    static void setCustomPropertyAttributes(const QString& title, const QString& key, const RPropertyAttributes& att);
-    static RPropertyAttributes getCustomPropertyAttributes(const QString& title, const QString& key);
+    static void setCustomPropertyAttributes(const QString &title,
+                                            const QString &key,
+                                            const RPropertyAttributes &att);
+    static RPropertyAttributes getCustomPropertyAttributes(const QString &title,
+                                                           const QString &key);
 
     /**
      * \nonscriptable
      */
     QMap<QString, QVariantMap> getCustomProperties() const;
 
-    virtual int getComplexity() const {
-        return 0;
-    }
+    virtual int getComplexity() const { return 0; }
 
-    virtual void setAutoUpdatesBlocked(bool on) {
-        Q_UNUSED(on)
-    }
+    virtual void setAutoUpdatesBlocked(bool on) { Q_UNUSED(on) }
 
-    virtual bool validate() {
-        return true;
-    }
+    virtual bool validate() { return true; }
 
 protected:
-
     void setUndone(bool on);
 
-    void setId(RObject::Id id) {
-        objectId = id;
-    }
+    void setId(RObject::Id id) { objectId = id; }
 
-    void setHandle(RObject::Handle h) {
-        handle = h;
-    }
+    void setHandle(RObject::Handle h) { handle = h; }
 
     /**
      * \nonscriptable
      */
-    static bool setMember(QString& variable, const QVariant& value, bool condition = true);
+    static bool setMember(QString &variable, const QVariant &value,
+                          bool condition = true);
     /**
      * \nonscriptable
      */
-    static bool setMember(double& variable, const QVariant& value, bool condition = true);
+    static bool setMember(double &variable, const QVariant &value,
+                          bool condition = true);
     /**
      * \nonscriptable
      */
-    static bool setMember(int& variable, const QVariant& value, bool condition = true);
+    static bool setMember(int &variable, const QVariant &value,
+                          bool condition = true);
     /**
      * \nonscriptable
      */
-    static bool setMember(bool& variable, const QVariant& value, bool condition = true);
+    static bool setMember(bool &variable, const QVariant &value,
+                          bool condition = true);
     /**
      * \nonscriptable
      */
-    bool setMemberFlag(int flag, const QVariant& value, bool condition = true);
+    bool setMemberFlag(int flag, const QVariant &value, bool condition = true);
     /**
      * \nonscriptable
      */
-    static bool setMember(QList<double>& variable, const QVariant& value, bool condition);
+    static bool setMember(QList<double> &variable, const QVariant &value,
+                          bool condition);
     /**
      * \nonscriptable
      */
-    static bool setMemberX(QList<RVector>& variable, const QVariant& value, bool condition = true);
+    static bool setMemberX(QList<RVector> &variable, const QVariant &value,
+                           bool condition = true);
     /**
      * \nonscriptable
      */
-    static bool setMemberY(QList<RVector>& variable, const QVariant& value, bool condition = true);
+    static bool setMemberY(QList<RVector> &variable, const QVariant &value,
+                           bool condition = true);
     /**
      * \nonscriptable
      */
-    static bool setMemberZ(QList<RVector>& variable, const QVariant& value, bool condition = true);
+    static bool setMemberZ(QList<RVector> &variable, const QVariant &value,
+                           bool condition = true);
 
     /**
      * \nonscriptable
      */
-    static bool setMemberVector(QList<RVector>& variable, const QVariant& value, RObject::XYZ xyz);
+    static bool setMemberVector(QList<RVector> &variable, const QVariant &value,
+                                RObject::XYZ xyz);
 
 private:
-    RDocument* document;
+    RDocument *document;
     /**
      * Unique ID of this object.
      */
@@ -356,7 +337,8 @@ private:
     /**
      * Attributes of custom properties (read-only, invisible, ...).
      */
-    static QMap<QString, QMap<QString, RPropertyAttributes> > customPropertyAttributes;
+    static QMap<QString, QMap<QString, RPropertyAttributes>>
+            customPropertyAttributes;
 };
 
 #endif

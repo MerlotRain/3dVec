@@ -25,27 +25,25 @@
 // MSVC <= 2008 does not have this:
 //#include <stdint.h>
 
-#include <QSet>
 #include <QList>
+#include <QSet>
 
 #include "RBox.h"
 #include "RMath.h"
 #include "RRequireHeap.h"
 #include "RSpatialIndexVisitor.h"
 
-class QCADCORE_EXPORT RSpatialIndexDebugVisitor : public RSpatialIndexVisitor {
+class QCADCORE_EXPORT RSpatialIndexDebugVisitor : public RSpatialIndexVisitor
+{
 public:
     RSpatialIndexDebugVisitor(QDebug dbg) : dbg(dbg) {}
     virtual ~RSpatialIndexDebugVisitor() {}
-    virtual void visitData(
-        int id,
-        int pos,
-        double x1, double y1, double z1,
-        double x2, double y2, double z2);
+    virtual void visitData(int id, int pos, double x1, double y1, double z1,
+                           double x2, double y2, double z2);
 
-    virtual void visitNode(
-        double x1, double y1, double z1,
-        double x2, double y2, double z2) {
+    virtual void visitNode(double x1, double y1, double z1, double x2,
+                           double y2, double z2)
+    {
         Q_UNUSED(x1)
         Q_UNUSED(y1)
         Q_UNUSED(z1)
@@ -55,7 +53,7 @@ public:
     }
 
     QDebug dbg;
-    QList<QPair<int, int> > matches;
+    QList<QPair<int, int>> matches;
 };
 
 
@@ -65,50 +63,40 @@ public:
  * \ingroup core
  * \scriptable
  */
-class QCADCORE_EXPORT RSpatialIndex: public RRequireHeap {
+class QCADCORE_EXPORT RSpatialIndex : public RRequireHeap
+{
 public:
-    RSpatialIndex() {
-    }
+    RSpatialIndex() {}
 
-    virtual ~RSpatialIndex() {
-    }
+    virtual ~RSpatialIndex() {}
 
     static qint64 getSIId(int id, int pos);
     static int getId(qint64 siid);
     static int getPos(qint64 siid);
 
-    virtual RSpatialIndex* create() = 0;
+    virtual RSpatialIndex *create() = 0;
     virtual void clear() = 0;
 
-    virtual void bulkLoad(const QList<int>& ids, const QList<QList<RBox> >& bbs);
+    virtual void bulkLoad(const QList<int> &ids, const QList<QList<RBox>> &bbs);
 
-    virtual void bulkLoadSimple(const QList<int>& ids, const QList<RBox>& bbs);
-
-    /**
-     * Adds a new entry into this spatial index.
-     */
-    virtual void addToIndex(
-        int id, int pos,
-        double x1, double y1, double z1,
-        double x2, double y2, double z2
-    ) = 0;
+    virtual void bulkLoadSimple(const QList<int> &ids, const QList<RBox> &bbs);
 
     /**
      * Adds a new entry into this spatial index.
      */
-    virtual void addToIndex(
-        int id, int pos,
-        const RBox& bb
-    );
+    virtual void addToIndex(int id, int pos, double x1, double y1, double z1,
+                            double x2, double y2, double z2) = 0;
+
+    /**
+     * Adds a new entry into this spatial index.
+     */
+    virtual void addToIndex(int id, int pos, const RBox &bb);
 
     /**
      * Adds a new entry at multiple positions into this 
      * spatial index.
      */
-    virtual void addToIndex(
-        int id,
-        const QList<RBox>& bbs
-    );
+    virtual void addToIndex(int id, const QList<RBox> &bbs);
 
     /**
      * Removes the entry with the given ID from this spatial index.
@@ -119,22 +107,21 @@ public:
      * Removes the entry with the given ID from this spatial index.
      * the bounding box is provided for fast lookup.
      */
-    virtual bool removeFromIndex(
-            int id, int pos,
-            double x1, double y1, double z1,
-            double x2, double y2, double z2) = 0;
+    virtual bool removeFromIndex(int id, int pos, double x1, double y1,
+                                 double z1, double x2, double y2,
+                                 double z2) = 0;
 
     /**
      * Removes the entry with the given ID from this spatial index.
      * the bounding box is provided for faster lookup.
      */
-    virtual bool removeFromIndex(int id, int pos, const RBox& bb);
+    virtual bool removeFromIndex(int id, int pos, const RBox &bb);
 
     /**
      * Removes the entry with the given ID from this spatial index.
      * the bounding boxes are provided for faster lookup.
      */
-    virtual bool removeFromIndex(int id, const QList<RBox>& bb);
+    virtual bool removeFromIndex(int id, const QList<RBox> &bb);
 
     /**
      * Queries the index for all items that are completely inside or intersect
@@ -150,20 +137,16 @@ public:
      *      this object (visitor pattern).
      * \return map with IDs as keys and positions as values
      */
-    virtual QMap<int, QSet<int> > queryIntersected(
-        double x1, double y1, double z1,
-        double x2, double y2, double z2,
-        RSpatialIndexVisitor* dataVisitor=NULL
-    ) = 0;
+    virtual QMap<int, QSet<int>>
+    queryIntersected(double x1, double y1, double z1, double x2, double y2,
+                     double z2, RSpatialIndexVisitor *dataVisitor = NULL) = 0;
 
     /**
      * Queries the index for all items that are completely inside or intersect
      * with the given box.
      */
-    virtual QMap<int, QSet<int> > queryIntersected(
-        const RBox& b,
-        RSpatialIndexVisitor* dataVisitor=NULL
-    );
+    virtual QMap<int, QSet<int>>
+    queryIntersected(const RBox &b, RSpatialIndexVisitor *dataVisitor = NULL);
 
     /**
      * Queries the index for all items that are completely inside the given
@@ -178,25 +161,20 @@ public:
      * \param dataVisitor The item data is handed back to the caller over
      *      this object (visitor pattern).
      */
-    virtual QMap<int, QSet<int> > queryContained(
-        double x1, double y1, double z1,
-        double x2, double y2, double z2,
-        RSpatialIndexVisitor* dataVisitor=NULL
-    ) = 0;
+    virtual QMap<int, QSet<int>>
+    queryContained(double x1, double y1, double z1, double x2, double y2,
+                   double z2, RSpatialIndexVisitor *dataVisitor = NULL) = 0;
 
     /**
      * Queries the index for all items that are completely inside the given
      * box.
      */
-    virtual QMap<int, QSet<int> > queryContained(
-        const RBox& b,
-        RSpatialIndexVisitor* dataVisitor=NULL
-    );
+    virtual QMap<int, QSet<int>>
+    queryContained(const RBox &b, RSpatialIndexVisitor *dataVisitor = NULL);
 
-    QList<int> queryContainedIds(
-        double x1, double y1, double z1,
-        double x2, double y2, double z2,
-        RSpatialIndexVisitor* dataVisitor = NULL);
+    QList<int> queryContainedIds(double x1, double y1, double z1, double x2,
+                                 double y2, double z2,
+                                 RSpatialIndexVisitor *dataVisitor = NULL);
 
     /**
      * Queries the index for closest neighbor items.
@@ -207,11 +185,9 @@ public:
      * \param dataVisitor The item data is handed back to the caller over
      *      this object (visitor pattern).
      */
-    virtual QMap<int, QSet<int> > queryNearestNeighbor(
-        unsigned int k,
-        double x, double y, double z,
-        RSpatialIndexVisitor* dataVisitor=NULL
-    ) = 0;
+    virtual QMap<int, QSet<int>>
+    queryNearestNeighbor(unsigned int k, double x, double y, double z,
+                         RSpatialIndexVisitor *dataVisitor = NULL) = 0;
 
     virtual QPair<int, int> queryNearestNeighbor(double x, double y, double z);
 

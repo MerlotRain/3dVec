@@ -37,7 +37,8 @@ class REntityData;
  * \scriptable
  * \sharedPointerSupport
  */
-class QCADCORE_EXPORT RDimStyle: public RObject, public RDimStyleData {
+class QCADCORE_EXPORT RDimStyle : public RObject, public RDimStyleData
+{
 
 public:
     static RPropertyTypeId PropertyCustom;
@@ -71,37 +72,35 @@ public:
 public:
     RDimStyle();
 
-    RDimStyle(RDocument* document);
+    RDimStyle(RDocument *document);
     virtual ~RDimStyle();
 
     static void init();
-    static void initDimX(const RPropertyTypeId& propertyTypeId, RS::KnownVariable var, RS::KnownVariableType type);
+    static void initDimX(const RPropertyTypeId &propertyTypeId,
+                         RS::KnownVariable var, RS::KnownVariableType type);
 
-    static RS::EntityType getRtti() {
-        return RS::ObjectDimStyle;
-    }
+    static RS::EntityType getRtti() { return RS::ObjectDimStyle; }
 
-    virtual RS::EntityType getType() const {
-        return RS::ObjectDimStyle;
-    }
+    virtual RS::EntityType getType() const { return RS::ObjectDimStyle; }
 
-    virtual RDimStyle* clone() const {
-        return new RDimStyle(*this);
-    }
+    virtual RDimStyle *clone() const { return new RDimStyle(*this); }
 
     void updateDocumentVariables();
     void updateFromDocumentVariables();
 
-    QPair<QVariant, RPropertyAttributes> getProperty(RPropertyTypeId& propertyTypeId, bool humanReadable=false, bool noAttributes=false, bool showOnRequest=false);
-    bool setProperty(RPropertyTypeId propertyTypeId, const QVariant& value, RTransaction* transaction);
+    QPair<QVariant, RPropertyAttributes>
+    getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
+                bool noAttributes = false, bool showOnRequest = false);
+    bool setProperty(RPropertyTypeId propertyTypeId, const QVariant &value,
+                     RTransaction *transaction);
 
-    void render(const REntityData& entityData, bool preview, bool forceSelected) {
-        
+    void render(const REntityData &entityData, bool preview, bool forceSelected)
+    {
     }
 
 
 public:
-    static QList<QPair<RPropertyTypeId, RS::KnownVariable> > propertyVariables;
+    static QList<QPair<RPropertyTypeId, RS::KnownVariable>> propertyVariables;
 };
 
 #endif

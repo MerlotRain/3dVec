@@ -21,7 +21,4 @@
 /**
  * Initializes the linetype list.
  */
-void RLinetypeList::init(bool metric, QList<RLinetypePattern> &res)
-{
-
-}
+void RLinetypeList::init(bool metric, QList<RLinetypePattern> &res) {}

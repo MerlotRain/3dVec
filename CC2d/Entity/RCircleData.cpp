@@ -19,22 +19,24 @@
 #include "RCircleData.h"
 #include "RCircleEntity.h"
 
-RCircleData::RCircleData() {
-}
+RCircleData::RCircleData() {}
 
-RCircleData::RCircleData(const RCircle& circle) : RCircle(circle) {
-}
+RCircleData::RCircleData(const RCircle &circle) : RCircle(circle) {}
 
-RCircleData::RCircleData(RDocument* document, const RCircleData& data) {
+RCircleData::RCircleData(RDocument *document, const RCircleData &data)
+{
     *this = data;
     this->document = document;
 }
 
-RCircleData::RCircleData(const RVector& center, double radius) :
-    RCircle(center, radius) {
+RCircleData::RCircleData(const RVector &center, double radius)
+    : RCircle(center, radius)
+{
 }
 
-QList<RRefPoint> RCircleData::getReferencePoints(RS::ProjectionRenderingHint hint) const {
+QList<RRefPoint>
+RCircleData::getReferencePoints(RS::ProjectionRenderingHint hint) const
+{
     Q_UNUSED(hint)
 
     QList<RRefPoint> ret;
@@ -46,18 +48,23 @@ QList<RRefPoint> RCircleData::getReferencePoints(RS::ProjectionRenderingHint hin
     return ret;
 }
 
-bool RCircleData::moveReferencePoint(const RVector& referencePoint, const RVector& targetPoint, Qt::KeyboardModifiers modifiers) {
+bool RCircleData::moveReferencePoint(const RVector &referencePoint,
+                                     const RVector &targetPoint,
+                                     Qt::KeyboardModifiers modifiers)
+{
     Q_UNUSED(modifiers)
 
     bool ret = false;
-    if (referencePoint.equalsFuzzy(center)) {
+    if (referencePoint.equalsFuzzy(center))
+    {
         center = targetPoint;
         ret = true;
     }
     else if (referencePoint.equalsFuzzy(center + RVector(radius, 0)) ||
              referencePoint.equalsFuzzy(center + RVector(0, radius)) ||
              referencePoint.equalsFuzzy(center - RVector(radius, 0)) ||
-             referencePoint.equalsFuzzy(center - RVector(0, radius))) {
+             referencePoint.equalsFuzzy(center - RVector(0, radius)))
+    {
         radius = center.getDistanceTo(targetPoint);
         ret = true;
     }

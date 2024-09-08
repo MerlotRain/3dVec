@@ -22,18 +22,18 @@
 
 #include "CC2dCoreExport.h"
 
-#include <QString>
 #include <QColor>
 #include <QDebug>
+#include <QString>
 
-#include "RGlobal.h"
-#include "RObject.h"
-#include "RVector.h"
-#include "RPropertyTypeId.h"
-#include "RLinetype.h"
 #include "RColor.h"
+#include "RGlobal.h"
+#include "RLinetype.h"
 #include "RLineweight.h"
+#include "RObject.h"
 #include "RPropertyAttributes.h"
+#include "RPropertyTypeId.h"
+#include "RVector.h"
 
 class RDocument;
 
@@ -44,7 +44,8 @@ class RDocument;
  * \scriptable
  * \sharedPointerSupport
  */
-class QCADCORE_EXPORT RLayer: public RObject {
+class QCADCORE_EXPORT RLayer : public RObject
+{
 public:
     static RPropertyTypeId PropertyCustom;
     static RPropertyTypeId PropertyType;
@@ -66,214 +67,178 @@ public:
 
 
 public:
-    enum LayerFlag {
+    enum LayerFlag
+    {
         // these complement the RObject flags
-        Off = 0x010,              //!< layer is off
-        Frozen = 0x020,           //!< layer is frozen
-        Locked = 0x040,           //!< layer is locked
-        Collapsed = 0x080,        //!< layer is collapsed
-        Plottable = 0x100,        //!< printing disabled for this layer
-        Snappable = 0x200,        //!< snap disabled for this layer
-        OffIsFreeze = 0x400       //!< off means freeze for this layer
+        Off = 0x010,       //!< layer is off
+        Frozen = 0x020,    //!< layer is frozen
+        Locked = 0x040,    //!< layer is locked
+        Collapsed = 0x080, //!< layer is collapsed
+        Plottable = 0x100, //!< printing disabled for this layer
+        Snappable = 0x200, //!< snap disabled for this layer
+        OffIsFreeze = 0x400//!< off means freeze for this layer
     };
     Q_DECLARE_FLAGS(LayerFlags, LayerFlag)
 
 public:
     RLayer();
 
-    RLayer(RDocument* document, const QString& name, bool frozen = false,
-        bool locked = false, const RColor& color = Qt::black,
-        RLinetype::Id linetypeId = RLinetype::INVALID_ID,
-        RLineweight::Lineweight lineweight = RLineweight::Weight000,
-        bool off = false);
+    RLayer(RDocument *document, const QString &name, bool frozen = false,
+           bool locked = false, const RColor &color = Qt::black,
+           RLinetype::Id linetypeId = RLinetype::INVALID_ID,
+           RLineweight::Lineweight lineweight = RLineweight::Weight000,
+           bool off = false);
 
-    RLayer(const RLayer& other);
+    RLayer(const RLayer &other);
     virtual ~RLayer();
 
     static void init();
 
-    static RS::EntityType getRtti() {
-        return RS::ObjectLayer;
-    }
+    static RS::EntityType getRtti() { return RS::ObjectLayer; }
 
-    virtual RS::EntityType getType() const {
-        return RS::ObjectLayer;
-    }
+    virtual RS::EntityType getType() const { return RS::ObjectLayer; }
 
-    virtual RLayer* clone() const;
+    virtual RLayer *clone() const;
 
     RLayer::Id getParentLayerId() const;
 
-    QString getName() const {
-        return name;
+    QString getName() const { return name; }
+
+    void setName(const QString &n);
+
+    bool isOffOrFrozen() const { return isOff() || isFrozen(); }
+
+    bool isOff() const { return getFlag(RLayer::Off); }
+
+    void setOff(bool on) { setFlag(RLayer::Off, on); }
+
+    bool isFrozen() const { return getFlag(RLayer::Frozen); }
+
+    void setFrozen(bool on) { setFlag(RLayer::Frozen, on); }
+
+    bool isLocked() const { return getFlag(RLayer::Locked); }
+
+    void setLocked(bool on) { setFlag(RLayer::Locked, on); }
+
+    bool isCollapsed() const { return getFlag(RLayer::Collapsed); }
+
+    void setCollapsed(bool on) { setFlag(RLayer::Collapsed, on); }
+
+    bool isPlottable() const { return getFlag(RLayer::Plottable); }
+
+    void setPlottable(bool on)
+    {
+        if (name.toLower() != "defpoints") { setFlag(RLayer::Plottable, on); }
     }
 
-    void setName(const QString& n);
+    bool isSnappable() const { return getFlag(RLayer::Snappable); }
 
-    bool isOffOrFrozen() const {
-        return isOff() || isFrozen();
-    }
+    void setSnappable(bool on) { setFlag(RLayer::Snappable, on); }
 
-    bool isOff() const {
-        return getFlag(RLayer::Off);
-    }
+    bool isOffIsFreeze() const { return getFlag(RLayer::OffIsFreeze); }
 
-    void setOff(bool on) {
-        setFlag(RLayer::Off, on);
-    }
+    void setOffIsFreeze(bool on) { setFlag(RLayer::OffIsFreeze, on); }
 
-    bool isFrozen() const {
-        return getFlag(RLayer::Frozen);
-    }
+    RColor getColor() const { return color; }
 
-    void setFrozen(bool on) {
-        setFlag(RLayer::Frozen, on);
-    }
+    void setColor(const RColor &c) { color = c; }
 
-    bool isLocked() const {
-        return getFlag(RLayer::Locked);
-    }
+    RLinetype::Id getLinetypeId() const { return linetypeId; }
 
-    void setLocked(bool on) {
-        setFlag(RLayer::Locked, on);
-    }
+    void setLinetypeId(RLinetype::Id lt) { linetypeId = lt; }
 
-    bool isCollapsed() const {
-        return getFlag(RLayer::Collapsed);
-    }
+    RLineweight::Lineweight getLineweight() const { return lineweight; }
 
-    void setCollapsed(bool on) {
-        setFlag(RLayer::Collapsed, on);
-    }
+    void setLineweight(RLineweight::Lineweight lw) { lineweight = lw; }
 
-    bool isPlottable() const {
-        return getFlag(RLayer::Plottable);
-    }
-
-    void setPlottable(bool on) {
-        if (name.toLower()!="defpoints") {
-            setFlag(RLayer::Plottable, on);
-        }
-    }
-
-    bool isSnappable() const {
-        return getFlag(RLayer::Snappable);
-    }
-
-    void setSnappable(bool on) {
-        setFlag(RLayer::Snappable, on);
-    }
-
-    bool isOffIsFreeze() const {
-        return getFlag(RLayer::OffIsFreeze);
-    }
-
-    void setOffIsFreeze(bool on) {
-        setFlag(RLayer::OffIsFreeze, on);
-    }
-
-    RColor getColor() const {
-        return color;
-    }
-
-    void setColor(const RColor& c) {
-        color = c;
-    }
-
-    RLinetype::Id getLinetypeId() const {
-        return linetypeId;
-    }
-
-    void setLinetypeId(RLinetype::Id lt) {
-        linetypeId = lt;
-    }
-
-    RLineweight::Lineweight getLineweight() const {
-        return lineweight;
-    }
-
-    void setLineweight(RLineweight::Lineweight lw) {
-        lineweight = lw;
-    }
-
-    virtual QPair<QVariant, RPropertyAttributes> getProperty(
-            RPropertyTypeId& propertyTypeId,
-            bool humanReadable = false, bool noAttributes = false, bool showOnRequest = false);
+    virtual QPair<QVariant, RPropertyAttributes>
+    getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
+                bool noAttributes = false, bool showOnRequest = false);
     virtual bool setProperty(RPropertyTypeId propertyTypeId,
-            const QVariant& value, RTransaction* transaction=NULL);
+                             const QVariant &value,
+                             RTransaction *transaction = NULL);
 
-    bool hasChildLayers() const {
-        const RDocument* doc = getDocument();
-        if (doc==NULL) {
-            return false;
-        }
+    bool hasChildLayers() const
+    {
+        const RDocument *doc = getDocument();
+        if (doc == NULL) { return false; }
         return RLayer::hasChildLayersStatic(doc, name);
     }
 
-    QList<QString> getChildLayerNames(bool recursive = true) const {
-        const RDocument* doc = getDocument();
-        if (doc==NULL) {
-            return QList<QString>();
-        }
+    QList<QString> getChildLayerNames(bool recursive = true) const
+    {
+        const RDocument *doc = getDocument();
+        if (doc == NULL) { return QList<QString>(); }
         return RLayer::getChildLayerNamesStatic(doc, name, recursive);
     }
 
-    QString getParentLayerName() const {
+    QString getParentLayerName() const
+    {
         return RLayer::getParentLayerNameStatic(name);
     }
 
-    QString getShortLayerName() const {
+    QString getShortLayerName() const
+    {
         return RLayer::getShortLayerNameStatic(name);
     }
 
-    QList<QString> getLayerNameHierarchy() const {
+    QList<QString> getLayerNameHierarchy() const
+    {
         return RLayer::getLayerNameHierarchyStatic(name);
     }
 
-    bool isChildLayerOf(const QString& layerName) const {
+    bool isChildLayerOf(const QString &layerName) const
+    {
         return RLayer::isChildLayerOfStatic(name, layerName);
     }
 
-    static QString getHierarchySeparator() {
-        
-        return "";
-    }
+    static QString getHierarchySeparator() { return ""; }
 
-    static bool hasChildLayersStatic(const RDocument* doc, const QString& layerName) {
-        
+    static bool hasChildLayersStatic(const RDocument *doc,
+                                     const QString &layerName)
+    {
+
         return false;
     }
 
-    static QList<QString> getChildLayerNamesStatic(const RDocument* doc, const QString& layerName, bool recursive = true) {
-        
+    static QList<QString> getChildLayerNamesStatic(const RDocument *doc,
+                                                   const QString &layerName,
+                                                   bool recursive = true)
+    {
+
         return QList<QString>();
     }
 
-    static QString getParentLayerNameStatic(const QString& layerName) {
-        
+    static QString getParentLayerNameStatic(const QString &layerName)
+    {
+
         return QString();
     }
 
-    static QString getShortLayerNameStatic(const QString& layerName) {
-        
+    static QString getShortLayerNameStatic(const QString &layerName)
+    {
+
         return QString();
     }
 
-    static QList<QString> getLayerNameHierarchyStatic(const QString& layerName) {
-        
+    static QList<QString> getLayerNameHierarchyStatic(const QString &layerName)
+    {
+
         return QList<QString>();
     }
 
-    static bool isChildLayerOfStatic(const QString& layerName, const QString& parentLayerName) {
+    static bool isChildLayerOfStatic(const QString &layerName,
+                                     const QString &parentLayerName)
+    {
         return false;
     }
+
 private:
     QString name;
     LayerFlags flags;
     RColor color;
     RLinetype::Id linetypeId;
     RLineweight::Lineweight lineweight;
-
 };
 
 #endif
