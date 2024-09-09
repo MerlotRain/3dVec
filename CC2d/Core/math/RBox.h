@@ -137,6 +137,10 @@ public:
      */
     RVector c2;
 };
-
+Q_DECLARE_METATYPE(RBox)
+Q_DECLARE_METATYPE(RBox*)
+Q_DECLARE_METATYPE(QSharedPointer<RBox>)
+Q_DECLARE_METATYPE(QSharedPointer<RBox>*)
+Q_DECLARE_METATYPE(QList<RBox>)
 
 #endif

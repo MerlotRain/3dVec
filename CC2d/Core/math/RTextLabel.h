@@ -57,5 +57,10 @@ public:
     QString text;
     QVariant userData;
 };
+Q_DECLARE_METATYPE(RTextLabel)
+Q_DECLARE_METATYPE(RTextLabel*)
+Q_DECLARE_METATYPE(QSharedPointer<RTextLabel>)
+Q_DECLARE_METATYPE(QSharedPointer<RTextLabel>*)
+Q_DECLARE_METATYPE(QList<RTextLabel>)
 
 #endif

@@ -100,6 +100,9 @@ public:
      */
     RVector position;
 };
-
+Q_DECLARE_METATYPE(RPoint)
+Q_DECLARE_METATYPE(RPoint*)
+Q_DECLARE_METATYPE(QSharedPointer<RPoint>)
+Q_DECLARE_METATYPE(QSharedPointer<RPoint>*)
 
 #endif

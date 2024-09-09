@@ -37,7 +37,7 @@ class QCADCORE_EXPORT RDimStyleData
 {
 
 public:
-    RDimStyleData(bool override = false);
+    RDimStyleData();
     virtual ~RDimStyleData();
 
     static void init();
@@ -47,8 +47,6 @@ public:
     static int getIntDefault(RS::KnownVariable key);
     static bool getBoolDefault(RS::KnownVariable key);
     static RColor getColorDefault(RS::KnownVariable key);
-
-    void initFromSettings();
 
     bool hasOverride(RS::KnownVariable key) const
     {
@@ -186,5 +184,9 @@ protected:
 
     static QMap<RS::KnownVariable, QVariant> mapDefaults;
 };
+Q_DECLARE_METATYPE(RDimStyleData)
+Q_DECLARE_METATYPE(RDimStyleData*)
+typedef QMap<RS::KnownVariable, RS::KnownVariableType> _QMapRSKnownVariableRSKnownVariableType;
+Q_DECLARE_METATYPE(_QMapRSKnownVariableRSKnownVariableType)
 
 #endif

@@ -699,5 +699,10 @@ protected:
      */
     void setParentId(REntity::Id parentId) { getData().setParentId(parentId); }
 };
+Q_DECLARE_METATYPE(REntity*)
+Q_DECLARE_METATYPE(QSharedPointer<REntity>)
+Q_DECLARE_METATYPE(QSharedPointer<REntity>*)
+Q_DECLARE_METATYPE(QStack<REntity*>)
+Q_DECLARE_METATYPE(QStack<REntity*>*)
 
 #endif

@@ -163,5 +163,11 @@ private:
 
     static QMap<QString, QString> nameMap;
 };
+Q_DECLARE_METATYPE(RLinetypePattern*)
+Q_DECLARE_METATYPE(const RLinetypePattern*)
+Q_DECLARE_METATYPE(RLinetypePattern)
+typedef QMap<QString,RLinetypePattern> _RMapQStringRLinetypePattern;
+Q_DECLARE_METATYPE(_RMapQStringRLinetypePattern*)
+Q_DECLARE_METATYPE(_RMapQStringRLinetypePattern)
 
 #endif

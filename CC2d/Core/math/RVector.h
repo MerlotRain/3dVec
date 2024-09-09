@@ -363,5 +363,12 @@ public:
 };
 
 QCADCORE_EXPORT RVector operator*(double s, const RVector &v);
+Q_DECLARE_METATYPE(QList<RVector>)
+Q_DECLARE_METATYPE(QList<RVector>*)
+typedef QMultiMap<int, RVector> _RMapIntVector;
+Q_DECLARE_METATYPE(_RMapIntVector*)
+Q_DECLARE_METATYPE(RVector)
+Q_DECLARE_METATYPE(RVector*)
+Q_DECLARE_METATYPE(const RVector*)
 
 #endif

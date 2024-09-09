@@ -176,5 +176,9 @@ protected:
     RBlockReferenceData data;
     mutable int recursionDepth;
 };
+Q_DECLARE_METATYPE(RBlockReferenceEntity*)
+Q_DECLARE_METATYPE(QSharedPointer<RBlockReferenceEntity>)
+Q_DECLARE_METATYPE(QSharedPointer<RBlockReferenceEntity>*)
+
 
 #endif

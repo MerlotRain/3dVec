@@ -342,5 +342,10 @@ private:
     //QList<QSharedPointer<RShape> > subShapes;
     static RPolylineProxy *polylineProxy;
 };
+Q_DECLARE_METATYPE(const RPolyline*)
+Q_DECLARE_METATYPE(RPolyline*)
+Q_DECLARE_METATYPE(RPolyline)
+Q_DECLARE_METATYPE(QSharedPointer<RPolyline>)
+Q_DECLARE_METATYPE(QSharedPointer<RPolyline>*)
 
 #endif

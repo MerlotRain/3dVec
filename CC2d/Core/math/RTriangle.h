@@ -167,5 +167,11 @@ public:
 public:
     RVector corner[3];
 };
+Q_DECLARE_METATYPE(QList<RTriangle>)
+Q_DECLARE_METATYPE(RTriangle*)
+Q_DECLARE_METATYPE(const RTriangle*)
+Q_DECLARE_METATYPE(RTriangle)
+Q_DECLARE_METATYPE(QSharedPointer<RTriangle>)
+Q_DECLARE_METATYPE(QSharedPointer<RTriangle>*)
 
 #endif

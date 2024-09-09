@@ -162,4 +162,10 @@ public:
      */
     RVector directionVector;
 };
+Q_DECLARE_METATYPE(const RXLine*)
+Q_DECLARE_METATYPE(RXLine*)
+Q_DECLARE_METATYPE(RXLine)
+Q_DECLARE_METATYPE(QSharedPointer<RXLine>)
+Q_DECLARE_METATYPE(QSharedPointer<RXLine>*)
+
 #endif

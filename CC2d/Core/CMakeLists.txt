@@ -61,7 +61,6 @@ set(core_SRCS
     math/RRefPoint.cpp
     math/RShape.cpp
     math/RTextLabel.cpp
-    math/RTransform.cpp
     math/RTriangle.cpp
     math/RVector.cpp
     math/RXLine.cpp
@@ -133,10 +132,7 @@ set(core_HDRS
     math/RRay.h
     math/RRefPoint.h
     math/RShape.h
-    math/RShapeProxy.h
     math/RTextLabel.h
-    math/RTransform.h
-    math/RTransformOp.h
     math/RTriangle.h
     math/RVector.h
     math/RXLine.h

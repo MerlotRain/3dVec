@@ -34,7 +34,6 @@
 
 double RShape::twopi = M_PI * 2;
 double RShape::epsTolerance = 1.0e-02;
-RShapeProxy *RShape::shapeProxy = NULL;
 
 bool RShape::isFullEllipseShape(const RShape &s)
 {
@@ -2418,10 +2417,6 @@ QList<QSharedPointer<RShape>> RShape::trim(const RShape &trimShape,
 QList<QSharedPointer<RShape>>
 RShape::roundCorners(const QList<QSharedPointer<RShape>> &shapes, double radius)
 {
-    if (RShape::hasProxy())
-    {
-        return RShape::getShapeProxy()->roundAllCorners(shapes, radius);
-    }
     return shapes;
 }
 

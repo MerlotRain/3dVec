@@ -141,6 +141,12 @@ private:
 private:
     static const double cadColors[][3];
 };
+Q_DECLARE_METATYPE(RColor)
+Q_DECLARE_METATYPE(RColor*)
+typedef QPair<QString, RColor> _RPairStringRColor;
+Q_DECLARE_METATYPE(_RPairStringRColor)
+Q_DECLARE_METATYPE(QList< _RPairStringRColor >)
+Q_DECLARE_METATYPE(RColor::Mode)
 
 
 #endif /* RCOLOR_H_ */

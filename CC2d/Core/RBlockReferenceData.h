@@ -25,7 +25,6 @@
 #include "RBlock.h"
 #include "RBox.h"
 #include "REntity.h"
-#include "RTransform.h"
 #include "RVector.h"
 
 class RDocument;
@@ -180,5 +179,9 @@ private:
     mutable QList<RBox> boundingBoxesIgnoreEmpty;
     mutable QMap<REntity::Id, QSharedPointer<REntity>> cache;
 };
+Q_DECLARE_METATYPE(RBlockReferenceData)
+Q_DECLARE_METATYPE(RBlockReferenceData*)
+Q_DECLARE_METATYPE(const RBlockReferenceData*)
+Q_DECLARE_METATYPE(QSharedPointer<RBlockReferenceData>)
 
 #endif

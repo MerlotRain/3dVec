@@ -106,5 +106,16 @@ public:
 private:
     Flags flags;
 };
+Q_DECLARE_METATYPE(QList<RRefPoint>)
+Q_DECLARE_METATYPE(QList<RRefPoint>*)
+typedef QMultiMap<int, RRefPoint> _RMapIntRefPoint;
+Q_DECLARE_METATYPE(_RMapIntRefPoint*)
+Q_DECLARE_METATYPE(RRefPoint)
+Q_DECLARE_METATYPE(RRefPoint*)
+Q_DECLARE_METATYPE(const RRefPoint*)
+Q_DECLARE_METATYPE(RRefPoint::Flag)
+Q_DECLARE_METATYPE(RRefPoint::Flag*)
+Q_DECLARE_METATYPE(QFlags<RRefPoint::Flag>)
+Q_DECLARE_METATYPE(QFlags<RRefPoint::Flag>*)
 
 #endif

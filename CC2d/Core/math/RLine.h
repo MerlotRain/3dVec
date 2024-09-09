@@ -162,6 +162,10 @@ public:
      */
     RVector endPoint;
 };
-
+Q_DECLARE_METATYPE(const RLine*)
+Q_DECLARE_METATYPE(RLine*)
+Q_DECLARE_METATYPE(RLine)
+Q_DECLARE_METATYPE(QSharedPointer<RLine>)
+Q_DECLARE_METATYPE(QSharedPointer<RLine>*)
 
 #endif

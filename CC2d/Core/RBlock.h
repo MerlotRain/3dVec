@@ -121,5 +121,9 @@ private:
     bool pixelUnit;
     RVector origin;
 };
+Q_DECLARE_METATYPE(QSharedPointer<RBlock>)
+Q_DECLARE_METATYPE(QSharedPointer<RBlock>*)
+Q_DECLARE_METATYPE(RBlock)
+Q_DECLARE_METATYPE(RBlock*)
 
 #endif

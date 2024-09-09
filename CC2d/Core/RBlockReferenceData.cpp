@@ -20,7 +20,6 @@
 #include "RBlockReferenceEntity.h"
 #include "RDocument.h"
 #include "RStorage.h"
-#include "RTransform.h"
 
 RBlockReferenceData::RBlockReferenceData()
     : referencedBlockId(RBlock::INVALID_ID), rotation(0), columnCount(1),
@@ -570,7 +569,7 @@ bool RBlockReferenceData::applyTransformationTo(
     return true;
 }
 
-RTransform RBlockReferenceData::getTransform() const
+QTransform RBlockReferenceData::getTransform() const
 {
     QSharedPointer<RBlock> block =
             document->queryBlockDirect(referencedBlockId);
@@ -579,15 +578,13 @@ RTransform RBlockReferenceData::getTransform() const
         qWarning("RBlockReferenceData::getTransform: "
                  "block %d is NULL",
                  referencedBlockId);
-        return RTransform();
+        return QTransform();
     }
 
-    RTransform ret;
-    ret.translate(position.x, position.y);
-    ret.rotateRadians(rotation);
-    ret.scale(scaleFactors.x, scaleFactors.y);
-    ret.translate(-block->getOrigin().x, -block->getOrigin().y);
-    return ret;
+    return QTransform::fromTranslate(position.x, position.y)
+            .rotateRadians(rotation)
+            .scale(scaleFactors.x, scaleFactors.y)
+            .translate(-block->getOrigin().x, -block->getOrigin().y);
 }
 
 RVector RBlockReferenceData::mapToBlock(const RVector &v) const

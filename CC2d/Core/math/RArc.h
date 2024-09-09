@@ -214,6 +214,11 @@ public:
      */
     bool reversed;
 };
+Q_DECLARE_METATYPE(const RArc*)
+Q_DECLARE_METATYPE(RArc*)
+Q_DECLARE_METATYPE(RArc)
+Q_DECLARE_METATYPE(QSharedPointer<RArc>)
+Q_DECLARE_METATYPE(QSharedPointer<RArc>*)
 
 
 #endif

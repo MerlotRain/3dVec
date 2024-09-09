@@ -23,9 +23,8 @@ QMap<RS::KnownVariable, QVariant> RDimStyleData::mapDefaults;
 //QList<RDimStyleData::RDimXVar> RDimStyleData::propertyVariables;
 QMap<RS::KnownVariable, RS::KnownVariableType> RDimStyleData::dimXTypes;
 
-RDimStyleData::RDimStyleData(bool override)
+RDimStyleData::RDimStyleData()
 {
-    if (!override) { initFromSettings(); }
 }
 
 RDimStyleData::~RDimStyleData() {}
@@ -92,37 +91,4 @@ RColor RDimStyleData::getColorDefault(RS::KnownVariable key)
     if (mapDefaults.isEmpty()) { RDimStyleData::initDefaults(); }
     if (mapDefaults.contains(key)) { return mapDefaults[key].value<RColor>(); }
     return RColor();
-}
-
-void RDimStyleData::initFromSettings()
-{
-    // initialize defaults for dim style as part of a new document (as opposed to a dimension entity override):
-    setDouble(RS::DIMSCALE, RS::DIMSCALE);
-    setDouble(RS::DIMTXT, RS::DIMTXT);
-    setDouble(RS::DIMGAP, RS::DIMGAP);
-    setDouble(RS::DIMASZ, RS::DIMASZ);
-    setDouble(RS::DIMEXE, RS::DIMEXE);
-    setDouble(RS::DIMEXO, RS::DIMEXO);
-
-    // preference is stored in settings as true/false:
-    setInt(RS::DIMTAD, (int) RS::DIMTAD);
-    setBool(RS::DIMTIH, RS::DIMTIH);
-    setDouble(RS::DIMDLI, RS::DIMDLI);
-    setColor(RS::DIMCLRT, RColor());
-    setDouble(RS::DIMTSZ, 0.0);
-
-
-    setInt(RS::DIMLUNIT, RS::DIMLUNIT);
-    setInt(RS::DIMDEC, RS::DIMDEC);
-    setInt(RS::DIMDSEP, RS::DIMDSEP);
-
-    setInt(RS::DIMZIN, 0);
-
-
-    setInt(RS::DIMAUNIT, RS::DIMAUNIT);
-    setInt(RS::DIMADEC, RS::DIMADEC);
-
-    setInt(RS::DIMAZIN, 2);
-
-    setDouble(RS::DIMTSZ, getDouble(RS::DIMASZ));
 }

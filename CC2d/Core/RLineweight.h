@@ -96,6 +96,9 @@ private:
     //static QMap<RLineweight::Lineweight, QIcon> iconMap;
     static QMap<QPair<RLineweight::Lineweight, QPair<int, int>>, QIcon> iconMap;
 };
+Q_DECLARE_METATYPE(RLineweight)
+Q_DECLARE_METATYPE(RLineweight*)
+Q_DECLARE_METATYPE(RLineweight::Lineweight)
 
 
 #endif /* RLINEWEIGHT_H_ */

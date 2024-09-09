@@ -139,6 +139,10 @@ public:
      */
     double radius;
 };
-
+Q_DECLARE_METATYPE(const RCircle*)
+Q_DECLARE_METATYPE(RCircle*)
+Q_DECLARE_METATYPE(RCircle)
+Q_DECLARE_METATYPE(QSharedPointer<RCircle>)
+Q_DECLARE_METATYPE(QSharedPointer<RCircle>*)
 
 #endif

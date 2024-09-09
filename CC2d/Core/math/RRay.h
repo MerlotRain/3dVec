@@ -78,5 +78,10 @@ public:
     RRay copy() const { return *this; }
 #endif
 };
+Q_DECLARE_METATYPE(const RRay*)
+Q_DECLARE_METATYPE(RRay*)
+Q_DECLARE_METATYPE(RRay)
+Q_DECLARE_METATYPE(QSharedPointer<RRay>)
+Q_DECLARE_METATYPE(QSharedPointer<RRay>*)
 
 #endif

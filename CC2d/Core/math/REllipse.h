@@ -250,6 +250,11 @@ public:
 private:
     static REllipseProxy *ellipseProxy;
 };
+Q_DECLARE_METATYPE(const REllipse*)
+Q_DECLARE_METATYPE(REllipse*)
+Q_DECLARE_METATYPE(REllipse)
+Q_DECLARE_METATYPE(QSharedPointer<REllipse>)
+Q_DECLARE_METATYPE(QSharedPointer<REllipse>*)
 
 
 #endif

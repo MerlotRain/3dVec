@@ -556,22 +556,6 @@ public:
     static QSharedPointer<RShape>
     ellipseToArcCircleEllipse(const REllipse &ellipse);
 
-    static bool hasProxy() { return shapeProxy != NULL; }
-
-    /**
-     * \nonscriptable
-     */
-    static void setShapeProxy(RShapeProxy *p)
-    {
-        if (shapeProxy != NULL) { delete shapeProxy; }
-        shapeProxy = p;
-    }
-
-    /**
-     * \nonscriptable
-     */
-    static RShapeProxy *getShapeProxy() { return shapeProxy; }
-
 private:
     static double ellipse2tr(double x, double y, double AA, double BB,
                              double CC, double DD, double EE, double FF);
@@ -579,9 +563,15 @@ private:
 private:
     static double twopi;
     static double epsTolerance;
-
-private:
-    static RShapeProxy *shapeProxy;
 };
+Q_DECLARE_METATYPE(RShape*)
+Q_DECLARE_METATYPE(RShape::Type)
+Q_DECLARE_METATYPE(const RShape*)
+Q_DECLARE_METATYPE(QSharedPointer<RShape>)
+Q_DECLARE_METATYPE(QSharedPointer<const RShape>)
+Q_DECLARE_METATYPE(QSharedPointer<RShape>*)
+Q_DECLARE_METATYPE(QList<QSharedPointer<RShape> >)
+Q_DECLARE_METATYPE(QList<QSharedPointer<RShape> >*)
+Q_DECLARE_METATYPE(QList<QSharedPointer<const RShape> >)
 
 #endif
