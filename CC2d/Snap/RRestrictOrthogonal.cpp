@@ -21,12 +21,12 @@
 #include "RGraphicsView.h"
 //#include "ROrthoGrid.h"
 
-RVector RRestrictOrthogonal::restrictSnap(const RVector& position, const RVector& relativeZero) {
+RVector RRestrictOrthogonal::restrictSnap(const RVector &position,
+                                          const RVector &relativeZero)
+{
     RVector ret = position;
 
-    if (documentInterface==NULL) {
-        return ret;
-    }
+    if (documentInterface == NULL) { return ret; }
 
     ret = documentInterface->restrictOrtho(position, relativeZero, mode);
 

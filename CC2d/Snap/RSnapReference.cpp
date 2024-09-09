@@ -20,23 +20,25 @@
 #include "RBlockReferenceEntity.h"
 
 QList<RVector> RSnapReference::snapEntity(QSharedPointer<REntity> entity,
-                                          const RVector& point,
-                                          const RBox& queryBox,
-                                          RGraphicsView& view,
-                                          QList<REntity::Id>* subEntityIds) {
+                                          const RVector &point,
+                                          const RBox &queryBox,
+                                          RGraphicsView &view,
+                                          QList<REntity::Id> *subEntityIds)
+{
     Q_UNUSED(point)
     Q_UNUSED(queryBox)
     Q_UNUSED(view)
 
     // 20210716: TODO: add subEntityIds:
-    QList<RRefPoint> ret = entity->getInternalReferencePoints(RS::RenderTop, subEntityIds);
-    QSharedPointer<RBlockReferenceEntity> blockRef = entity.dynamicCast<RBlockReferenceEntity>();
-    if (!blockRef.isNull()) {
+    QList<RRefPoint> ret =
+            entity->getInternalReferencePoints(RS::RenderTop, subEntityIds);
+    QSharedPointer<RBlockReferenceEntity> blockRef =
+            entity.dynamicCast<RBlockReferenceEntity>();
+    if (!blockRef.isNull())
+    {
         // add reference point of block reference:
         ret.append(entity->getReferencePoints(RS::RenderTop));
-        if (subEntityIds!=NULL) {
-            subEntityIds->append(RObject::INVALID_ID);
-        }
+        if (subEntityIds != NULL) { subEntityIds->append(RObject::INVALID_ID); }
     }
     return RRefPoint::toVectorList(ret);
 }

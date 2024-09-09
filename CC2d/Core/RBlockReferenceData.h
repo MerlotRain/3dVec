@@ -146,7 +146,7 @@ public:
         return entity;
     }
 
-    RTransform getTransform() const;
+    QTransform getTransform() const;
 
     RVector getColumnRowOffset(int col, int row, bool rotated = false) const;
     void applyColumnRowOffsetTo(REntity &entity, int col, int row,

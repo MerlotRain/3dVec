@@ -33,20 +33,19 @@ class RMouseEvent;
  *
  * \ingroup snap
  */
-class QCADSNAP_EXPORT RSnapPerpendicular : public RSnapEntityBase {
+class QCADSNAP_EXPORT RSnapPerpendicular : public RSnapEntityBase
+{
 public:
     RSnapPerpendicular() : RSnapEntityBase(RSnap::Perpendicular) {}
     virtual ~RSnapPerpendicular() {}
 
 protected:
-    virtual QList<RVector> snapEntity(
-            QSharedPointer<REntity> entity,
-            const RVector& point,
-            const RBox& queryBox,
-            RGraphicsView& view,
-            QList<REntity::Id>* subEntityIds = NULL);
+    virtual QList<RVector> snapEntity(QSharedPointer<REntity> entity,
+                                      const RVector &point,
+                                      const RBox &queryBox, RGraphicsView &view,
+                                      QList<REntity::Id> *subEntityIds = NULL);
 };
 
-Q_DECLARE_METATYPE(RSnapPerpendicular*)
+Q_DECLARE_METATYPE(RSnapPerpendicular *)
 
 #endif

@@ -22,8 +22,9 @@
 
 #include "snap_global.h"
 
-#include "RSnap.h"
 #include "REntity.h"
+#include "RSnap.h"
+
 
 class RGraphicsView;
 class RMouseEvent;
@@ -35,23 +36,20 @@ class RMouseEvent;
  *
  * \ingroup snap
  */
-class QCADSNAP_EXPORT RSnapIntersection : public RSnap {
+class QCADSNAP_EXPORT RSnapIntersection : public RSnap
+{
 public:
     RSnapIntersection() : RSnap(RSnap::Intersection) {}
     virtual ~RSnapIntersection() {}
 
-    virtual RVector snap(
-        const RVector& position,
-        RGraphicsView& view,
-        double range = RNANDOUBLE);
+    virtual RVector snap(const RVector &position, RGraphicsView &view,
+                         double range = RNANDOUBLE);
 
-    virtual RVector snap(
-            const RVector& position,
-            RGraphicsView& view,
-            const QMap<REntity::Id, QSet<int> >& candidates,
-            const RBox& queryBox);
+    virtual RVector snap(const RVector &position, RGraphicsView &view,
+                         const QMap<REntity::Id, QSet<int>> &candidates,
+                         const RBox &queryBox);
 };
 
-Q_DECLARE_METATYPE(RSnapIntersection*)
+Q_DECLARE_METATYPE(RSnapIntersection *)
 
 #endif

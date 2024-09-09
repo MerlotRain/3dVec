@@ -16,11 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with QCAD.
  */
+#include "RSnapFree.h"
 #include "RGraphicsView.h"
 #include "RMouseEvent.h"
-#include "RSnapFree.h"
 
-RVector RSnapFree::snap(const RVector& position, RGraphicsView& view, double range) {
+
+RVector RSnapFree::snap(const RVector &position, RGraphicsView &view,
+                        double range)
+{
     Q_UNUSED(view);
     Q_UNUSED(range);
 

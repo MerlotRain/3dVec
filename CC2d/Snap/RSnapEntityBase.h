@@ -22,8 +22,9 @@
 
 #include "snap_global.h"
 
-#include "RSnap.h"
 #include "RGraphicsView.h"
+#include "RSnap.h"
+
 
 class RMouseEvent;
 
@@ -34,31 +35,26 @@ class RMouseEvent;
  *
  * \ingroup snap
  */
-class QCADSNAP_EXPORT RSnapEntityBase : public RSnap {
+class QCADSNAP_EXPORT RSnapEntityBase : public RSnap
+{
 public:
     RSnapEntityBase(RSnap::Status s) : RSnap(s) {}
     virtual ~RSnapEntityBase() {}
 
-    virtual RVector snap(
-            const RVector& position,
-            RGraphicsView& view,
-            double range=RNANDOUBLE);
+    virtual RVector snap(const RVector &position, RGraphicsView &view,
+                         double range = RNANDOUBLE);
 
-    virtual RVector snap(
-            const RVector& position,
-            RGraphicsView& view,
-            const QSet<REntity::Id>& candidates,
-            const RBox& queryBox);
+    virtual RVector snap(const RVector &position, RGraphicsView &view,
+                         const QSet<REntity::Id> &candidates,
+                         const RBox &queryBox);
 
 protected:
-    virtual QList<RVector> snapEntity(
-            QSharedPointer<REntity> entity,
-            const RVector& point,
-            const RBox& queryBox,
-            RGraphicsView& view,
-            QList<REntity::Id>* subEntityIds = NULL) = 0;
+    virtual QList<RVector>
+    snapEntity(QSharedPointer<REntity> entity, const RVector &point,
+               const RBox &queryBox, RGraphicsView &view,
+               QList<REntity::Id> *subEntityIds = NULL) = 0;
 };
 
-Q_DECLARE_METATYPE(RSnapEntityBase*)
+Q_DECLARE_METATYPE(RSnapEntityBase *)
 
 #endif

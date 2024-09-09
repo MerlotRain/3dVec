@@ -34,95 +34,78 @@ class RDocumentInterface;
  *
  * \ingroup snap
  */
-class QCADSNAP_EXPORT RRestrictAngleLength : public RSnapRestriction {
+class QCADSNAP_EXPORT RRestrictAngleLength : public RSnapRestriction
+{
 public:
-    enum AngleLengthMode {
+    enum AngleLengthMode
+    {
         None,
         Angle,
         Length,
         AngleLength
     };
 
-    RRestrictAngleLength(RDocumentInterface* documentInterface = NULL) :
-        RSnapRestriction(documentInterface),
-        mode(RRestrictAngleLength::AngleLength),
-        baseAngle(0.0),
-        angle(0.0),
-        baseLength(0.0),
-        length(0.0) {}
+    RRestrictAngleLength(RDocumentInterface *documentInterface = NULL)
+        : RSnapRestriction(documentInterface),
+          mode(RRestrictAngleLength::AngleLength), baseAngle(0.0), angle(0.0),
+          baseLength(0.0), length(0.0)
+    {
+    }
 
-    RRestrictAngleLength(RDocumentInterface* documentInterface, double baseAngle, double angle, double baseLength, double length)
-        : RSnapRestriction(documentInterface), 
-          mode(RRestrictAngleLength::AngleLength),
-          baseAngle(baseAngle), angle(angle),
-          baseLength(baseLength), length(length),
-          repeatAngle(false), repeatLength(false) {}
+    RRestrictAngleLength(RDocumentInterface *documentInterface,
+                         double baseAngle, double angle, double baseLength,
+                         double length)
+        : RSnapRestriction(documentInterface),
+          mode(RRestrictAngleLength::AngleLength), baseAngle(baseAngle),
+          angle(angle), baseLength(baseLength), length(length),
+          repeatAngle(false), repeatLength(false)
+    {
+    }
 
     virtual ~RRestrictAngleLength() {}
 
-    virtual RVector restrictSnap(const RVector& position, const RVector& relativeZero);
+    virtual RVector restrictSnap(const RVector &position,
+                                 const RVector &relativeZero);
 
-    virtual void setBaseAngle(double a) {
-        baseAngle = a;
-    }
+    virtual void setBaseAngle(double a) { baseAngle = a; }
 
-    virtual void setAngle(double a) {
-        angle = a;
-    }
+    virtual void setAngle(double a) { angle = a; }
 
-    virtual void setBaseLength(double l) {
-        baseLength = l;
-    }
+    virtual void setBaseLength(double l) { baseLength = l; }
 
-    virtual void setLength(double l) {
-        length = l;
-    }
+    virtual void setLength(double l) { length = l; }
 
-    virtual void setRestrictAngle(bool on) {
-        if (on) {
-            if (mode==None) {
-                mode = Angle;
-            }
-            if (mode==Length) {
-                mode = AngleLength;
-            }
+    virtual void setRestrictAngle(bool on)
+    {
+        if (on)
+        {
+            if (mode == None) { mode = Angle; }
+            if (mode == Length) { mode = AngleLength; }
         }
-        else {
-            if (mode==Angle) {
-                mode = None;
-            }
-            if (mode==AngleLength) {
-                mode = Length;
-            }
+        else
+        {
+            if (mode == Angle) { mode = None; }
+            if (mode == AngleLength) { mode = Length; }
         }
     }
 
-    virtual void setRestrictLength(bool on) {
-        if (on) {
-            if (mode==None) {
-                mode = Length;
-            }
-            if (mode==Angle) {
-                mode = AngleLength;
-            }
+    virtual void setRestrictLength(bool on)
+    {
+        if (on)
+        {
+            if (mode == None) { mode = Length; }
+            if (mode == Angle) { mode = AngleLength; }
         }
-        else {
-            if (mode==Length) {
-                mode = None;
-            }
-            if (mode==AngleLength) {
-                mode = Angle;
-            }
+        else
+        {
+            if (mode == Length) { mode = None; }
+            if (mode == AngleLength) { mode = Angle; }
         }
     }
 
-    virtual void setRepeatAngle(bool on) {
-        repeatAngle = on;
-    }
+    virtual void setRepeatAngle(bool on) { repeatAngle = on; }
 
-    virtual void setRepeatLength(bool on) {
-        repeatLength = on;
-    }
+    virtual void setRepeatLength(bool on) { repeatLength = on; }
 
 protected:
     AngleLengthMode mode;
@@ -134,7 +117,7 @@ protected:
     bool repeatLength;
 };
 
-Q_DECLARE_METATYPE(RRestrictAngleLength*)
+Q_DECLARE_METATYPE(RRestrictAngleLength *)
 Q_DECLARE_METATYPE(RRestrictAngleLength::AngleLengthMode)
 
 #endif

@@ -50,7 +50,6 @@ set(core_SRCS
     math/RArc.cpp
     math/RBox.cpp
     math/RCircle.cpp
-    math/RDirected.cpp
     math/REllipse.cpp
     math/RLine.cpp
     math/RMath.cpp
@@ -119,7 +118,6 @@ set(core_HDRS
     math/RArc.h
     math/RBox.h
     math/RCircle.h
-    math/RDirected.h
     math/REllipse.h
     math/REllipseProxy.h
     math/RExplodable.h

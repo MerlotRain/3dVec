@@ -29,60 +29,47 @@
 #endif
 
 
-
 /**
  * Internal.
  */
-RSpatialIndexNavel::RSiRegion::RSiRegion(
-    double x1, double y1, double z1,
-    double x2, double y2, double z2) {
+RSpatialIndexNavel::RSiRegion::RSiRegion(double x1, double y1, double z1,
+                                         double x2, double y2, double z2)
+{
 
-    double p1[] = { 
-        std::min(x1, x2), 
-        std::min(y1, y2), 
-        std::min(z1, z2) 
-    };
-    double p2[] = { 
-        std::max(x1, x2), 
-        std::max(y1, y2), 
-        std::max(z1, z2) 
-    };
+    double p1[] = {std::min(x1, x2), std::min(y1, y2), std::min(z1, z2)};
+    double p2[] = {std::max(x1, x2), std::max(y1, y2), std::max(z1, z2)};
 
-    (*(SpatialIndex::Region*)this) = SpatialIndex::Region(p1, p2, 3);
+    (*(SpatialIndex::Region *) this) = SpatialIndex::Region(p1, p2, 3);
 }
 
 
 /**
  * Internal.
  */
-RSpatialIndexNavel::RSiPoint::RSiPoint(double x, double y, double z) {
+RSpatialIndexNavel::RSiPoint::RSiPoint(double x, double y, double z)
+{
 
-    double p[] = {
-        x,
-        y,
-        z
-    };
+    double p[] = {x, y, z};
 
-    (*(SpatialIndex::Point*)this) = SpatialIndex::Point(p, 3);
+    (*(SpatialIndex::Point *) this) = SpatialIndex::Point(p, 3);
 }
-
 
 
 /**
  * Creates a 2d spatial index in memory (r-tree, star shape).
  */
-RSpatialIndexNavel::RSpatialIndexNavel() {
+RSpatialIndexNavel::RSpatialIndexNavel()
+{
     RDebug::incCounter("RSpatialIndexNavel");
     init();
 }
 
 
-
-RSpatialIndexNavel::~RSpatialIndexNavel() {
+RSpatialIndexNavel::~RSpatialIndexNavel()
+{
     RDebug::decCounter("RSpatialIndexNavel");
     uninit();
 }
-
 
 
 //int RSpatialIndexNavel::dataToInt(const uint8_t* data) {
@@ -100,7 +87,8 @@ RSpatialIndexNavel::~RSpatialIndexNavel() {
 //}
 
 
-void RSpatialIndexNavel::init() {
+void RSpatialIndexNavel::init()
+{
     buff = SpatialIndex::StorageManager::createNewMemoryStorageManager();
 
     SpatialIndex::id_type indexIdentifier;
@@ -115,20 +103,14 @@ void RSpatialIndexNavel::init() {
     // 100: slower for inserts
     size_t leafCapacity = 50;
     tree = SpatialIndex::RTree::createNewRTree(
-        *buff,
-        minimumLoad,
-        indexCapacity,
-        leafCapacity,
-        dimension,
-        SpatialIndex::RTree::RV_RSTAR,
-        indexIdentifier
-    );
+            *buff, minimumLoad, indexCapacity, leafCapacity, dimension,
+            SpatialIndex::RTree::RV_RSTAR, indexIdentifier);
     //sidCounter = 0;
 }
 
 
-
-void RSpatialIndexNavel::uninit() {
+void RSpatialIndexNavel::uninit()
+{
     delete tree;
     delete buff;
     tree = NULL;
@@ -136,42 +118,40 @@ void RSpatialIndexNavel::uninit() {
     //sidCounter = 0;
 }
 
-RSpatialIndex* RSpatialIndexNavel::create() {
-    return new RSpatialIndexNavel();
-}
+RSpatialIndex *RSpatialIndexNavel::create() { return new RSpatialIndexNavel(); }
 
-void RSpatialIndexNavel::clear() {
+void RSpatialIndexNavel::clear()
+{
     uninit();
     init();
 }
 
-void RSpatialIndexNavel::bulkLoad(const QList<int>& ids, const QList<QList<RBox> >& bbs) {
-    if (ids.isEmpty() || bbs.isEmpty()) {
+void RSpatialIndexNavel::bulkLoad(const QList<int> &ids,
+                                  const QList<QList<RBox>> &bbs)
+{
+    if (ids.isEmpty() || bbs.isEmpty())
+    {
         clear();
         return;
     }
 
-    try {
+    try
+    {
         RSiDataStream stream(ids, bbs);
         uninit();
 
         buff = SpatialIndex::StorageManager::createNewMemoryStorageManager();
         SpatialIndex::id_type indexIdentifier;
         tree = SpatialIndex::RTree::createAndBulkLoadNewRTree(
-                SpatialIndex::RTree::BLM_STR,
-                stream,
-                *buff,
-                0.2, 50, 50,
-                3,
-                SpatialIndex::RTree::RV_RSTAR,
-                indexIdentifier
-        );
+                SpatialIndex::RTree::BLM_STR, stream, *buff, 0.2, 50, 50, 3,
+                SpatialIndex::RTree::RV_RSTAR, indexIdentifier);
     }
-    catch(Tools::IllegalArgumentException e) {
+    catch (Tools::IllegalArgumentException e)
+    {
         qWarning() << "caught exception in spatial index: " << e.what().c_str();
     }
 }
-    
+
 /**
  * Adds an item to the index.
  *
@@ -188,120 +168,124 @@ void RSpatialIndexNavel::bulkLoad(const QList<int>& ids, const QList<QList<RBox>
  *      for deleting the data. NULL indicates that the item data is stored
  *      externally (e.g. in a map or list).
  */
-void RSpatialIndexNavel::addToIndex(
-    int id, int pos,
-    double x1, double y1, double z1,
-    double x2, double y2, double z2) {
+void RSpatialIndexNavel::addToIndex(int id, int pos, double x1, double y1,
+                                    double z1, double x2, double y2, double z2)
+{
 
     //qDebug() << "RSpatialIndexNavel::addToIndex: id: " << id << ", pos: " << pos << ", " << x1 << "," << y1 << "/" << x2 << "," << y2;
 
     //qDebug() << "\tbefore: " << *this;
 
     if (RMath::isNaN(x1) || RMath::isNaN(y1) || RMath::isNaN(z1) ||
-            RMath::isNaN(x2) || RMath::isNaN(y2) || RMath::isNaN(z2)) {
+        RMath::isNaN(x2) || RMath::isNaN(y2) || RMath::isNaN(z2))
+    {
 
         qWarning() << "trying to add NaN values to spatial index";
         return;
     }
 
-    addToIndex(
-        id, pos,
-        RSpatialIndexNavel::RSiRegion(
-                    qMin(x1, x2), qMin(y1, y2), qMin(z1, z2),
-                    qMax(x1, x2), qMax(y1, y2), qMax(z1, z2))
-        //dataLength,
-        //data
+    addToIndex(id, pos,
+               RSpatialIndexNavel::RSiRegion(qMin(x1, x2), qMin(y1, y2),
+                                             qMin(z1, z2), qMax(x1, x2),
+                                             qMax(y1, y2), qMax(z1, z2))
+               //dataLength,
+               //data
     );
 
     //qDebug() << "\tafter: " << *this << "\n\n";
 }
 
-void RSpatialIndexNavel::addToIndex(int id, int pos, const RBox& bb) {
+void RSpatialIndexNavel::addToIndex(int id, int pos, const RBox &bb)
+{
     RSpatialIndex::addToIndex(id, pos, bb);
 }
 
 /**
  * Internal.
  */
-void RSpatialIndexNavel::addToIndex(
-    int id, int pos,
-    const RSiRegion &region, size_t dataLength, const uint8_t *data) {
+void RSpatialIndexNavel::addToIndex(int id, int pos, const RSiRegion &region,
+                                    size_t dataLength, const uint8_t *data)
+{
 
-//    sidCounter++;
+    //    sidCounter++;
 
-//    sidToId.insert(sidCounter, id);
-//    if (idToSid.contains(id)) {
-//        idToSid[id].append(sidCounter);
-//    }
-//    else {
-//        idToSid.insert(id, QList<int>() << sidCounter);
-//    }
+    //    sidToId.insert(sidCounter, id);
+    //    if (idToSid.contains(id)) {
+    //        idToSid[id].append(sidCounter);
+    //    }
+    //    else {
+    //        idToSid.insert(id, QList<int>() << sidCounter);
+    //    }
 
     //RDebug::startTimer(16);
     tree->insertData(dataLength, data, region, RSpatialIndex::getSIId(id, pos));
     //RDebug::stopTimer(16, "insert data");
 }
 
-bool RSpatialIndexNavel::removeFromIndex(int id, int pos, const RBox &bb) {
+bool RSpatialIndexNavel::removeFromIndex(int id, int pos, const RBox &bb)
+{
     return RSpatialIndex::removeFromIndex(id, pos, bb);
 }
 
-bool RSpatialIndexNavel::removeFromIndex(int id, const QList<RBox>& bb) {
+bool RSpatialIndexNavel::removeFromIndex(int id, const QList<RBox> &bb)
+{
     //bool ok = true;
 
-//    QList<int> sids = idToSid.value(id);
-//    qDebug() << "bb.size(): " << bb.size();
-//    qDebug() << "sids.size(): " << sids.size();
-//    if (bb.size()!=sids.size()) {
-//        qWarning() << "RSpatialIndexNavel::removeFromIndex: no remove...";
-//        return;
-//    }
+    //    QList<int> sids = idToSid.value(id);
+    //    qDebug() << "bb.size(): " << bb.size();
+    //    qDebug() << "sids.size(): " << sids.size();
+    //    if (bb.size()!=sids.size()) {
+    //        qWarning() << "RSpatialIndexNavel::removeFromIndex: no remove...";
+    //        return;
+    //    }
 
     //Q_ASSERT(bb.size()==sids.size());
 
     bool ok = true;
-    for (int pos = 0; pos < bb.size(); ++pos) {
+    for (int pos = 0; pos < bb.size(); ++pos)
+    {
         ok = removeFromIndex(id, pos, bb[pos]) && ok;
     }
     //idToSid.remove(id);
 
     //if (!ok) {
-        // TODO:
-        //removeFromIndex(id);
+    // TODO:
+    //removeFromIndex(id);
     //}
 
     return ok;
 }
 
-bool RSpatialIndexNavel::removeFromIndex(
-        int id, int pos,
-        double x1, double y1, double z1,
-        double x2, double y2, double z2) {
+bool RSpatialIndexNavel::removeFromIndex(int id, int pos, double x1, double y1,
+                                         double z1, double x2, double y2,
+                                         double z2)
+{
 
     //RDebug::startTimer(4);
     //QList<int> sids = idToSid.value(id);
     //RDebug::stopTimer(4, "removeFromIndex: 001");
 
-    double p1[] = { qMin(x1, x2), qMin(y1, y2), qMin(z1, z2) };
-    double p2[] = { qMax(x1, x2), qMax(y1, y2), qMax(z1, z2) };
+    double p1[] = {qMin(x1, x2), qMin(y1, y2), qMin(z1, z2)};
+    double p2[] = {qMax(x1, x2), qMax(y1, y2), qMax(z1, z2)};
     SpatialIndex::Region r(p1, p2, 3);
     //for (int i=0; i<sids.size(); i++) {
-        //qDebug() << "RSpatialIndexNavel::removeFromIndex: " << id << " / " << pos;
-        //RDebug::startTimer(4);
-        if (tree->deleteData(r, RSpatialIndex::getSIId(id, pos))) {
-            //RDebug::stopTimer(4, "removeFromIndex: 002");
-            //RDebug::stopTimer(4, "RSpatialIndexNavel::removeFromIndex");
-            return true;
-        }
+    //qDebug() << "RSpatialIndexNavel::removeFromIndex: " << id << " / " << pos;
+    //RDebug::startTimer(4);
+    if (tree->deleteData(r, RSpatialIndex::getSIId(id, pos)))
+    {
+        //RDebug::stopTimer(4, "removeFromIndex: 002");
+        //RDebug::stopTimer(4, "RSpatialIndexNavel::removeFromIndex");
+        return true;
+    }
     //}
 
     //RDebug::printBacktrace();
-//    qWarning() << QString(
-//                      "RSpatialIndexNavel::removeFromIndex: "
-//                      "entry not found, id: %1, pos: %2, %3,%4,%5 / %6,%7,%8")
-//                  .arg(id).arg(pos)
-//                  .arg(x1) .arg(y1) .arg(z1)
-//                  .arg(x2) .arg(y2) .arg(z2);
+    //    qWarning() << QString(
+    //                      "RSpatialIndexNavel::removeFromIndex: "
+    //                      "entry not found, id: %1, pos: %2, %3,%4,%5 / %6,%7,%8")
+    //                  .arg(id).arg(pos)
+    //                  .arg(x1) .arg(y1) .arg(z1)
+    //                  .arg(x2) .arg(y2) .arg(z2);
     // TODO: call removeFromIndex with id (inefficient?)
     //qDebug() << "spatial index: " << *this;
     //Q_ASSERT(false);
@@ -364,28 +348,26 @@ bool RSpatialIndexNavel::removeFromIndex(
 //}
 
 
-
-QMap<int, QSet<int> > RSpatialIndexNavel::queryIntersected(
-    double x1, double y1, double z1,
-    double x2, double y2, double z2,
-    RSpatialIndexVisitor* dataVisitor) {
+QMap<int, QSet<int>>
+RSpatialIndexNavel::queryIntersected(double x1, double y1, double z1, double x2,
+                                     double y2, double z2,
+                                     RSpatialIndexVisitor *dataVisitor)
+{
 
     return queryIntersected(
-        RSpatialIndexNavel::RSiRegion(x1,y1,z1, x2,y2,z2), 
-        dataVisitor
-    );
+            RSpatialIndexNavel::RSiRegion(x1, y1, z1, x2, y2, z2), dataVisitor);
 }
-
 
 
 /**
  * Internal.
  */
-QMap<int, QSet<int> > RSpatialIndexNavel::queryIntersected(
-    const RSpatialIndexNavel::RSiRegion& region, 
-    RSpatialIndexVisitor* dataVisitor) {
+QMap<int, QSet<int>> RSpatialIndexNavel::queryIntersected(
+        const RSpatialIndexNavel::RSiRegion &region,
+        RSpatialIndexVisitor *dataVisitor)
+{
 
-    QMap<int, QSet<int> > result;
+    QMap<int, QSet<int>> result;
     RSpatialIndexNavel::Visitor visitor(result, dataVisitor);
     tree->intersectsWithQuery(region, visitor);
 
@@ -393,28 +375,26 @@ QMap<int, QSet<int> > RSpatialIndexNavel::queryIntersected(
 }
 
 
+QMap<int, QSet<int>>
+RSpatialIndexNavel::queryContained(double x1, double y1, double z1, double x2,
+                                   double y2, double z2,
+                                   RSpatialIndexVisitor *dataVisitor)
+{
 
-QMap<int, QSet<int> > RSpatialIndexNavel::queryContained(
-    double x1, double y1, double z1, 
-    double x2, double y2, double z2,
-    RSpatialIndexVisitor* dataVisitor) {
-
-    return queryContained(
-        RSpatialIndexNavel::RSiRegion(x1, y1, z1, x2, y2, z2), 
-        dataVisitor
-    );
+    return queryContained(RSpatialIndexNavel::RSiRegion(x1, y1, z1, x2, y2, z2),
+                          dataVisitor);
 }
-
 
 
 /**
  * Internal.
  */
-QMap<int, QSet<int> > RSpatialIndexNavel::queryContained(
-    const RSpatialIndexNavel::RSiRegion& region, 
-    RSpatialIndexVisitor* dataVisitor) {
+QMap<int, QSet<int>>
+RSpatialIndexNavel::queryContained(const RSpatialIndexNavel::RSiRegion &region,
+                                   RSpatialIndexVisitor *dataVisitor)
+{
 
-    QMap<int, QSet<int> > result;
+    QMap<int, QSet<int>> result;
     RSpatialIndexNavel::Visitor visitor(result, dataVisitor);
     tree->containsWhatQuery(region, visitor);
 
@@ -422,34 +402,34 @@ QMap<int, QSet<int> > RSpatialIndexNavel::queryContained(
 }
 
 
-QMap<int, QSet<int> > RSpatialIndexNavel::queryNearestNeighbor(
-    unsigned int k,
-    double x, double y, double z,
-    RSpatialIndexVisitor *dataVisitor) {
+QMap<int, QSet<int>>
+RSpatialIndexNavel::queryNearestNeighbor(unsigned int k, double x, double y,
+                                         double z,
+                                         RSpatialIndexVisitor *dataVisitor)
+{
 
-    return queryNearestNeighbor(
-        k,
-        RSpatialIndexNavel::RSiPoint(x, y, z),
-        dataVisitor
-    );
+    return queryNearestNeighbor(k, RSpatialIndexNavel::RSiPoint(x, y, z),
+                                dataVisitor);
 }
-
 
 
 /**
  * Internal.
  */
-QMap<int, QSet<int> > RSpatialIndexNavel::queryNearestNeighbor(
-    unsigned int k,
-    const RSiPoint& point, RSpatialIndexVisitor* dataVisitor) {
+QMap<int, QSet<int>>
+RSpatialIndexNavel::queryNearestNeighbor(unsigned int k, const RSiPoint &point,
+                                         RSpatialIndexVisitor *dataVisitor)
+{
 
-    QMap<int, QSet<int> > result;
+    QMap<int, QSet<int>> result;
     RSpatialIndexNavel::Visitor visitor(result, dataVisitor);
     tree->nearestNeighborQuery(k, point, visitor);
 
     return result;
 }
 
-QPair<int, int> RSpatialIndexNavel::queryNearestNeighbor(double x, double y, double z) {
+QPair<int, int> RSpatialIndexNavel::queryNearestNeighbor(double x, double y,
+                                                         double z)
+{
     return RSpatialIndex::queryNearestNeighbor(x, y, z);
 }

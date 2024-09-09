@@ -19,10 +19,10 @@
 #include "RSnapEnd.h"
 
 QList<RVector> RSnapEnd::snapEntity(QSharedPointer<REntity> entity,
-                                    const RVector& point,
-                                    const RBox& queryBox,
-                                    RGraphicsView& view,
-                                    QList<REntity::Id>* subEntityIds) {
+                                    const RVector &point, const RBox &queryBox,
+                                    RGraphicsView &view,
+                                    QList<REntity::Id> *subEntityIds)
+{
 
     Q_UNUSED(view)
     Q_UNUSED(point)

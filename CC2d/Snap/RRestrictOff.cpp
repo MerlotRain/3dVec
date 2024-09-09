@@ -18,7 +18,9 @@
  */
 #include "RRestrictOff.h"
 
-RVector RRestrictOff::restrictSnap(const RVector& position, const RVector& relativeZero) {
+RVector RRestrictOff::restrictSnap(const RVector &position,
+                                   const RVector &relativeZero)
+{
     Q_UNUSED(relativeZero);
 
     lastSnap = RVector::invalid;

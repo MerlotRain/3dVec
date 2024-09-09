@@ -19,20 +19,21 @@
 #include "RSnapDistance.h"
 
 QList<RVector> RSnapDistance::snapEntity(QSharedPointer<REntity> entity,
-    const RVector& point, const RBox& queryBox, RGraphicsView& view, QList<REntity::Id>* subEntityIds) {
+                                         const RVector &point,
+                                         const RBox &queryBox,
+                                         RGraphicsView &view,
+                                         QList<REntity::Id> *subEntityIds)
+{
 
     Q_UNUSED(point)
     Q_UNUSED(view)
 
-    return entity->getPointsWithDistanceToEnd(distance, RS::FromAny, queryBox, subEntityIds);
+    return entity->getPointsWithDistanceToEnd(distance, RS::FromAny, queryBox,
+                                              subEntityIds);
 }
 
-void RSnapDistance::showUiOptions() {
-}
+void RSnapDistance::showUiOptions() {}
 
-void RSnapDistance::hideUiOptions() {
-}
+void RSnapDistance::hideUiOptions() {}
 
-void RSnapDistance::setDistance(double d) {
-    distance = d;
-}
+void RSnapDistance::setDistance(double d) { distance = d; }

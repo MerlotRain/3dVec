@@ -34,18 +34,16 @@ class RMouseEvent;
  *
  * \ingroup snap
  */
-class QCADSNAP_EXPORT RSnapGrid : public RSnap {
+class QCADSNAP_EXPORT RSnapGrid : public RSnap
+{
 public:
     RSnapGrid() : RSnap(RSnap::Grid) {}
     virtual ~RSnapGrid() {}
 
-    virtual RVector snap(
-            const RVector& position,
-            RGraphicsView& view,
-            double range=RNANDOUBLE
-    );
+    virtual RVector snap(const RVector &position, RGraphicsView &view,
+                         double range = RNANDOUBLE);
 };
 
-Q_DECLARE_METATYPE(RSnapGrid*)
+Q_DECLARE_METATYPE(RSnapGrid *)
 
 #endif

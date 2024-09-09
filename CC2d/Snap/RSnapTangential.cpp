@@ -16,63 +16,61 @@
  * You should have received a copy of the GNU General Public License
  * along with QCAD.
  */
-#include "RDocumentInterface.h"
-#include "RGraphicsView.h"
 #include "RSnapTangential.h"
 #include "RArc.h"
-#include "REllipse.h"
 #include "RCircle.h"
+#include "RDocumentInterface.h"
+#include "REllipse.h"
+#include "RGraphicsView.h"
 
-QList<RVector> RSnapTangential::snapEntity(
-        QSharedPointer<REntity> entity,
-        const RVector& point,
-        const RBox& queryBox,
-        RGraphicsView& view,
-        QList<REntity::Id>* subEntityIds) {
+
+QList<RVector> RSnapTangential::snapEntity(QSharedPointer<REntity> entity,
+                                           const RVector &point,
+                                           const RBox &queryBox,
+                                           RGraphicsView &view,
+                                           QList<REntity::Id> *subEntityIds)
+{
 
     QList<RVector> ret;
 
-    RDocumentInterface* di = view.getDocumentInterface();
-    if (di==NULL) {
-        return ret;
-    }
+    RDocumentInterface *di = view.getDocumentInterface();
+    if (di == NULL) { return ret; }
 
     REntity::Id subEntityId = REntity::INVALID_ID;
-    QSharedPointer<RShape> shape = entity->getClosestShape(point, queryBox.getWidth()/2, true, &subEntityId);
-    if (shape.isNull()) {
-        return ret;
-    }
+    QSharedPointer<RShape> shape = entity->getClosestShape(
+            point, queryBox.getWidth() / 2, true, &subEntityId);
+    if (shape.isNull()) { return ret; }
 
     QSharedPointer<RCircle> circle = shape.dynamicCast<RCircle>();
-    if (!circle.isNull()) {
+    if (!circle.isNull())
+    {
         QList<RLine> lines = circle->getTangents(di->getLastPosition());
-        for (int i=0; i<lines.length(); i++) {
+        for (int i = 0; i < lines.length(); i++)
+        {
             ret.append(lines[i].getEndPoint());
-            if (subEntityIds!=NULL) {
-                subEntityIds->append(subEntityId);
-            }
+            if (subEntityIds != NULL) { subEntityIds->append(subEntityId); }
         }
     }
 
     QSharedPointer<RArc> arc = shape.dynamicCast<RArc>();
-    if (!arc.isNull()) {
+    if (!arc.isNull())
+    {
         QList<RLine> lines = arc->getTangents(di->getLastPosition());
-        for (int i=0; i<lines.length(); i++) {
+        for (int i = 0; i < lines.length(); i++)
+        {
             ret.append(lines[i].getEndPoint());
-            if (subEntityIds!=NULL) {
-                subEntityIds->append(subEntityId);
-            }
+            if (subEntityIds != NULL) { subEntityIds->append(subEntityId); }
         }
     }
 
     QSharedPointer<REllipse> ellipse = shape.dynamicCast<REllipse>();
-    if (!ellipse.isNull()) {
+    if (!ellipse.isNull())
+    {
         QList<RLine> lines = ellipse->getTangents(di->getLastPosition());
-        for (int i=0; i<lines.length(); i++) {
+        for (int i = 0; i < lines.length(); i++)
+        {
             ret.append(lines[i].getEndPoint());
-            if (subEntityIds!=NULL) {
-                subEntityIds->append(subEntityId);
-            }
+            if (subEntityIds != NULL) { subEntityIds->append(subEntityId); }
         }
     }
 

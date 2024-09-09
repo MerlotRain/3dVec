@@ -49,10 +49,10 @@ RPropertyTypeId RDimStyle::PropertyDimblk2;
 
 QList<QPair<RPropertyTypeId, RS::KnownVariable>> RDimStyle::propertyVariables;
 
-RDimStyle::RDimStyle() : RObject(), RDimStyleData(false) {}
+RDimStyle::RDimStyle() : RObject(), RDimStyleData() {}
 
 RDimStyle::RDimStyle(RDocument *document)
-    : RObject(document), RDimStyleData(false)
+    : RObject(document), RDimStyleData()
 {
 }
 

@@ -16,34 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with QCAD.
  */
+#include "RSnapPerpendicular.h"
 #include "RDocumentInterface.h"
 #include "RGraphicsView.h"
-#include "RSnapPerpendicular.h"
 
-QList<RVector> RSnapPerpendicular::snapEntity(
-        QSharedPointer<REntity> entity,
-        const RVector& point,
-        const RBox& queryBox,
-        RGraphicsView& view,
-        QList<REntity::Id>* subEntityIds) {
+
+QList<RVector> RSnapPerpendicular::snapEntity(QSharedPointer<REntity> entity,
+                                              const RVector &point,
+                                              const RBox &queryBox,
+                                              RGraphicsView &view,
+                                              QList<REntity::Id> *subEntityIds)
+{
 
     QList<RVector> ret;
 
-    RDocumentInterface* di = view.getDocumentInterface();
-    if (di==NULL) {
-        return ret;
-    }
+    RDocumentInterface *di = view.getDocumentInterface();
+    if (di == NULL) { return ret; }
 
     RObject::Id subEntityId = REntity::INVALID_ID;
-    QSharedPointer<RShape> shape = entity->getClosestShape(point, queryBox.getWidth()/2, true, &subEntityId);
-    if (shape.isNull()) {
-        return ret;
-    }
+    QSharedPointer<RShape> shape = entity->getClosestShape(
+            point, queryBox.getWidth() / 2, true, &subEntityId);
+    if (shape.isNull()) { return ret; }
 
     ret.append(shape->getClosestPointOnShape(di->getLastPosition(), false));
-    if (subEntityIds!=NULL) {
-        subEntityIds->append(subEntityId);
-    }
+    if (subEntityIds != NULL) { subEntityIds->append(subEntityId); }
 
     return ret;
 }

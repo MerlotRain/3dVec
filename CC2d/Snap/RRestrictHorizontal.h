@@ -33,15 +33,17 @@ class RDocumentInterface;
  *
  * \ingroup snap
  */
-class QCADSNAP_EXPORT RRestrictHorizontal : public RRestrictOrthogonal {
+class QCADSNAP_EXPORT RRestrictHorizontal : public RRestrictOrthogonal
+{
 public:
-    RRestrictHorizontal(RDocumentInterface* documentInterface = NULL)
-        : RRestrictOrthogonal(documentInterface) {
+    RRestrictHorizontal(RDocumentInterface *documentInterface = NULL)
+        : RRestrictOrthogonal(documentInterface)
+    {
         mode = RS::OrthoHorizonal;
     }
     virtual ~RRestrictHorizontal() {}
 };
 
-Q_DECLARE_METATYPE(RRestrictHorizontal*)
+Q_DECLARE_METATYPE(RRestrictHorizontal *)
 
 #endif

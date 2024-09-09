@@ -19,18 +19,18 @@
 #include "RSnapOnEntity.h"
 
 QList<RVector> RSnapOnEntity::snapEntity(QSharedPointer<REntity> entity,
-                                         const RVector& point,
-                                         const RBox& queryBox,
-                                         RGraphicsView& view,
-                                         QList<REntity::Id>* subEntityIds) {
+                                         const RVector &point,
+                                         const RBox &queryBox,
+                                         RGraphicsView &view,
+                                         QList<REntity::Id> *subEntityIds)
+{
 
     Q_UNUSED(view)
 
     QList<RVector> ret;
     REntity::Id subEntityId;
-    ret.append(entity->getClosestPointOnEntity(point, queryBox.getWidth()/2, true, &subEntityId));
-    if (subEntityIds!=NULL) {
-        subEntityIds->append(subEntityId);
-    }
+    ret.append(entity->getClosestPointOnEntity(point, queryBox.getWidth() / 2,
+                                               true, &subEntityId));
+    if (subEntityIds != NULL) { subEntityIds->append(subEntityId); }
     return ret;
 }

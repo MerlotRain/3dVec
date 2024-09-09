@@ -36,7 +36,8 @@ class RMouseEvent;
  *
  * \ingroup snap
  */
-class QCADSNAP_EXPORT RSnapDistance : public RSnapEntityBase {
+class QCADSNAP_EXPORT RSnapDistance : public RSnapEntityBase
+{
 public:
     RSnapDistance() : RSnapEntityBase(RSnap::Distance), distance(1.0) {}
     virtual ~RSnapDistance() {}
@@ -49,17 +50,15 @@ protected:
     /**
      * \nonscriptable
      */
-    virtual QList<RVector> snapEntity(
-            QSharedPointer<REntity> entity,
-            const RVector& point,
-            const RBox& queryBox,
-            RGraphicsView& view,
-            QList<REntity::Id>* subEntityIds = NULL);
+    virtual QList<RVector> snapEntity(QSharedPointer<REntity> entity,
+                                      const RVector &point,
+                                      const RBox &queryBox, RGraphicsView &view,
+                                      QList<REntity::Id> *subEntityIds = NULL);
 
 private:
     double distance;
 };
 
-Q_DECLARE_METATYPE(RSnapDistance*)
+Q_DECLARE_METATYPE(RSnapDistance *)
 
 #endif

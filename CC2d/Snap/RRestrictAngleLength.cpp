@@ -21,50 +21,56 @@
 #include "RGraphicsView.h"
 #include "ROrthoGrid.h"
 
-RVector RRestrictAngleLength::restrictSnap(const RVector& position, const RVector& relativeZero) {
+RVector RRestrictAngleLength::restrictSnap(const RVector &position,
+                                           const RVector &relativeZero)
+{
     RVector ret;
 
     double ang = relativeZero.getAngleTo(position);
     double angRes = ang;
     //if (fabs(angle)>RS::AngleTolerance) {
-        if (repeatAngle) {
-            angRes = RMath::mround((ang - baseAngle) / angle) * angle + baseAngle;
-        }
-        else {
-            angRes = baseAngle + angle;
-        }
+    if (repeatAngle)
+    {
+        angRes = RMath::mround((ang - baseAngle) / angle) * angle + baseAngle;
+    }
+    else { angRes = baseAngle + angle; }
     //}
 
     RVector rPos = position;
-    if (mode==RRestrictAngleLength::AngleLength || mode==RRestrictAngleLength::Angle) {
-        RLine line(relativeZero, relativeZero + RVector::createPolar(100.0, angRes));
+    if (mode == RRestrictAngleLength::AngleLength ||
+        mode == RRestrictAngleLength::Angle)
+    {
+        RLine line(relativeZero,
+                   relativeZero + RVector::createPolar(100.0, angRes));
         rPos = line.getClosestPointOnShape(position, false);
     }
 
     double len = relativeZero.getDistanceTo(rPos);
     double lenRes = len;
-    if (fabs(length)>RS::PointTolerance) {
-        if (repeatLength) {
-            lenRes = RMath::mround((len - baseLength) / length) * length + baseLength;
+    if (fabs(length) > RS::PointTolerance)
+    {
+        if (repeatLength)
+        {
+            lenRes = RMath::mround((len - baseLength) / length) * length +
+                     baseLength;
         }
-        else {
-            lenRes = baseLength + length;
-        }
+        else { lenRes = baseLength + length; }
     }
 
-    switch (mode) {
-    case RRestrictAngleLength::None:
-        ret = position;
-        break;
-    case RRestrictAngleLength::AngleLength:
-        ret = relativeZero + RVector::createPolar(lenRes, angRes);
-        break;
-    case RRestrictAngleLength::Angle:
-        ret = relativeZero + RVector::createPolar(len, angRes);
-        break;
-    case RRestrictAngleLength::Length:
-        ret = relativeZero + RVector::createPolar(lenRes, ang);
-        break;
+    switch (mode)
+    {
+        case RRestrictAngleLength::None:
+            ret = position;
+            break;
+        case RRestrictAngleLength::AngleLength:
+            ret = relativeZero + RVector::createPolar(lenRes, angRes);
+            break;
+        case RRestrictAngleLength::Angle:
+            ret = relativeZero + RVector::createPolar(len, angRes);
+            break;
+        case RRestrictAngleLength::Length:
+            ret = relativeZero + RVector::createPolar(lenRes, ang);
+            break;
     }
 
     lastSnap = ret;

@@ -26,7 +26,6 @@
 #include <QSharedPointer>
 
 #include "RMath.h"
-#include "RShapeProxy.h"
 #include "RVector.h"
 
 class RArc;

@@ -22,8 +22,9 @@
 
 #include "snap_global.h"
 
-#include "RSnapEntityBase.h"
 #include "REntity.h"
+#include "RSnapEntityBase.h"
+
 
 class RMouseEvent;
 
@@ -34,20 +35,19 @@ class RMouseEvent;
  *
  * \ingroup snap
  */
-class QCADSNAP_EXPORT RSnapReference : public RSnapEntityBase {
+class QCADSNAP_EXPORT RSnapReference : public RSnapEntityBase
+{
 public:
     RSnapReference() : RSnapEntityBase(RSnap::Reference) {}
     virtual ~RSnapReference() {}
 
 protected:
-    virtual QList<RVector> snapEntity(
-            QSharedPointer<REntity>  entity,
-            const RVector& point,
-            const RBox& queryBox,
-            RGraphicsView& view,
-            QList<REntity::Id>* subEntityIds = NULL);
+    virtual QList<RVector> snapEntity(QSharedPointer<REntity> entity,
+                                      const RVector &point,
+                                      const RBox &queryBox, RGraphicsView &view,
+                                      QList<REntity::Id> *subEntityIds = NULL);
 };
 
-Q_DECLARE_METATYPE(RSnapReference*)
+Q_DECLARE_METATYPE(RSnapReference *)
 
 #endif

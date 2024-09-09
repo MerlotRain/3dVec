@@ -16,19 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with QCAD.
  */
+#include "RSnapGrid.h"
 #include "RGraphicsView.h"
 #include "RGrid.h"
 #include "RMouseEvent.h"
-#include "RSnapGrid.h"
 
 
-
-RVector RSnapGrid::snap(const RVector& position, RGraphicsView& view, double range) {
+RVector RSnapGrid::snap(const RVector &position, RGraphicsView &view,
+                        double range)
+{
     Q_UNUSED(range);
 
-    RGrid* grid = view.getGrid();
+    RGrid *grid = view.getGrid();
 
-    if (grid==NULL) {
+    if (grid == NULL)
+    {
         RVector ret = position;
         ret.valid = false;
         return ret;

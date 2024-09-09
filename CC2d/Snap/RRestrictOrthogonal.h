@@ -33,19 +33,22 @@ class RDocumentInterface;
  *
  * \ingroup snap
  */
-class QCADSNAP_EXPORT RRestrictOrthogonal : public RSnapRestriction {
+class QCADSNAP_EXPORT RRestrictOrthogonal : public RSnapRestriction
+{
 public:
-    RRestrictOrthogonal(RDocumentInterface* documentInterface)
-        : RSnapRestriction(documentInterface), 
-          mode(RS::Orthogonal) {}
+    RRestrictOrthogonal(RDocumentInterface *documentInterface)
+        : RSnapRestriction(documentInterface), mode(RS::Orthogonal)
+    {
+    }
     virtual ~RRestrictOrthogonal() {}
 
-    virtual RVector restrictSnap(const RVector& position, const RVector& relativeZero);
+    virtual RVector restrictSnap(const RVector &position,
+                                 const RVector &relativeZero);
 
 protected:
     RS::OrthoMode mode;
 };
 
-Q_DECLARE_METATYPE(RRestrictOrthogonal*)
+Q_DECLARE_METATYPE(RRestrictOrthogonal *)
 
 #endif

@@ -33,15 +33,19 @@ class RDocumentInterface;
  *
  * \ingroup snap
  */
-class QCADSNAP_EXPORT RRestrictOff : public RSnapRestriction {
+class QCADSNAP_EXPORT RRestrictOff : public RSnapRestriction
+{
 public:
-    RRestrictOff(RDocumentInterface* documentInterface = NULL)
-        : RSnapRestriction(documentInterface) {}
+    RRestrictOff(RDocumentInterface *documentInterface = NULL)
+        : RSnapRestriction(documentInterface)
+    {
+    }
     virtual ~RRestrictOff() {}
 
-    virtual RVector restrictSnap(const RVector& position, const RVector& relativeZero);
+    virtual RVector restrictSnap(const RVector &position,
+                                 const RVector &relativeZero);
 };
 
-Q_DECLARE_METATYPE(RRestrictOff*)
+Q_DECLARE_METATYPE(RRestrictOff *)
 
 #endif
