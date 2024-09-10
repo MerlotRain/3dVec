@@ -34,7 +34,6 @@
 #include "RLayerState.h"
 #include "RLinetype.h"
 #include "RNonCopyable.h"
-#include "RRequireHeap.h"
 #include "RSpatialIndex.h"
 #include "RTransactionStack.h"
 #include "RView.h"
@@ -69,7 +68,7 @@ class RStorage;
  * \ingroup core
  * \scriptable
  */
-class QCADCORE_EXPORT RDocument : public RRequireHeap, RNonCopyable
+class QCADCORE_EXPORT RDocument : public RNonCopyable
 {
 public:
     RDocument(RStorage &storage, RSpatialIndex &spatialIndex,

@@ -39,7 +39,6 @@ class QCADCORE_EXPORT RViewportEntity : public REntity
 {
 
 public:
-    static RPropertyTypeId PropertyCustom;
     static RPropertyTypeId PropertyHandle;
     static RPropertyTypeId PropertyType;
     static RPropertyTypeId PropertyBlock;

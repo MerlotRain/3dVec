@@ -19,7 +19,6 @@
 #include "RLayer.h"
 #include "RDocument.h"
 
-RPropertyTypeId RLayer::PropertyCustom;
 RPropertyTypeId RLayer::PropertyType;
 RPropertyTypeId RLayer::PropertyHandle;
 RPropertyTypeId RLayer::PropertyProtected;
@@ -82,8 +81,6 @@ RLayer::~RLayer()
 
 void RLayer::init()
 {
-    RLayer::PropertyCustom.generateId(RLayer::getRtti(),
-                                      RObject::PropertyCustom);
     RLayer::PropertyType.generateId(RLayer::getRtti(), RObject::PropertyType);
     RLayer::PropertyHandle.generateId(RLayer::getRtti(),
                                       RObject::PropertyHandle);
@@ -132,9 +129,6 @@ RLayer::Id RLayer::getParentLayerId() const
 
 void RLayer::setName(const QString &n)
 {
-    //    if (name == "0") {
-    //        return;
-    //    }
     name = n.trimmed();
 }
 
@@ -258,15 +252,6 @@ RLayer::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
             if (document != NULL)
             {
                 RPropertyAttributes attr;
-                //if (!noAttributes) {
-                //    attr.setChoices(getDocument()->getLinetypeNames());
-                //}
-                //QVariant v;
-                //QSharedPointer<RLinetype> lt = getDocument()->queryLinetype(linetype);
-                //v.setValue<RLinetype> (*lt.data());
-                //return qMakePair(v, attr);
-                //                return qMakePair(QVariant(getDocument()->getLinetypeName(
-                //                        linetype)), attr);
                 QString desc = document->getLinetypeLabel(linetypeId);
                 return qMakePair(QVariant(desc), attr);
             }
@@ -281,7 +266,6 @@ RLayer::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
         return qMakePair(v, RPropertyAttributes());
     }
 
-    //return qMakePair(QVariant(), RPropertyAttributes());
     return RObject::getProperty(propertyTypeId, humanReadable, noAttributes,
                                 showOnRequest);
 }

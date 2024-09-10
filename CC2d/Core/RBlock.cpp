@@ -22,7 +22,6 @@
 const QString RBlock::modelSpaceName = "*Model_Space";
 const QString RBlock::paperSpaceName = "*Paper_Space";
 
-RPropertyTypeId RBlock::PropertyCustom;
 RPropertyTypeId RBlock::PropertyType;
 RPropertyTypeId RBlock::PropertyHandle;
 RPropertyTypeId RBlock::PropertyName;
@@ -48,8 +47,6 @@ RBlock::~RBlock() {}
 
 void RBlock::init()
 {
-    RBlock::PropertyCustom.generateId(RBlock::getRtti(),
-                                      RObject::PropertyCustom);
     RBlock::PropertyType.generateId(RBlock::getRtti(), RObject::PropertyType);
     RBlock::PropertyHandle.generateId(RBlock::getRtti(),
                                       RObject::PropertyHandle);

@@ -18,20 +18,6 @@
  */
 #include "RSpatialIndex.h"
 
-void RSpatialIndexDebugVisitor::visitData(int id, int pos, double x1, double y1,
-                                          double z1, double x2, double y2,
-                                          double z2)
-{
-
-    //dbg.nospace()
-    qDebug() << "id: " << id << " pos: " << pos << " box: (" << x1 << ", " << y1
-             << ", " << z1 << " / " << x2 << ", " << y2 << ", " << z2 << ")";
-
-    QPair<int, int> p(id, pos);
-    Q_ASSERT(!matches.contains(p));
-    matches.append(p);
-}
-
 qint64 RSpatialIndex::getSIId(int id, int pos)
 {
     return ((qint64) pos << 32) + id;

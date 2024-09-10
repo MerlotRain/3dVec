@@ -41,7 +41,6 @@ class QCADCORE_EXPORT RTextBasedEntity : public REntity
     Q_DECLARE_TR_FUNCTIONS(RTextBasedEntity)
 
 public:
-    static RPropertyTypeId PropertyCustom;
     static RPropertyTypeId PropertyHandle;
     static RPropertyTypeId PropertyType;
     static RPropertyTypeId PropertyBlock;

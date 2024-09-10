@@ -18,7 +18,6 @@
  */
 #include "RDimLinearEntity.h"
 
-RPropertyTypeId RDimLinearEntity::PropertyCustom;
 RPropertyTypeId RDimLinearEntity::PropertyHandle;
 RPropertyTypeId RDimLinearEntity::PropertyProtected;
 RPropertyTypeId RDimLinearEntity::PropertyWorkingSet;
@@ -92,8 +91,6 @@ RDimLinearEntity::~RDimLinearEntity() {}
 
 void RDimLinearEntity::init()
 {
-    RDimLinearEntity::PropertyCustom.generateId(RDimLinearEntity::getRtti(),
-                                                RObject::PropertyCustom);
     RDimLinearEntity::PropertyHandle.generateId(RDimLinearEntity::getRtti(),
                                                 RObject::PropertyHandle);
     RDimLinearEntity::PropertyProtected.generateId(RDimLinearEntity::getRtti(),

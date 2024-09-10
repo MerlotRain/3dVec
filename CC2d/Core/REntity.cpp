@@ -23,7 +23,6 @@
 #include "RShape.h"
 #include "RStorage.h"
 
-RPropertyTypeId REntity::PropertyCustom;
 RPropertyTypeId REntity::PropertyHandle;
 RPropertyTypeId REntity::PropertyProtected;
 RPropertyTypeId REntity::PropertyWorkingSet;
@@ -75,8 +74,6 @@ bool REntity::isTextBased(const RS::EntityType type)
 
 void REntity::init()
 {
-    REntity::PropertyCustom.generateId(REntity::getRtti(),
-                                       RObject::PropertyCustom);
     REntity::PropertyHandle.generateId(REntity::getRtti(),
                                        RObject::PropertyHandle);
     REntity::PropertyProtected.generateId(REntity::getRtti(),

@@ -19,7 +19,6 @@
 #include "RLeaderEntity.h"
 #include "RStorage.h"
 
-RPropertyTypeId RLeaderEntity::PropertyCustom;
 RPropertyTypeId RLeaderEntity::PropertyHandle;
 RPropertyTypeId RLeaderEntity::PropertyProtected;
 RPropertyTypeId RLeaderEntity::PropertyWorkingSet;
@@ -47,24 +46,19 @@ RPropertyTypeId RLeaderEntity::PropertyDimasz;
 RLeaderEntity::RLeaderEntity(RDocument *document, const RLeaderData &data)
     : REntity(document), data(document, data)
 {
-    //RDebug::incCounter("RLeaderEntity");
 }
 
 RLeaderEntity::RLeaderEntity(const RLeaderEntity &other) : REntity(other)
 {
-    //RDebug::incCounter("RLeaderEntity");
     data = other.data;
 }
 
 RLeaderEntity::~RLeaderEntity()
 {
-    //RDebug::decCounter("RLeaderEntity");
 }
 
 void RLeaderEntity::init()
 {
-    RLeaderEntity::PropertyCustom.generateId(RLeaderEntity::getRtti(),
-                                             RObject::PropertyCustom);
     RLeaderEntity::PropertyHandle.generateId(RLeaderEntity::getRtti(),
                                              RObject::PropertyHandle);
     RLeaderEntity::PropertyProtected.generateId(RLeaderEntity::getRtti(),

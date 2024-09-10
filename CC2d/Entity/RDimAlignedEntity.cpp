@@ -18,7 +18,6 @@
  */
 #include "RDimAlignedEntity.h"
 
-RPropertyTypeId RDimAlignedEntity::PropertyCustom;
 RPropertyTypeId RDimAlignedEntity::PropertyHandle;
 RPropertyTypeId RDimAlignedEntity::PropertyProtected;
 RPropertyTypeId RDimAlignedEntity::PropertyWorkingSet;
@@ -94,8 +93,6 @@ RDimAlignedEntity::~RDimAlignedEntity() {}
 
 void RDimAlignedEntity::init()
 {
-    RDimAlignedEntity::PropertyCustom.generateId(RDimAlignedEntity::getRtti(),
-                                                 RObject::PropertyCustom);
     RDimAlignedEntity::PropertyHandle.generateId(RDimAlignedEntity::getRtti(),
                                                  RObject::PropertyHandle);
     RDimAlignedEntity::PropertyProtected.generateId(

@@ -21,7 +21,6 @@
 #include "REllipseEntity.h"
 #include "RPoint.h"
 
-RPropertyTypeId RArcEntity::PropertyCustom;
 RPropertyTypeId RArcEntity::PropertyHandle;
 RPropertyTypeId RArcEntity::PropertyProtected;
 RPropertyTypeId RArcEntity::PropertyWorkingSet;
@@ -82,8 +81,6 @@ void RArcEntity::setShape(const RArc &a)
 
 void RArcEntity::init()
 {
-    RArcEntity::PropertyCustom.generateId(RArcEntity::getRtti(),
-                                          RObject::PropertyCustom);
     RArcEntity::PropertyHandle.generateId(RArcEntity::getRtti(),
                                           RObject::PropertyHandle);
     RArcEntity::PropertyProtected.generateId(RArcEntity::getRtti(),

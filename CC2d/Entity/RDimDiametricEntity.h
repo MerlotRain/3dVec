@@ -40,7 +40,6 @@ class QCADENTITY_EXPORT RDimDiametricEntity : public RDimensionEntity
     Q_DECLARE_TR_FUNCTIONS(RDimDiametricEntity)
 
 public:
-    static RPropertyTypeId PropertyCustom;
     static RPropertyTypeId PropertyHandle;
     static RPropertyTypeId PropertyProtected;
     static RPropertyTypeId PropertyWorkingSet;

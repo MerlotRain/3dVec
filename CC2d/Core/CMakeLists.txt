@@ -33,7 +33,7 @@ set(core_SRCS
     RResourceList.cpp
     RS.cpp
     RSpatialIndex.cpp
-    RSpatialIndexSimple.cpp
+    RSpatialIndexNavel.cpp
     RStorage.cpp
     RStorageBlockSort.cpp
     RStorageLayerSort.cpp
@@ -100,7 +100,7 @@ set(core_HDRS
     RResourceList.h
     RS.h
     RSpatialIndex.h
-    RSpatialIndexSimple.h
+    RSpatialIndexNavel.h
     RSpatialIndexVisitor.h
     RStorage.h
     RStorageBlockSort.h

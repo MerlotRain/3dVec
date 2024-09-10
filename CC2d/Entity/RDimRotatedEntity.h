@@ -36,11 +36,9 @@ class RDocument;
  */
 class QCADENTITY_EXPORT RDimRotatedEntity : public RDimLinearEntity
 {
-
     Q_DECLARE_TR_FUNCTIONS(RDimRotatedEntity)
 
 public:
-    static RPropertyTypeId PropertyCustom;
     static RPropertyTypeId PropertyHandle;
     static RPropertyTypeId PropertyProtected;
     static RPropertyTypeId PropertyWorkingSet;

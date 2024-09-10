@@ -19,7 +19,6 @@
 #include "RTraceEntity.h"
 #include "RLine.h"
 
-RPropertyTypeId RTraceEntity::PropertyCustom;
 RPropertyTypeId RTraceEntity::PropertyHandle;
 RPropertyTypeId RTraceEntity::PropertyProtected;
 RPropertyTypeId RTraceEntity::PropertyWorkingSet;
@@ -59,8 +58,6 @@ RTraceEntity::~RTraceEntity() {}
 
 void RTraceEntity::init()
 {
-    RTraceEntity::PropertyCustom.generateId(RTraceEntity::getRtti(),
-                                            RObject::PropertyCustom);
     RTraceEntity::PropertyHandle.generateId(RTraceEntity::getRtti(),
                                             RObject::PropertyHandle);
     RTraceEntity::PropertyProtected.generateId(RTraceEntity::getRtti(),

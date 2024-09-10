@@ -18,7 +18,6 @@
  */
 #include "RDimAngular3PEntity.h"
 
-RPropertyTypeId RDimAngular3PEntity::PropertyCustom;
 RPropertyTypeId RDimAngular3PEntity::PropertyHandle;
 RPropertyTypeId RDimAngular3PEntity::PropertyProtected;
 RPropertyTypeId RDimAngular3PEntity::PropertyWorkingSet;
@@ -98,8 +97,6 @@ RDimAngular3PEntity::~RDimAngular3PEntity() {}
 
 void RDimAngular3PEntity::init()
 {
-    RDimAngular3PEntity::PropertyCustom.generateId(
-            RDimAngular3PEntity::getRtti(), RObject::PropertyCustom);
     RDimAngular3PEntity::PropertyHandle.generateId(
             RDimAngular3PEntity::getRtti(), RObject::PropertyHandle);
     RDimAngular3PEntity::PropertyProtected.generateId(

@@ -68,7 +68,6 @@ class QCADCORE_EXPORT REntity : public RObject
     friend class RStorage;
 
 public:
-    static RPropertyTypeId PropertyCustom;
     static RPropertyTypeId PropertyHandle;
     static RPropertyTypeId PropertyProtected;
     static RPropertyTypeId PropertyWorkingSet;

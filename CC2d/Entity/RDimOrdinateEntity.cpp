@@ -18,7 +18,6 @@
  */
 #include "RDimOrdinateEntity.h"
 
-RPropertyTypeId RDimOrdinateEntity::PropertyCustom;
 RPropertyTypeId RDimOrdinateEntity::PropertyHandle;
 RPropertyTypeId RDimOrdinateEntity::PropertyProtected;
 RPropertyTypeId RDimOrdinateEntity::PropertyWorkingSet;
@@ -77,8 +76,6 @@ RDimOrdinateEntity::~RDimOrdinateEntity() {}
 
 void RDimOrdinateEntity::init()
 {
-    RDimOrdinateEntity::PropertyCustom.generateId(RDimOrdinateEntity::getRtti(),
-                                                  RObject::PropertyCustom);
     RDimOrdinateEntity::PropertyHandle.generateId(RDimOrdinateEntity::getRtti(),
                                                   RObject::PropertyHandle);
     RDimOrdinateEntity::PropertyProtected.generateId(

@@ -36,11 +36,9 @@ class RDocument;
  */
 class QCADENTITY_EXPORT RDimAngular2LEntity : public RDimAngularEntity
 {
-
     Q_DECLARE_TR_FUNCTIONS(RDimAngular2LEntity)
 
 public:
-    static RPropertyTypeId PropertyCustom;
     static RPropertyTypeId PropertyHandle;
     static RPropertyTypeId PropertyProtected;
     static RPropertyTypeId PropertyWorkingSet;

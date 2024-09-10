@@ -23,7 +23,6 @@
 #include "RLine.h"
 #include "RPoint.h"
 
-RPropertyTypeId RImageEntity::PropertyCustom;
 RPropertyTypeId RImageEntity::PropertyHandle;
 RPropertyTypeId RImageEntity::PropertyProtected;
 RPropertyTypeId RImageEntity::PropertyWorkingSet;
@@ -55,27 +54,21 @@ RPropertyTypeId RImageEntity::PropertyFade;
 RImageEntity::RImageEntity(RDocument *document, const RImageData &data)
     : REntity(document), data(document, data)
 {
-
-    //RDebug::incCounter("RImageEntity");
 }
 
 RImageEntity::RImageEntity(const RImageEntity &other) : REntity(other)
 {
-    //RDebug::incCounter("RImageEntity");
     data = other.data;
 }
 
 RImageEntity::~RImageEntity()
 {
-    //RDebug::decCounter("RImageEntity");
 }
 
 RImageEntity *RImageEntity::clone() const { return new RImageEntity(*this); }
 
 void RImageEntity::init()
 {
-    RImageEntity::PropertyCustom.generateId(RImageEntity::getRtti(),
-                                            RObject::PropertyCustom);
     RImageEntity::PropertyHandle.generateId(RImageEntity::getRtti(),
                                             RObject::PropertyHandle);
     RImageEntity::PropertyProtected.generateId(RImageEntity::getRtti(),

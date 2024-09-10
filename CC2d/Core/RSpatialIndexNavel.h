@@ -20,117 +20,13 @@
 #ifndef RSPATIALINDEXNAVEL_H
 #define RSPATIALINDEXNAVEL_H
 
-#include "spatialindex_global.h"
+#include "CC2dCoreExport.h"
 
 #include <QList>
 #include <QSet>
 #include <QtGlobal>
-
-
 #include "RSpatialIndex.h"
-
 #include "include/spatialindex/SpatialIndex.h"
-
-class RSiDataStream : public SpatialIndex::IDataStream
-{
-public:
-    RSiDataStream(const QList<int> &ids, const QList<QList<RBox>> &bbs)
-        : ids(ids), bbs(bbs), index(0), pos(0), done(false)
-    {
-
-        Q_ASSERT(this->ids.length() == this->bbs.length());
-    }
-
-    virtual ~RSiDataStream() {}
-
-    virtual SpatialIndex::IData *getNext()
-    {
-        Q_ASSERT(index < ids.length());
-        Q_ASSERT(index < bbs.length());
-        Q_ASSERT(pos < bbs[index].length());
-
-        RBox bb = bbs[index][pos];
-        double p1[] = {bb.getMinimum().x, bb.getMinimum().y, bb.getMinimum().z};
-        double p2[] = {bb.getMaximum().x, bb.getMaximum().y, bb.getMaximum().z};
-        SpatialIndex::Region r(p1, p2, 3);
-        qint64 id = RSpatialIndex::getSIId(ids[index], pos);
-
-        if (pos < bbs[index].length() - 1) { pos++; }
-        else
-        {
-            index++;
-            pos = 0;
-            if (index >= ids.length() || index >= bbs.length()) { done = true; }
-            else
-            {
-                // skip empty bbs lists:
-                while (index < bbs.length() && bbs[index].isEmpty())
-                {
-                    index++;
-                }
-            }
-        }
-
-        return new SpatialIndex::RTree::Data(0, NULL, r, id);
-    }
-
-    virtual bool hasNext() { return !done; }
-
-    virtual uint32_t size()
-    {
-        throw Tools::NotSupportedException("Operation not supported.");
-    }
-
-    virtual void rewind()
-    {
-        index = 0;
-        pos = 0;
-    }
-
-private:
-    const QList<int> &ids;
-    const QList<QList<RBox>> &bbs;
-    int index;
-    int pos;
-    bool done;
-};
-
-
-/**
- * \ingroup spatialindex
- */
-class RSiGetRegionVisitor : public RSpatialIndexVisitor
-{
-public:
-    RSiGetRegionVisitor(int id) : id(id), found(false) {}
-    virtual ~RSiGetRegionVisitor() {}
-    virtual void visitData(int id, int pos, double x1, double y1, double z1,
-                           double x2, double y2, double z2)
-    {
-
-        Q_UNUSED(pos);
-
-        if (this->id == id)
-        {
-            double p1[] = {x1, y1, z1};
-            double p2[] = {x2, y2, z2};
-
-            region = SpatialIndex::Region(p1, p2, 3);
-
-            found = true;
-        }
-    }
-    virtual void visitNode(double /*x1*/, double /*y1*/, double /*z1*/,
-                           double /*x2*/, double /*y2*/, double /*z2*/)
-    {
-    }
-
-public:
-    int id;
-    SpatialIndex::Region region;
-    bool found;
-};
-
 
 /**
  * \brief Spatial index class. 
@@ -140,7 +36,7 @@ public:
  * \ingroup spatialindex
  * \scriptable
  */
-class QCADSPATIALINDEX_EXPORT RSpatialIndexNavel : public RSpatialIndex
+class QCADCORE_EXPORT RSpatialIndexNavel : public RSpatialIndex
 {
 protected:
     /**

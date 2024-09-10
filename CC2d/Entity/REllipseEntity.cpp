@@ -20,7 +20,6 @@
 #include "RArcEntity.h"
 #include "RPoint.h"
 
-RPropertyTypeId REllipseEntity::PropertyCustom;
 RPropertyTypeId REllipseEntity::PropertyHandle;
 RPropertyTypeId REllipseEntity::PropertyProtected;
 RPropertyTypeId REllipseEntity::PropertyWorkingSet;
@@ -65,8 +64,6 @@ REllipseEntity::~REllipseEntity() {}
 
 void REllipseEntity::init()
 {
-    REllipseEntity::PropertyCustom.generateId(REllipseEntity::getRtti(),
-                                              RObject::PropertyCustom);
     REllipseEntity::PropertyHandle.generateId(REllipseEntity::getRtti(),
                                               RObject::PropertyHandle);
     REllipseEntity::PropertyProtected.generateId(REllipseEntity::getRtti(),

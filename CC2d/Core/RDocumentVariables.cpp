@@ -19,7 +19,6 @@
 #include "RDocumentVariables.h"
 #include "RDocument.h"
 
-RPropertyTypeId RDocumentVariables::PropertyCustom;
 RPropertyTypeId RDocumentVariables::PropertyHandle;
 RPropertyTypeId RDocumentVariables::PropertyProtected;
 RPropertyTypeId RDocumentVariables::PropertyCurrentLayerId;
@@ -39,8 +38,6 @@ RDocumentVariables::~RDocumentVariables() {}
 
 void RDocumentVariables::init()
 {
-    RDocumentVariables::PropertyCustom.generateId(RDocumentVariables::getRtti(),
-                                                  RObject::PropertyCustom);
     RDocumentVariables::PropertyHandle.generateId(RDocumentVariables::getRtti(),
                                                   RObject::PropertyHandle);
     RDocumentVariables::PropertyProtected.generateId(

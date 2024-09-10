@@ -41,7 +41,6 @@ class QCADCORE_EXPORT RDimStyle : public RObject, public RDimStyleData
 {
 
 public:
-    static RPropertyTypeId PropertyCustom;
     static RPropertyTypeId PropertyHandle;
     static RPropertyTypeId PropertyProtected;
 

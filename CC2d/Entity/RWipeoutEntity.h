@@ -44,7 +44,6 @@ class QCADENTITY_EXPORT RWipeoutEntity : public REntity
 {
 
 public:
-    static RPropertyTypeId PropertyCustom;
     static RPropertyTypeId PropertyHandle;
     static RPropertyTypeId PropertyProtected;
     static RPropertyTypeId PropertyWorkingSet;
@@ -58,33 +57,16 @@ public:
     static RPropertyTypeId PropertyDisplayedColor;
     static RPropertyTypeId PropertyDrawOrder;
 
-    //    static RPropertyTypeId PropertyClosed;
-    //    static RPropertyTypeId PropertyPolylineGen;
     static RPropertyTypeId PropertyVertexNX;
     static RPropertyTypeId PropertyVertexNY;
     static RPropertyTypeId PropertyVertexNZ;
     static RPropertyTypeId PropertyBulgeN;
-    //    static RPropertyTypeId PropertyAngleN;
-    //    static RPropertyTypeId PropertyStartWidthN;
-    //    static RPropertyTypeId PropertyEndWidthN;
-    //    static RPropertyTypeId PropertyGlobalWidth;
-
-    //    static RPropertyTypeId PropertyOrientation;
-    //    static RPropertyTypeId PropertyLength;
-    //    static RPropertyTypeId PropertyTotalLength;
-    //    static RPropertyTypeId PropertyArea;
-    //    static RPropertyTypeId PropertyTotalArea;
 
     static RPropertyTypeId PropertyBaseAngle;
     static RPropertyTypeId PropertySize1;
     static RPropertyTypeId PropertySize2;
 
     static RPropertyTypeId PropertyFrame;
-
-    //    static RPropertyTypeId PropertyElevation;
-
-    //    static QString TrClockwise;
-    //    static QString TrCounterclockwise;
 
 public:
     RWipeoutEntity(RDocument *document, const RWipeoutData &data);

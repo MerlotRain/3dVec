@@ -18,7 +18,6 @@
  */
 #include "RDimRadialEntity.h"
 
-RPropertyTypeId RDimRadialEntity::PropertyCustom;
 RPropertyTypeId RDimRadialEntity::PropertyHandle;
 RPropertyTypeId RDimRadialEntity::PropertyProtected;
 RPropertyTypeId RDimRadialEntity::PropertyWorkingSet;
@@ -90,8 +89,6 @@ RDimRadialEntity::~RDimRadialEntity() {}
 
 void RDimRadialEntity::init()
 {
-    RDimRadialEntity::PropertyCustom.generateId(RDimRadialEntity::getRtti(),
-                                                RObject::PropertyCustom);
     RDimRadialEntity::PropertyHandle.generateId(RDimRadialEntity::getRtti(),
                                                 RObject::PropertyHandle);
     RDimRadialEntity::PropertyProtected.generateId(RDimRadialEntity::getRtti(),

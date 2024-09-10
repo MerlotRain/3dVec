@@ -19,7 +19,6 @@
 #include "RFaceEntity.h"
 #include "RLine.h"
 
-RPropertyTypeId RFaceEntity::PropertyCustom;
 RPropertyTypeId RFaceEntity::PropertyHandle;
 RPropertyTypeId RFaceEntity::PropertyProtected;
 RPropertyTypeId RFaceEntity::PropertyWorkingSet;
@@ -59,8 +58,6 @@ RFaceEntity::~RFaceEntity() {}
 
 void RFaceEntity::init()
 {
-    RFaceEntity::PropertyCustom.generateId(RFaceEntity::getRtti(),
-                                           RObject::PropertyCustom);
     RFaceEntity::PropertyHandle.generateId(RFaceEntity::getRtti(),
                                            RObject::PropertyHandle);
     RFaceEntity::PropertyProtected.generateId(RFaceEntity::getRtti(),

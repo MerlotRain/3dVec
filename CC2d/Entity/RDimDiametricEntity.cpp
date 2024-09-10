@@ -18,7 +18,6 @@
  */
 #include "RDimDiametricEntity.h"
 
-RPropertyTypeId RDimDiametricEntity::PropertyCustom;
 RPropertyTypeId RDimDiametricEntity::PropertyHandle;
 RPropertyTypeId RDimDiametricEntity::PropertyProtected;
 RPropertyTypeId RDimDiametricEntity::PropertyWorkingSet;
@@ -92,8 +91,6 @@ RDimDiametricEntity::~RDimDiametricEntity() {}
 
 void RDimDiametricEntity::init()
 {
-    RDimDiametricEntity::PropertyCustom.generateId(
-            RDimDiametricEntity::getRtti(), RObject::PropertyCustom);
     RDimDiametricEntity::PropertyHandle.generateId(
             RDimDiametricEntity::getRtti(), RObject::PropertyHandle);
     RDimDiametricEntity::PropertyProtected.generateId(

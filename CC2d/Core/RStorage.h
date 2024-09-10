@@ -36,7 +36,6 @@
 #include "RLinetype.h"
 #include "RLinetypePattern.h"
 #include "RNonCopyable.h"
-#include "RRequireHeap.h"
 #include "RTransaction.h"
 #include "RView.h"
 #include "RViewportEntity.h"
@@ -59,7 +58,7 @@ class RDocument;
  * \ingroup core
  * \scriptable
  */
-class QCADCORE_EXPORT RStorage : RNonCopyable, public RRequireHeap
+class QCADCORE_EXPORT RStorage : RNonCopyable
 {
 public:
     RStorage();

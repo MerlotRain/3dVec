@@ -19,7 +19,6 @@
 #include "RDimStyle.h"
 #include "RDocument.h"
 
-RPropertyTypeId RDimStyle::PropertyCustom;
 RPropertyTypeId RDimStyle::PropertyHandle;
 RPropertyTypeId RDimStyle::PropertyProtected;
 
@@ -60,8 +59,6 @@ RDimStyle::~RDimStyle() {}
 
 void RDimStyle::init()
 {
-    RDimStyle::PropertyCustom.generateId(RDimStyle::getRtti(),
-                                         RObject::PropertyCustom);
     RDimStyle::PropertyHandle.generateId(RDimStyle::getRtti(),
                                          RObject::PropertyHandle);
     RDimStyle::PropertyProtected.generateId(RDimStyle::getRtti(),

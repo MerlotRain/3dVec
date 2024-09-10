@@ -18,7 +18,6 @@
  */
 #include "RTextBasedEntity.h"
 
-RPropertyTypeId RTextBasedEntity::PropertyCustom;
 RPropertyTypeId RTextBasedEntity::PropertyHandle;
 RPropertyTypeId RTextBasedEntity::PropertyType;
 RPropertyTypeId RTextBasedEntity::PropertyBlock;
@@ -56,8 +55,6 @@ RTextBasedEntity::~RTextBasedEntity() {}
 
 void RTextBasedEntity::init()
 {
-    RTextBasedEntity::PropertyCustom.generateId(RTextBasedEntity::getRtti(),
-                                                RObject::PropertyCustom);
     RTextBasedEntity::PropertyHandle.generateId(RTextBasedEntity::getRtti(),
                                                 RObject::PropertyHandle);
     RTextBasedEntity::PropertyType.generateId(RTextBasedEntity::getRtti(),

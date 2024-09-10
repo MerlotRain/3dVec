@@ -19,7 +19,6 @@
 #include "RPolylineEntity.h"
 #include "RLine.h"
 
-RPropertyTypeId RPolylineEntity::PropertyCustom;
 RPropertyTypeId RPolylineEntity::PropertyHandle;
 RPropertyTypeId RPolylineEntity::PropertyProtected;
 RPropertyTypeId RPolylineEntity::PropertyWorkingSet;
@@ -56,29 +55,18 @@ RPropertyTypeId RPolylineEntity::PropertySize1;
 RPropertyTypeId RPolylineEntity::PropertySize2;
 RPropertyTypeId RPolylineEntity::PropertyElevation;
 
-//#if QT_VERSION >= 0x050000
-//QString RPolylineEntity::TrClockwise; //= QString("↻ ") + QT_TRANSLATE_NOOP("REntity", "Clockwise");
-//QString RPolylineEntity::TrCounterclockwise; //= QString("↺ ") + QT_TRANSLATE_NOOP("REntity", "Counterclockwise");
-//#else
-//QString RPolylineEntity::TrClockwise; //= QT_TRANSLATE_NOOP("REntity", "Clockwise");
-//QString RPolylineEntity::TrCounterclockwise; //= QT_TRANSLATE_NOOP("REntity", "Counterclockwise");
-//#endif
-
 RPolylineEntity::RPolylineEntity(RDocument *document, const RPolylineData &data)
     : REntity(document), data(document, data)
 {
-    //RDebug::incCounter("RPolylineEntity");
 }
 
 RPolylineEntity::RPolylineEntity(const RPolylineEntity &other) : REntity(other)
 {
-    //RDebug::incCounter("RPolylineEntity");
     data = other.data;
 }
 
 RPolylineEntity::~RPolylineEntity()
 {
-    //RDebug::decCounter("RPolylineEntity");
 }
 
 void RPolylineEntity::setShape(const RPolyline &l)
@@ -92,8 +80,6 @@ void RPolylineEntity::setShape(const RPolyline &l)
 
 void RPolylineEntity::init()
 {
-    RPolylineEntity::PropertyCustom.generateId(RPolylineEntity::getRtti(),
-                                               RObject::PropertyCustom);
     RPolylineEntity::PropertyHandle.generateId(RPolylineEntity::getRtti(),
                                                RObject::PropertyHandle);
     RPolylineEntity::PropertyProtected.generateId(RPolylineEntity::getRtti(),

@@ -21,7 +21,6 @@
 #include "RTextData.h"
 #include "RTriangle.h"
 
-RPropertyTypeId RDimensionEntity::PropertyCustom;
 RPropertyTypeId RDimensionEntity::PropertyHandle;
 RPropertyTypeId RDimensionEntity::PropertyProtected;
 RPropertyTypeId RDimensionEntity::PropertyWorkingSet;
@@ -93,8 +92,6 @@ RDimensionEntity::~RDimensionEntity() {}
 
 void RDimensionEntity::init()
 {
-    RDimensionEntity::PropertyCustom.generateId(RDimensionEntity::getRtti(),
-                                                RObject::PropertyCustom);
     RDimensionEntity::PropertyHandle.generateId(RDimensionEntity::getRtti(),
                                                 RObject::PropertyHandle);
     RDimensionEntity::PropertyProtected.generateId(RDimensionEntity::getRtti(),

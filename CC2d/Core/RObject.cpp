@@ -29,7 +29,6 @@ const RObject::Handle RObject::INVALID_HANDLE = -1;
 QMap<QString, QMap<QString, RPropertyAttributes>>
         RObject::customPropertyAttributes;
 
-RPropertyTypeId RObject::PropertyCustom;
 RPropertyTypeId RObject::PropertyType;
 RPropertyTypeId RObject::PropertyHandle;
 RPropertyTypeId RObject::PropertyProtected;
@@ -65,8 +64,6 @@ void RObject::setDocument(RDocument *document) { this->document = document; }
 
 void RObject::init()
 {
-    RObject::PropertyCustom.generateId(RObject::getRtti(), "",
-                                       QT_TRANSLATE_NOOP("REntity", "Custom"));
     RObject::PropertyType.generateId(RObject::getRtti(), "",
                                      QT_TRANSLATE_NOOP("REntity", "Type"));
     RObject::PropertyHandle.generateId(RObject::getRtti(), "",

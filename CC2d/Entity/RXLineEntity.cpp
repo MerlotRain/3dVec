@@ -19,7 +19,6 @@
 #include "RXLineEntity.h"
 #include "RLine.h"
 
-RPropertyTypeId RXLineEntity::PropertyCustom;
 RPropertyTypeId RXLineEntity::PropertyHandle;
 RPropertyTypeId RXLineEntity::PropertyProtected;
 RPropertyTypeId RXLineEntity::PropertyWorkingSet;
@@ -63,8 +62,6 @@ void RXLineEntity::setShape(const RXLine &l)
 
 void RXLineEntity::init()
 {
-    RXLineEntity::PropertyCustom.generateId(RXLineEntity::getRtti(),
-                                            RObject::PropertyCustom);
     RXLineEntity::PropertyHandle.generateId(RXLineEntity::getRtti(),
                                             RObject::PropertyHandle);
     RXLineEntity::PropertyProtected.generateId(RXLineEntity::getRtti(),

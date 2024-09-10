@@ -19,7 +19,6 @@
 #include "RRayEntity.h"
 #include "RLine.h"
 
-RPropertyTypeId RRayEntity::PropertyCustom;
 RPropertyTypeId RRayEntity::PropertyHandle;
 RPropertyTypeId RRayEntity::PropertyProtected;
 RPropertyTypeId RRayEntity::PropertyWorkingSet;
@@ -63,8 +62,6 @@ void RRayEntity::setShape(const RRay &r)
 
 void RRayEntity::init()
 {
-    RRayEntity::PropertyCustom.generateId(RRayEntity::getRtti(),
-                                          RObject::PropertyCustom);
     RRayEntity::PropertyHandle.generateId(RRayEntity::getRtti(),
                                           RObject::PropertyHandle);
     RRayEntity::PropertyProtected.generateId(RRayEntity::getRtti(),

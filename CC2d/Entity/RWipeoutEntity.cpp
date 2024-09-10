@@ -19,7 +19,6 @@
 #include "RWipeoutEntity.h"
 #include "RLine.h"
 
-RPropertyTypeId RWipeoutEntity::PropertyCustom;
 RPropertyTypeId RWipeoutEntity::PropertyHandle;
 RPropertyTypeId RWipeoutEntity::PropertyProtected;
 RPropertyTypeId RWipeoutEntity::PropertyWorkingSet;
@@ -69,8 +68,6 @@ void RWipeoutEntity::setShape(const RPolyline &l)
 
 void RWipeoutEntity::init()
 {
-    RWipeoutEntity::PropertyCustom.generateId(RWipeoutEntity::getRtti(),
-                                              RObject::PropertyCustom);
     RWipeoutEntity::PropertyHandle.generateId(RWipeoutEntity::getRtti(),
                                               RObject::PropertyHandle);
     RWipeoutEntity::PropertyProtected.generateId(RWipeoutEntity::getRtti(),

@@ -30,32 +30,7 @@
 
 #include "RBox.h"
 #include "RMath.h"
-#include "RRequireHeap.h"
 #include "RSpatialIndexVisitor.h"
-
-class QCADCORE_EXPORT RSpatialIndexDebugVisitor : public RSpatialIndexVisitor
-{
-public:
-    RSpatialIndexDebugVisitor(QDebug dbg) : dbg(dbg) {}
-    virtual ~RSpatialIndexDebugVisitor() {}
-    virtual void visitData(int id, int pos, double x1, double y1, double z1,
-                           double x2, double y2, double z2);
-
-    virtual void visitNode(double x1, double y1, double z1, double x2,
-                           double y2, double z2)
-    {
-        Q_UNUSED(x1)
-        Q_UNUSED(y1)
-        Q_UNUSED(z1)
-        Q_UNUSED(x2)
-        Q_UNUSED(y2)
-        Q_UNUSED(z2)
-    }
-
-    QDebug dbg;
-    QList<QPair<int, int>> matches;
-};
-
 
 /**
  * \brief Abstract base class for spatial index implementations.
@@ -63,7 +38,7 @@ public:
  * \ingroup core
  * \scriptable
  */
-class QCADCORE_EXPORT RSpatialIndex : public RRequireHeap
+class QCADCORE_EXPORT RSpatialIndex
 {
 public:
     RSpatialIndex() {}

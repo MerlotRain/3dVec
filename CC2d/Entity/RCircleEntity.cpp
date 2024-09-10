@@ -20,7 +20,6 @@
 #include "RArcEntity.h"
 #include "RPoint.h"
 
-RPropertyTypeId RCircleEntity::PropertyCustom;
 RPropertyTypeId RCircleEntity::PropertyHandle;
 RPropertyTypeId RCircleEntity::PropertyProtected;
 RPropertyTypeId RCircleEntity::PropertyWorkingSet;
@@ -48,25 +47,19 @@ RPropertyTypeId RCircleEntity::PropertyTotalArea;
 RCircleEntity::RCircleEntity(RDocument *document, const RCircleData &data)
     : REntity(document), data(document, data)
 {
-
-    //RDebug::incCounter("RCircleEntity");
 }
 
 RCircleEntity::RCircleEntity(const RCircleEntity &other) : REntity(other)
 {
-    //RDebug::incCounter("RCircleEntity");
     data = other.data;
 }
 
 RCircleEntity::~RCircleEntity()
 {
-    //RDebug::decCounter("RCircleEntity");
 }
 
 void RCircleEntity::init()
 {
-    RCircleEntity::PropertyCustom.generateId(RCircleEntity::getRtti(),
-                                             RObject::PropertyCustom);
     RCircleEntity::PropertyHandle.generateId(RCircleEntity::getRtti(),
                                              RObject::PropertyHandle);
     RCircleEntity::PropertyProtected.generateId(RCircleEntity::getRtti(),

@@ -18,7 +18,6 @@
  */
 #include "RDimRotatedEntity.h"
 
-RPropertyTypeId RDimRotatedEntity::PropertyCustom;
 RPropertyTypeId RDimRotatedEntity::PropertyHandle;
 RPropertyTypeId RDimRotatedEntity::PropertyProtected;
 RPropertyTypeId RDimRotatedEntity::PropertyWorkingSet;
@@ -97,8 +96,6 @@ RDimRotatedEntity::~RDimRotatedEntity() {}
 
 void RDimRotatedEntity::init()
 {
-    RDimRotatedEntity::PropertyCustom.generateId(RDimRotatedEntity::getRtti(),
-                                                 RObject::PropertyCustom);
     RDimRotatedEntity::PropertyHandle.generateId(RDimRotatedEntity::getRtti(),
                                                  RObject::PropertyHandle);
     RDimRotatedEntity::PropertyProtected.generateId(

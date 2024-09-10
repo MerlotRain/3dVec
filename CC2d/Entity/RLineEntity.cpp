@@ -19,7 +19,6 @@
 #include "RLineEntity.h"
 #include "RLine.h"
 
-RPropertyTypeId RLineEntity::PropertyCustom;
 RPropertyTypeId RLineEntity::PropertyHandle;
 RPropertyTypeId RLineEntity::PropertyProtected;
 RPropertyTypeId RLineEntity::PropertyWorkingSet;
@@ -74,8 +73,6 @@ void RLineEntity::setShape(const RLine &l)
 
 void RLineEntity::init()
 {
-    RLineEntity::PropertyCustom.generateId(RLineEntity::getRtti(),
-                                           RObject::PropertyCustom);
     RLineEntity::PropertyHandle.generateId(RLineEntity::getRtti(),
                                            RObject::PropertyHandle);
     RLineEntity::PropertyProtected.generateId(RLineEntity::getRtti(),

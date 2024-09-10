@@ -19,7 +19,6 @@
 #include "RPointEntity.h"
 #include "RPoint.h"
 
-RPropertyTypeId RPointEntity::PropertyCustom;
 RPropertyTypeId RPointEntity::PropertyHandle;
 RPropertyTypeId RPointEntity::PropertyProtected;
 RPropertyTypeId RPointEntity::PropertyWorkingSet;
@@ -41,25 +40,19 @@ RPropertyTypeId RPointEntity::PropertyPositionZ;
 RPointEntity::RPointEntity(RDocument *document, const RPointData &data)
     : REntity(document), data(document, data)
 {
-
-    //RDebug::incCounter("RPointEntity");
 }
 
 RPointEntity::RPointEntity(const RPointEntity &other) : REntity(other)
 {
-    //RDebug::incCounter("RPointEntity");
     data = other.data;
 }
 
 RPointEntity::~RPointEntity()
 {
-    //RDebug::decCounter("RPointEntity");
 }
 
 void RPointEntity::init()
 {
-    RPointEntity::PropertyCustom.generateId(RPointEntity::getRtti(),
-                                            RObject::PropertyCustom);
     RPointEntity::PropertyHandle.generateId(RPointEntity::getRtti(),
                                             RObject::PropertyHandle);
     RPointEntity::PropertyProtected.generateId(RPointEntity::getRtti(),

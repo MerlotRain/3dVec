@@ -39,7 +39,6 @@ class QCADENTITY_EXPORT RTraceEntity : public REntity
 {
 
 public:
-    static RPropertyTypeId PropertyCustom;
     static RPropertyTypeId PropertyHandle;
     static RPropertyTypeId PropertyProtected;
     static RPropertyTypeId PropertyWorkingSet;

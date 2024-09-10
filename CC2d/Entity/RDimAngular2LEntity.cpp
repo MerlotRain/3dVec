@@ -18,7 +18,6 @@
  */
 #include "RDimAngular2LEntity.h"
 
-RPropertyTypeId RDimAngular2LEntity::PropertyCustom;
 RPropertyTypeId RDimAngular2LEntity::PropertyHandle;
 RPropertyTypeId RDimAngular2LEntity::PropertyProtected;
 RPropertyTypeId RDimAngular2LEntity::PropertyWorkingSet;
@@ -102,8 +101,6 @@ RDimAngular2LEntity::~RDimAngular2LEntity() {}
 
 void RDimAngular2LEntity::init()
 {
-    RDimAngular2LEntity::PropertyCustom.generateId(
-            RDimAngular2LEntity::getRtti(), RObject::PropertyCustom);
     RDimAngular2LEntity::PropertyHandle.generateId(
             RDimAngular2LEntity::getRtti(), RObject::PropertyHandle);
     RDimAngular2LEntity::PropertyProtected.generateId(

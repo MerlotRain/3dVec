@@ -19,7 +19,6 @@
 #include "RBlockReferenceEntity.h"
 #include "RStorage.h"
 
-RPropertyTypeId RBlockReferenceEntity::PropertyCustom;
 RPropertyTypeId RBlockReferenceEntity::PropertyHandle;
 RPropertyTypeId RBlockReferenceEntity::PropertyProtected;
 RPropertyTypeId RBlockReferenceEntity::PropertyWorkingSet;
@@ -74,8 +73,6 @@ RBlockReferenceEntity::~RBlockReferenceEntity() {}
 
 void RBlockReferenceEntity::init()
 {
-    RBlockReferenceEntity::PropertyCustom.generateId(
-            RBlockReferenceEntity::getRtti(), RObject::PropertyCustom);
     RBlockReferenceEntity::PropertyHandle.generateId(
             RBlockReferenceEntity::getRtti(), RObject::PropertyHandle);
     RBlockReferenceEntity::PropertyProtected.generateId(

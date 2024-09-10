@@ -44,7 +44,6 @@ class QCADENTITY_EXPORT RPolylineEntity : public REntity
 {
 
 public:
-    static RPropertyTypeId PropertyCustom;
     static RPropertyTypeId PropertyHandle;
     static RPropertyTypeId PropertyProtected;
     static RPropertyTypeId PropertyWorkingSet;

@@ -36,9 +36,7 @@ class RDocument;
  */
 class QCADENTITY_EXPORT RRayEntity : public REntity
 {
-
 public:
-    static RPropertyTypeId PropertyCustom;
     static RPropertyTypeId PropertyHandle;
     static RPropertyTypeId PropertyProtected;
     static RPropertyTypeId PropertyWorkingSet;

@@ -28,7 +28,7 @@
 #include "RMath.h"
 #include "RMemoryStorage.h"
 #include "RPolyline.h"
-#include "RSpatialIndexSimple.h"
+#include "RSpatialIndexNavel.h"
 #include "RStorage.h"
 #include "RUnit.h"
 
@@ -149,9 +149,9 @@ void RDocument::clear(bool beforeLoad)
 RDocument::~RDocument()
 {
     //::decCounter("RDocument");
-    storage.doDelete();
+    delete storage;
     clearSpatialIndices();
-    spatialIndex.doDelete();
+    delete spatialIndex;
 }
 
 void RDocument::setUnit(RS::Unit unit, RTransaction *transaction)
@@ -2812,7 +2812,7 @@ RDocument &RDocument::getClipboard()
     if (clipboard == NULL)
     {
         clipboard = new RDocument(*(new RMemoryStorage()),
-                                  *(new RSpatialIndexSimple()));
+                                  *(new RSpatialIndexNavel()));
     }
 
     return *clipboard;

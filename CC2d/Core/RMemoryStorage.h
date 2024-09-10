@@ -48,8 +48,6 @@ public:
     virtual void commitTransaction();
     virtual void rollbackTransaction();
 
-    //virtual QList<REntity::Id> orderBackToFront(const QSet<REntity::Id>& entityIds);
-
     virtual QSet<RObject::Id> queryAllObjects() const;
     virtual QSet<RObject::Id> querySelectedLayers() const;
     virtual QSet<REntity::Id> queryAllVisibleEntities();
@@ -83,7 +81,6 @@ public:
     virtual QSet<REntity::Id> queryBlockReferences(RBlock::Id blockId) const;
     virtual QSet<REntity::Id> queryAllBlockReferences() const;
     virtual QSet<REntity::Id> queryAllViewports() const;
-    //virtual QSet<REntity::Id> queryViewEntities(RView::Id viewId);
 
     virtual QSharedPointer<RDocumentVariables> queryDocumentVariables() const;
     virtual QSharedPointer<RDocumentVariables>
@@ -230,15 +227,6 @@ public:
 
     virtual void setEntityParentId(REntity &entity, REntity::Id parentId);
 
-    //virtual void setUnit(RS::Unit unit, RTransaction* transaction = NULL);
-    //virtual RS::Unit getUnit() const;
-
-    //    virtual void setDimensionFont(const QString& f);
-    //    virtual QString getDimensionFont() const;
-
-    //    virtual void setLinetypeScale(double v, RTransaction* transaction);
-    //    virtual double getLinetypeScale() const;
-
 protected:
     mutable RLineweight::Lineweight maxLineweight;
 
@@ -247,8 +235,6 @@ protected:
      */
     mutable RBox boundingBox[2][2];
     mutable bool boundingBoxDirty;
-    //mutable bool boundingBoxIgnoreHiddenLayers;
-    //mutable bool boundingBoxIgnoreEmpty;
 
     bool inTransaction;
     QHash<RObject::Id, QSharedPointer<RObject>> objectMap;
@@ -279,10 +265,6 @@ protected:
 
     QHash<QString, QVariant> variables;
     QMap<QString, QString> variableCaseMap;
-    //QHash<RS::KnownVariable, QVariant> knownVariables;
-    //RS::Unit unit;
-    //QString dimensionFont;
-    //double linetypeScale;
 };
 
 #endif /* RMEMORYSTOARGE_H_ */

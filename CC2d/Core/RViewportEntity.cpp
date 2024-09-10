@@ -19,7 +19,6 @@
 #include "RViewportEntity.h"
 #include "RStorage.h"
 
-RPropertyTypeId RViewportEntity::PropertyCustom;
 RPropertyTypeId RViewportEntity::PropertyHandle;
 RPropertyTypeId RViewportEntity::PropertyType;
 RPropertyTypeId RViewportEntity::PropertyBlock;
@@ -57,8 +56,6 @@ RViewportEntity::~RViewportEntity() {}
 
 void RViewportEntity::init()
 {
-    RViewportEntity::PropertyCustom.generateId(RViewportEntity::getRtti(),
-                                               RObject::PropertyCustom);
     RViewportEntity::PropertyHandle.generateId(RViewportEntity::getRtti(),
                                                RObject::PropertyHandle);
     RViewportEntity::PropertyType.generateId(RViewportEntity::getRtti(),

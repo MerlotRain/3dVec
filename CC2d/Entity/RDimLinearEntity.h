@@ -40,7 +40,6 @@ class QCADENTITY_EXPORT RDimLinearEntity : public RDimensionEntity
     Q_DECLARE_TR_FUNCTIONS(RDimLinearEntity)
 
 public:
-    static RPropertyTypeId PropertyCustom;
     static RPropertyTypeId PropertyHandle;
     static RPropertyTypeId PropertyProtected;
     static RPropertyTypeId PropertyWorkingSet;

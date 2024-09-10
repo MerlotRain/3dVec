@@ -19,7 +19,6 @@
 #include "RLayerState.h"
 #include "RDocument.h"
 
-RPropertyTypeId RLayerState::PropertyCustom;
 RPropertyTypeId RLayerState::PropertyType;
 RPropertyTypeId RLayerState::PropertyHandle;
 RPropertyTypeId RLayerState::PropertyProtected;
@@ -38,8 +37,6 @@ RLayerState::~RLayerState() {}
 
 void RLayerState::init()
 {
-    RLayerState::PropertyCustom.generateId(RLayerState::getRtti(),
-                                           RObject::PropertyCustom);
     RLayerState::PropertyType.generateId(RLayerState::getRtti(),
                                          RObject::PropertyType);
     RLayerState::PropertyHandle.generateId(RLayerState::getRtti(),

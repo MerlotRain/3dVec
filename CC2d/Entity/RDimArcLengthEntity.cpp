@@ -18,7 +18,6 @@
  */
 #include "RDimArcLengthEntity.h"
 
-RPropertyTypeId RDimArcLengthEntity::PropertyCustom;
 RPropertyTypeId RDimArcLengthEntity::PropertyHandle;
 RPropertyTypeId RDimArcLengthEntity::PropertyProtected;
 RPropertyTypeId RDimArcLengthEntity::PropertyWorkingSet;
@@ -100,8 +99,6 @@ RDimArcLengthEntity::~RDimArcLengthEntity() {}
 
 void RDimArcLengthEntity::init()
 {
-    RDimArcLengthEntity::PropertyCustom.generateId(
-            RDimArcLengthEntity::getRtti(), RObject::PropertyCustom);
     RDimArcLengthEntity::PropertyHandle.generateId(
             RDimArcLengthEntity::getRtti(), RObject::PropertyHandle);
     RDimArcLengthEntity::PropertyProtected.generateId(

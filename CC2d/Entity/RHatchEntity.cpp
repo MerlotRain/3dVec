@@ -23,7 +23,6 @@
 #include "RLine.h"
 #include "RPoint.h"
 
-RPropertyTypeId RHatchEntity::PropertyCustom;
 RPropertyTypeId RHatchEntity::PropertyHandle;
 RPropertyTypeId RHatchEntity::PropertyProtected;
 RPropertyTypeId RHatchEntity::PropertyWorkingSet;
@@ -69,8 +68,6 @@ RHatchEntity *RHatchEntity::clone() const { return new RHatchEntity(*this); }
 
 void RHatchEntity::init()
 {
-    RHatchEntity::PropertyCustom.generateId(RHatchEntity::getRtti(),
-                                            RObject::PropertyCustom);
     RHatchEntity::PropertyHandle.generateId(RHatchEntity::getRtti(),
                                             RObject::PropertyHandle);
     RHatchEntity::PropertyProtected.generateId(RHatchEntity::getRtti(),

@@ -19,7 +19,6 @@
 #include "RSolidEntity.h"
 #include "RLine.h"
 
-RPropertyTypeId RSolidEntity::PropertyCustom;
 RPropertyTypeId RSolidEntity::PropertyHandle;
 RPropertyTypeId RSolidEntity::PropertyProtected;
 RPropertyTypeId RSolidEntity::PropertyWorkingSet;
@@ -59,8 +58,6 @@ RSolidEntity::~RSolidEntity() {}
 
 void RSolidEntity::init()
 {
-    RSolidEntity::PropertyCustom.generateId(RSolidEntity::getRtti(),
-                                            RObject::PropertyCustom);
     RSolidEntity::PropertyHandle.generateId(RSolidEntity::getRtti(),
                                             RObject::PropertyHandle);
     RSolidEntity::PropertyProtected.generateId(RSolidEntity::getRtti(),
