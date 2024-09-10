@@ -25,7 +25,6 @@
 #include <QList>
 #include <QStack>
 
-#include "RBlock.h"
 #include "RBox.h"
 #include "RColor.h"
 #include "RLayer.h"
@@ -35,7 +34,6 @@
 #include "RPolyline.h"
 #include "RRefPoint.h"
 
-class RBlockReferenceEntity;
 class RDocument;
 class REntity;
 
@@ -79,9 +77,6 @@ public:
 
     virtual RS::EntityType getType() const { return RS::EntityUnknown; }
 
-    /**
-     * \return True if entity is of point nature (point, pixel based block).
-     */
     virtual bool isPointType() const { return false; }
 
     virtual bool isValid() const { return true; }
@@ -139,19 +134,11 @@ public:
 
     virtual RBox getBoundingBox(bool ignoreEmpty = false) const;
 
-    void copyAttributesFrom(const REntityData &entityData,
-                            bool copyBlockId = true);
+    void copyAttributesFrom(const REntityData &entityData);
 
     virtual void to2D();
     virtual void setZ(double z);
 
-    /**
-     * \return List of bounding boxes that contain this entity.
-     * This is used for complex entities such as block references
-     * to further optimize algorithms that depend on bounding boxes
-     * (e.g. spatial index algorithms). The default implementation
-     * returns the bounding box that contains the whole entity.
-     */
     virtual QList<RBox> getBoundingBoxes(bool ignoreEmpty = false) const
     {
         return QList<RBox>() << getBoundingBox(ignoreEmpty);
@@ -219,22 +206,6 @@ public:
     void setLayerName(const QString &layerName);
     QString getLayerName() const;
 
-    virtual void setBlockId(RBlock::Id blockId) { this->blockId = blockId; }
-
-    RBlock::Id getBlockId() const { return blockId; }
-
-    virtual void setParentId(RObject::Id parentId)
-    {
-        this->parentId = parentId;
-    }
-
-    /**
-     * \return ID of parent entity (block reference for block attribute).
-     */
-    RObject::Id getParentId() const { return parentId; }
-
-    QString getBlockName() const;
-
     /**
      * Sets the linetype of this entity to the given linetype ID.
      * \see RDocument::getLinetypeId
@@ -245,7 +216,7 @@ public:
     }
 
     /**
-     * \return Linetype ID of this entity. Note that this might be ByLayer or ByBlock.
+     * \return Linetype ID of this entity. Note that this might be ByLayer.
      */
     virtual RLinetype::Id getLinetypeId() const { return linetypeId; }
 
@@ -292,12 +263,6 @@ public:
         return getColor(true, stack);
     }
 
-    /**
-     * Can be overwritten to return internal, resolved reference points.
-     * This is used for example for block references in combination with
-     * snap to reference points.
-     * Default implementation returns same as getReferencePoints().
-     */
     virtual QList<RRefPoint>
     getInternalReferencePoints(RS::ProjectionRenderingHint hint = RS::RenderTop,
                                QList<RObject::Id> *subEntityIds = NULL) const
@@ -417,7 +382,6 @@ public:
      * (mark the entity as dirty).
      */
     virtual void update() const {}
-    void setAutoUpdatesBlocked(bool on);
 
     static int getDefaultDrawOrder() { return RMININT; }
 
@@ -426,12 +390,8 @@ protected:
     bool updatesEnabled;
     bool selectionStatus;
     bool selectionStatusWorkingSet;
-    /** Block auto updates is true during imports, undo and redo. */
-    bool autoUpdatesBlocked;
     int drawOrder;
     RLayer::Id layerId;
-    RBlock::Id blockId;
-    RObject::Id parentId;
     RLinetype::Id linetypeId;
     double linetypeScale;
     RLineweight::Lineweight lineweight;

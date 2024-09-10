@@ -18,8 +18,6 @@
  */
 #include "RStorage.h"
 #include "RDocument.h"
-#include "RStorageBlockSort.h"
-#include "RStorageLayerSort.h"
 
 RStorage::RStorage()
     : modified(false), handleCounter(0), document(NULL), maxDrawOrder(0),
@@ -27,9 +25,9 @@ RStorage::RStorage()
       currentLineweight(RLineweight::WeightByLayer),
       currentLinetypeId(RLinetype::INVALID_ID),
       //currentLayerId(RLayer::INVALID_ID),
-      currentViewId(RView::INVALID_ID), currentBlockId(RBlock::INVALID_ID),
+      currentViewId(RView::INVALID_ID),
       currentViewportId(RViewportEntity::INVALID_ID),
-      modelSpaceBlockId(RBlock::INVALID_ID), layer0Id(RLayer::INVALID_ID),
+      layer0Id(RLayer::INVALID_ID),
       lastTransactionId(-1), lastTransactionGroup(1),
       notifyGlobalListeners(true)
 {
@@ -46,7 +44,6 @@ void RStorage::clear()
     currentLineweight = RLineweight::WeightByLayer,
     currentLinetypeId = RLinetype::INVALID_ID;
     currentViewId = RView::INVALID_ID;
-    currentBlockId = RBlock::INVALID_ID;
     currentViewportId = RViewportEntity::INVALID_ID;
     lastTransactionId = -1;
     lastTransactionGroup = 1;
@@ -217,12 +214,6 @@ bool RStorage::hasLayerState(const QString &layerStateName) const
     return sl.contains(layerStateName, Qt::CaseInsensitive);
 }
 
-bool RStorage::hasBlock(const QString &blockName) const
-{
-    QStringList sl = RS::toList<QString>(getBlockNames());
-    return sl.contains(blockName, Qt::CaseInsensitive);
-}
-
 bool RStorage::hasLinetype(const QString &linetypeName) const
 {
     QStringList sl = RS::toList<QString>(getLinetypeNames());
@@ -275,19 +266,9 @@ RStorage::orderBackToFront(const QSet<REntity::Id> &entityIds) const
     */
 }
 
-QList<RBlock::Id> RStorage::sortBlocks(const QList<RBlock::Id> &blockIds) const
-{
-    QList<RBlock::Id> ret = blockIds;
-    RStorageBlockSort s(this);
-    qSort(ret.begin(), ret.end(), s);
-    return ret;
-}
-
 QList<RLayer::Id> RStorage::sortLayers(const QList<RLayer::Id> &layerIds) const
 {
     QList<RLayer::Id> ret = layerIds;
-    RStorageLayerSort s(this);
-    qSort(ret.begin(), ret.end(), s);
     return ret;
 }
 
@@ -300,7 +281,7 @@ bool RStorage::lessThan(const QPair<REntity::Id, int> &p1,
 
 int RStorage::getMinDrawOrder()
 {
-    QSet<REntity::Id> entityIds = queryAllEntities(false, false);
+    QSet<REntity::Id> entityIds = queryAllEntities(false);
     QSet<REntity::Id>::const_iterator it;
     int minDrawOrder = maxDrawOrder;
     for (it = entityIds.begin(); it != entityIds.end(); ++it)
@@ -951,142 +932,3 @@ bool RStorage::isParentLayerPlottable(const RLayer &layer) const
     if (!pl->isPlottable()) { return false; }
     return isParentLayerPlottable(*pl);
 }
-
-/**
- * \return True if the given entity is visible in the context of the given block or the current block (default).
- */
-bool RStorage::isEntityVisible(const REntity &entity, RObject::Id blockId) const
-{
-    RLayer::Id layerId = entity.getLayerId();
-    bool isLayer0 = (layerId == getLayer0Id());
-
-    // delegate attribute visibility to block reference:
-    // only show block attributes of visible blocks:
-    if (entity.getType() == RS::EntityAttribute)
-    {
-        //if (RSettings::getHideAttributeWithBlock())
-        {
-            if (document != NULL)
-            {
-                RLayer::Id layer0Id = document->getLayer0Id();
-                REntity::Id blockRefId = entity.getParentId();
-                QSharedPointer<REntity> parentEntity =
-                        document->queryEntityDirect(blockRefId);
-                QSharedPointer<RBlockReferenceEntity> blockRef =
-                        parentEntity.dynamicCast<RBlockReferenceEntity>();
-                if (!blockRef.isNull())
-                {
-                    bool blockRefOnLayer0 = blockRef->getLayerId() == layer0Id;
-                    // delegate visibility of block attribute to block reference:
-                    if (isLayer0)
-                    {
-                        if (blockRefOnLayer0)
-                        {
-                            QSharedPointer<RLayer> layer0 =
-                                    document->queryLayerDirect(layerId);
-                            if (!layer0.isNull() && layer0->isOff())
-                            {
-                                return false;
-                            }
-                        }
-                        else
-                        {
-                            QSharedPointer<RLayer> layer =
-                                    document->queryLayerDirect(
-                                            blockRef->getLayerId());
-                            if (!layer.isNull() && layer->isOff())
-                            {
-                                return false;
-                            }
-                        }
-                        return blockRef->isVisible();
-                    }
-                    else if (!blockRef->isVisible()) { return false; }
-                }
-            }
-        }
-    }
-
-    bool ignoreLayerVisibility = false;
-
-    QSharedPointer<RLayer> layer = queryLayerDirect(layerId);
-    if (layer.isNull())
-    {
-        // entity might not be on a layer yet:
-        return true;
-    }
-
-
-    //if (isLayer0 && RSettings::isLayer0CompatibilityOn())
-    {
-
-        if (blockId == RBlock::INVALID_ID) { blockId = getCurrentBlockId(); }
-
-        if (entity.getBlockId() != blockId)
-        {
-
-            // entity is on layer 0 and not in model space block:
-            // if layer 0 compatibility is on, the visibility of layer 0
-            // does not affect the visibility of the entity:
-            ignoreLayerVisibility = true;
-        }
-    }
-
-    // check if layer is frozen:
-    if (isLayerFrozen(*layer) && !ignoreLayerVisibility)
-    {
-        if (entity.getType() != RS::EntityViewport) { return false; }
-    }
-
-    // check if layer is off and this is not a block reference:
-    // block references on layer X remain visible if X is off but not frozen:
-    if (isLayerOff(*layer) && !ignoreLayerVisibility)
-    {
-        if (entity.getType() != RS::EntityBlockRef &&
-            entity.getType() != RS::EntityViewport)
-        {
-            return false;
-        }
-    }
-
-    // if entity is on layer 0 and layer of current rendering context block reference
-    // is off, entity is off:
-    // -> this is implemented in RBlockReference::exportEntity
-
-    // check if block is frozen:
-    if (entity.getType() == RS::EntityBlockRef)
-    {
-        const RBlockReferenceEntity *blockRef =
-                dynamic_cast<const RBlockReferenceEntity *>(&entity);
-        if (blockRef != NULL)
-        {
-            RBlock::Id refBlockId = blockRef->getReferencedBlockId();
-            if (refBlockId != RBlock::INVALID_ID)
-            {
-                QSharedPointer<RBlock> block = queryBlockDirect(refBlockId);
-                if (!block.isNull() && block->isFrozen()) { return false; }
-            }
-        }
-    }
-
-    return true;
-}
-
-//RBlockReferenceEntity::Id RStorage::getWorkingSetBlockReferenceId() const {
-//    QSharedPointer<RDocumentVariables> v = queryDocumentVariablesDirect();
-//    if (v.isNull()) {
-//        return RObject::INVALID_ID;
-//    }
-//    return v->getWorkingSetBlockReferenceId();
-//}
-
-//void RStorage::setWorkingSetBlockReferenceId(RBlockReferenceEntity::Id id, int group, RTransaction* transaction) {
-//    bool useLocalTransaction;
-//    QSharedPointer<RDocumentVariables> docVars = startDocumentVariablesTransaction(transaction, useLocalTransaction);
-//    if (group!=-1) {
-//        transaction->setGroup(group);
-//    }
-//    Q_ASSERT(!docVars.isNull());
-//    docVars->setWorkingSetBlockReferenceId(id);
-//    endDocumentVariablesTransaction(transaction, useLocalTransaction, docVars);
-//}

@@ -148,7 +148,6 @@ public:
 
         ObjectLinetype,
         ObjectLayer,
-        ObjectBlock,
         ObjectLayerState,
         ObjectView,
         ObjectUcs,
@@ -158,10 +157,6 @@ public:
         EntityAll,     /**< All entities (for filters) */
         EntityUnknown, /**< Unknown entity */
 
-        EntityAttribute,           /**< Block attribute */
-        EntityAttributeDefinition, /**< Block attribute definition */
-        EntityBlockRef,            /**< Block reference */
-        EntityBlockRefAttr,        /**< Block reference with attributes */
         EntityPoint,               /**< Point */
         EntityLine,                /**< Line */
         EntityXLine,               /**< XLine */

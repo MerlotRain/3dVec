@@ -86,11 +86,6 @@ public:
 
     bool isValid() const;
     bool isCustom() const;
-    //bool isBlockAttribute() const;
-
-    //    QString getBlockAttributeTag() const;
-    //    QString getBlockAttributePrompt() const;
-    //    QString getBlockAttributeId() const;
 
     void generateId(RS::EntityType type, const QString &groupTitle,
                     const QString &title, bool forceNew = false,
@@ -126,7 +121,6 @@ public:
 
 public:
     const static long int INVALID_ID;
-    //const static QString blockAttributePrefix;
 
 private:
     long int id;

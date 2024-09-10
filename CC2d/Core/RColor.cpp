@@ -25,7 +25,6 @@
 #include "RMath.h"
 
 QColor RColor::CompatByLayer = QColor(1, 1, 1);
-QColor RColor::CompatByBlock = QColor(2, 2, 2);
 QList<QPair<QString, RColor>> RColor::list;
 QMap<QPair<RColor, QPair<int, int>>, QIcon> RColor::iconMap;
 bool RColor::isInitialized = false;
@@ -65,7 +64,6 @@ RColor::RColor(const QString &name, RColor::Mode mode)
 bool RColor::operator==(const RColor &color) const
 {
     if (mode == RColor::ByLayer) { return color.mode == RColor::ByLayer; }
-    if (mode == RColor::ByBlock) { return color.mode == RColor::ByBlock; }
     return mode == color.mode && QColor::operator==(color);
 }
 
@@ -150,13 +148,11 @@ RColor RColor::getFaded(const RColor &color, const QColor &bgColor,
 
 bool RColor::isValid() const
 {
-    if (mode == RColor::ByBlock || mode == RColor::ByLayer) { return true; }
+    if (mode == RColor::ByLayer) { return true; }
     return QColor::isValid();
 }
 
 bool RColor::isByLayer() const { return mode == RColor::ByLayer; }
-
-bool RColor::isByBlock() const { return mode == RColor::ByBlock; }
 
 bool RColor::isFixed() const { return mode == RColor::Fixed; }
 
@@ -178,35 +174,15 @@ QString RColor::getName() const
     return QColor::name();
 }
 
-/**
- * \return List of known colors.
- *
- * \param onlyFixed Only fixed colors, not ByLayer, ByBlock, ...
- */
 QList<QPair<QString, RColor>> RColor::getList(bool onlyFixed)
 {
     init();
     QList<QPair<QString, RColor>> l = list;
-    //if (combineBw) {
-    //    QString name = RColor(Qt::black).getName();
-    //    l.removeAll(QPair<QString, RColor> (name, Qt::black));
-    //    name = RColor(Qt::white).getName();
-    //    l.removeAll(QPair<QString, RColor> (name, Qt::white));
-    //} else {
-    //    QString name = RColor(Qt::black, RColor::BlackWhite).getName();
-    //    l.removeAll(QPair<QString, RColor> (name, RColor(Qt::black,
-    //            RColor::BlackWhite)));
-    //}
     if (!onlyFixed) { return l; }
 
     // remove "By Layer"
     QString name = RColor(RColor::ByLayer).getName();
     l.removeAll(QPair<QString, RColor>(name, RColor(RColor::ByLayer)));
-
-    // remove "By Block"
-    name = RColor(RColor::ByBlock).getName();
-    l.removeAll(QPair<QString, RColor>(name, RColor(RColor::ByBlock)));
-
     return l;
 }
 
@@ -220,11 +196,6 @@ QStringList RColor::getNameList(bool onlyFixed)
     // remove "By Layer"
     QString name = RColor(RColor::ByLayer).getName();
     l.removeAll(name);
-
-    // remove "By Block"
-    name = RColor(RColor::ByBlock).getName();
-    l.removeAll(name);
-
     return l;
 }
 
@@ -237,10 +208,6 @@ QList<RColor> RColor::getColorList(bool onlyFixed)
 
     // remove "By Layer"
     l.removeAll(RColor(RColor::ByLayer));
-
-    // remove "By Block"
-    l.removeAll(RColor(RColor::ByBlock));
-
     return l;
 }
 
@@ -249,7 +216,6 @@ QList<RColor> RColor::getColorList(bool onlyFixed)
  */
 int RColor::getColorIndex() const
 {
-    if (isByBlock()) { return 0; }
     if (isByLayer()) { return 256; }
 
     for (int i = 1; i < 255; i++)
@@ -277,7 +243,6 @@ int RColor::getCustomColorCode() const
 RColor RColor::createFromCadIndex(int code)
 {
     // special colors:
-    if (code == 0) { return RColor(RColor::ByBlock); }
     if (code == 256) { return RColor(RColor::ByLayer); }
 
     // normal indexed colors:
@@ -321,7 +286,6 @@ void RColor::init()
     isInitialized = true;
 
     init(tr("By Layer"), RColor(RColor::ByLayer));
-    init(tr("By Block"), RColor(RColor::ByBlock));
     init(tr("Red"), RColor(Qt::red));
     init(tr("Green"), RColor(Qt::green));
     init(tr("Blue"), RColor(Qt::blue));
@@ -378,8 +342,7 @@ QIcon RColor::getIcon(const RColor &color, const QSize &size)
     }
 
     RColor col = color;
-    if (color.isByLayer() || color.isByBlock() || /*color == RColor(Qt::black,
-            RColor::BlackWhite) ||*/
+    if (color.isByLayer() || 
         !color.isValid())
     {
         col = Qt::white;
@@ -389,7 +352,6 @@ QIcon RColor::getIcon(const RColor &color, const QSize &size)
     QPainter painter(&img);
     int w = img.width();
     int h = img.height();
-    //    painter.setCompositionMode(QPainter::CompositionMode_Source);
     painter.fillRect(0, 0, w, h, col);
     if (!color.isValid())
     {
@@ -400,17 +362,7 @@ QIcon RColor::getIcon(const RColor &color, const QSize &size)
         grad.setColorAt(0.66, Qt::blue);
         grad.setColorAt(1, Qt::green);
         painter.fillRect(QRect(0, 0, w, h), grad);
-    } /*else if (color == RColor(Qt::black, RColor::BlackWhite) || color
-            == RColor(Qt::white, RColor::BlackWhite)) {
-        // icon for black / white
-        painter.setRenderHint(QPainter::Antialiasing);
-        QPainterPath path;
-        path.moveTo(0, 0);
-        path.lineTo(w, 0);
-        path.lineTo(w, h);
-        painter.fillPath(path, Qt::black);
-        painter.setRenderHint(QPainter::Antialiasing, false);
-    }*/
+    }
     else if (col.alpha() != 255)
     {
         // indicate alpha by an inset
@@ -435,7 +387,6 @@ QIcon RColor::getIcon(const RColor &color, const QSize &size)
 QColor RColor::toCompat() const
 {
     if (isByLayer()) { return CompatByLayer; }
-    if (isByBlock()) { return CompatByBlock; }
 
     return *this;
 }
@@ -446,7 +397,6 @@ QColor RColor::toCompat() const
 void RColor::setCompat(const QColor &col)
 {
     if (col == CompatByLayer) { *this = RColor(ByLayer); }
-    else if (col == CompatByBlock) { *this = RColor(ByBlock); }
     else
     {
         *this = col;

@@ -20,7 +20,6 @@
 
 RPropertyTypeId RTextBasedEntity::PropertyHandle;
 RPropertyTypeId RTextBasedEntity::PropertyType;
-RPropertyTypeId RTextBasedEntity::PropertyBlock;
 RPropertyTypeId RTextBasedEntity::PropertyLayer;
 RPropertyTypeId RTextBasedEntity::PropertyLinetype;
 RPropertyTypeId RTextBasedEntity::PropertyLinetypeScale;
@@ -59,8 +58,6 @@ void RTextBasedEntity::init()
                                                 RObject::PropertyHandle);
     RTextBasedEntity::PropertyType.generateId(RTextBasedEntity::getRtti(),
                                               REntity::PropertyType);
-    RTextBasedEntity::PropertyBlock.generateId(RTextBasedEntity::getRtti(),
-                                               REntity::PropertyBlock);
     RTextBasedEntity::PropertyLayer.generateId(RTextBasedEntity::getRtti(),
                                                REntity::PropertyLayer);
     RTextBasedEntity::PropertyLinetype.generateId(RTextBasedEntity::getRtti(),

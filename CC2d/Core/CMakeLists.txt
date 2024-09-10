@@ -1,9 +1,6 @@
 add_library(CC2dCore SHARED)
 
 set(core_SRCS
-    RBlock.cpp
-    RBlockReferenceData.cpp
-    RBlockReferenceEntity.cpp
     RColor.cpp
     RDimStyle.cpp
     RDimStyleData.cpp
@@ -34,14 +31,9 @@ set(core_SRCS
     RSpatialIndex.cpp
     RSpatialIndexNavel.cpp
     RStorage.cpp
-    RStorageBlockSort.cpp
-    RStorageLayerSort.cpp
     RTransaction.cpp
     RTransactionStack.cpp
     RUnit.cpp
-    RView.cpp
-    RViewportData.cpp
-    RViewportEntity.cpp
     RTextBasedData.cpp
     RTextLayout.cpp
     RTextBasedEntity.cpp
@@ -65,9 +57,6 @@ set(core_SRCS
 )
 
 set(core_HDRS
-    RBlock.h
-    RBlockReferenceData.h
-    RBlockReferenceEntity.h
     RColor.h
     RColorCodes.h
     RDimStyle.h
@@ -101,14 +90,9 @@ set(core_HDRS
     RSpatialIndexNavel.h
     RSpatialIndexVisitor.h
     RStorage.h
-    RStorageBlockSort.h
-    RStorageLayerSort.h
     RTransaction.h
     RTransactionStack.h
     RUnit.h
-    RView.h
-    RViewportData.h
-    RViewportEntity.h
     RTextBasedData.h
     RTextLayout.h
     RTextBasedEntity.h

@@ -117,12 +117,6 @@ RColor REntityData::getColor(const RColor &unresolvedColor,
         return l->getColor();
     }
 
-    if (unresolvedColor.isByBlock())
-    {
-        if (blockRefStack.isEmpty()) { return RColor(Qt::white); }
-        return blockRefStack.top()->getColor(true, blockRefStack);
-    }
-
     return unresolvedColor;
 }
 

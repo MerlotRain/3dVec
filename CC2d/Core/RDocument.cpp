@@ -24,7 +24,6 @@
 #include "RDocument.h"
 #include "RLinetypeListImperial.h"
 #include "RLinetypeListMetric.h"
-#include "RLinkedStorage.h"
 #include "RMath.h"
 #include "RMemoryStorage.h"
 #include "RPolyline.h"
@@ -168,7 +167,7 @@ void RDocument::setMeasurement(RS::Measurement m, RTransaction *transaction)
     initLinetypes(transaction);
 
     // update hatches:
-    QSet<REntity::Id> ids = storage.queryAllEntities(false, true);
+    QSet<REntity::Id> ids = storage.queryAllEntities(false);
 
     QSetIterator<REntity::Id> i(ids);
     while (i.hasNext())

@@ -39,8 +39,6 @@
 
 class RDocument;
 class REntity;
-class RBlockReferenceEntity;
-class RViewportData;
 
 #ifndef RDEFAULT_QSET_INT
 #define RDEFAULT_QSET_INT QSet<int>()
@@ -72,7 +70,6 @@ public:
     static RPropertyTypeId PropertyProtected;
     static RPropertyTypeId PropertyWorkingSet;
     static RPropertyTypeId PropertyType;
-    static RPropertyTypeId PropertyBlock;
     static RPropertyTypeId PropertyLayer;
     static RPropertyTypeId PropertyLinetype;
     static RPropertyTypeId PropertyLinetypeScale;
@@ -134,24 +131,6 @@ public:
     virtual bool isSane() const { return getData().isSane(); }
 
     /**
-     * Reimplemented by entities that are part of a block reference but not stored
-     * as part of the block definition (currently only block attributes).
-     * The default implementation returns false.
-     */
-    //    virtual bool isPartOfBlockReference(REntity::Id blockRefId) const {
-    //        Q_UNUSED(blockRefId)
-
-    //        return false;
-    //    }
-
-    /**
-     * Reimplemented by entities that do not want to be automatically painted
-     */
-    //    virtual bool getAutoVisualize() const {
-    //        return true;
-    //    }
-
-    /**
      * \copydoc REntityData::isSelected
      */
     virtual bool isSelected() const { return getData().isSelected(); }
@@ -211,26 +190,6 @@ public:
      * \copydoc REntityData::getLayerName
      */
     QString getLayerName() const { return getData().getLayerName(); }
-
-    /**
-     * \copydoc REntityData::setBlockId
-     */
-    void setBlockId(RBlock::Id blockId) { getData().setBlockId(blockId); }
-
-    /**
-     * \copydoc REntityData::getBlockId
-     */
-    RBlock::Id getBlockId() const { return getData().getBlockId(); }
-
-    /**
-     * \copydoc REntityData::getBlockName
-     */
-    QString getBlockName() const { return getData().getBlockName(); }
-
-    /**
-     * \copydoc REntityData::getParentId
-     */
-    REntity::Id getParentId() const { return getData().getParentId(); }
 
     /**
      * \copydoc REntityData::setLinetypeId
@@ -314,9 +273,8 @@ public:
 
     RColor getDisplayColor() { return getData().getDisplayColor(); }
 
-    void copyAttributesFrom(const REntity *entity, bool copyBlockId = true);
-    void copyAttributesFrom(const REntityData &entityData,
-                            bool copyBlockId = true);
+    void copyAttributesFrom(const REntity *entity);
+    void copyAttributesFrom(const REntityData &entityData);
 
     /**
      * \copydoc REntityData::getBoundingBox
@@ -617,12 +575,6 @@ public:
         getData().scaleVisualProperties(scaleFactor);
     }
 
-    virtual void setViewportContext(const RViewportData &)
-    {
-        // MSVC does not compile this:
-        //Q_UNUSED(vp);
-    }
-
     /**
      * \copydoc REntityData::mirror
      */
@@ -672,11 +624,6 @@ public:
         return getData().castToConstShape();
     }
 
-    virtual void setAutoUpdatesBlocked(bool on)
-    {
-        getData().setAutoUpdatesBlocked(on);
-    }
-
     virtual QPair<QVariant, RPropertyAttributes>
     getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable = false,
                 bool noAttributes = false, bool showOnRequest = false);
@@ -685,7 +632,6 @@ public:
                              const QVariant &value,
                              RTransaction *transaction = NULL);
 
-    virtual bool isVisible(RBlock::Id blockId = RBlock::INVALID_ID) const;
     virtual bool isEditable(bool allowInvisible = false) const;
     virtual bool isInWorkingSet() const;
 

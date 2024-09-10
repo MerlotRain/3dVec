@@ -17,7 +17,6 @@
  * along with QCAD.
  */
 #include "REntity.h"
-#include "RBlockReferenceEntity.h"
 #include "RDocument.h"
 #include "RExplodable.h"
 #include "RShape.h"
@@ -27,7 +26,6 @@ RPropertyTypeId REntity::PropertyHandle;
 RPropertyTypeId REntity::PropertyProtected;
 RPropertyTypeId REntity::PropertyWorkingSet;
 RPropertyTypeId REntity::PropertyType;
-RPropertyTypeId REntity::PropertyBlock;
 RPropertyTypeId REntity::PropertyLayer;
 RPropertyTypeId REntity::PropertyLinetype;
 RPropertyTypeId REntity::PropertyLinetypeScale;
@@ -82,8 +80,6 @@ void REntity::init()
                                            RObject::PropertyWorkingSet);
     REntity::PropertyType.generateId(REntity::getRtti(), "",
                                      QT_TRANSLATE_NOOP("REntity", "Type"));
-    REntity::PropertyBlock.generateId(REntity::getRtti(), "",
-                                      QT_TRANSLATE_NOOP("REntity", "Block"));
     REntity::PropertyLayer.generateId(REntity::getRtti(), "",
                                       QT_TRANSLATE_NOOP("REntity", "Layer"));
     REntity::PropertyLinetype.generateId(
@@ -284,11 +280,6 @@ REntity::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
     {
         return qMakePair(QVariant(getType()), RPropertyAttributes());
     }
-    else if (propertyTypeId == PropertyBlock)
-    {
-        return qMakePair(QVariant(getData().getBlockId()),
-                         RPropertyAttributes());
-    }
     else if (propertyTypeId == PropertyLayer)
     {
         if (humanReadable)
@@ -422,11 +413,7 @@ bool REntity::setProperty(RPropertyTypeId propertyTypeId, const QVariant &value,
 
     bool ret = RObject::setProperty(propertyTypeId, value, transaction);
 
-    if (propertyTypeId == PropertyBlock)
-    {
-        ret = ret || RObject::setMember(getData().blockId, value.toInt(), true);
-    }
-    else if (propertyTypeId == PropertyLayer)
+    if (propertyTypeId == PropertyLayer)
     {
         if (value.type() == QVariant::Int || value.type() == QVariant::LongLong)
         {

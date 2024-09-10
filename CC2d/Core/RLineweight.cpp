@@ -33,7 +33,6 @@ void RLineweight::init()
     {
         isInitialized = true;
         init(tr("By Layer"), RLineweight::WeightByLayer);
-        init(tr("By Block"), RLineweight::WeightByBlock);
         init(tr("Default"), RLineweight::WeightByLwDefault);
         init(tr("0.00mm"), RLineweight::Weight000);
         init(tr("0.05mm"), RLineweight::Weight005);
@@ -90,11 +89,6 @@ RLineweight::getList(bool onlyFixed, bool noDefault)
             name = getName(RLineweight::WeightByLayer);
             l.removeAll(QPair<QString, RLineweight::Lineweight>(
                     name, RLineweight::Lineweight(RLineweight::WeightByLayer)));
-
-            // remove "By Block"
-            name = getName(RLineweight::WeightByBlock);
-            l.removeAll(QPair<QString, RLineweight::Lineweight>(
-                    name, RLineweight::Lineweight(RLineweight::WeightByBlock)));
         }
 
         if (noDefault)

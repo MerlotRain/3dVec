@@ -44,7 +44,7 @@ void RDimStyleData::initDefaults()
     mapDefaults[RS::DIMTIH] = false;
     mapDefaults[RS::DIMDLI] = 5.0;
     QVariant v;
-    v.setValue<RColor>(RColor(RColor::ByBlock));
+    v.setValue<RColor>(RColor(RColor::ByLayer));
     mapDefaults[RS::DIMCLRT] = v;
     mapDefaults[RS::DIMTSZ] = 0.0;
     mapDefaults[RS::DIMLUNIT] = RS::Decimal;

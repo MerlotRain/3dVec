@@ -36,7 +36,7 @@
 #endif
 
 /**
- * Color. Fixed RGBA or ByLayer or ByBlock.
+ * Color. Fixed RGBA or ByLayer.
  *
  * \ingroup core
  * \scriptable
@@ -52,7 +52,6 @@ public:
     enum Mode
     {
         ByLayer,
-        ByBlock,
         Fixed
     };
 
@@ -99,7 +98,6 @@ public:
     bool isValid() const;
     QString getName() const;
     bool isByLayer() const;
-    bool isByBlock() const;
     bool isFixed() const;
 
     QColor toCompat() const;
@@ -125,7 +123,6 @@ public:
 
 public:
     static QColor CompatByLayer;
-    static QColor CompatByBlock;
 
 private:
     static void init();

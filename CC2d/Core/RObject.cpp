@@ -18,7 +18,6 @@
  */
 #include <QMetaType>
 
-#include "RBlock.h"
 #include "RDocument.h"
 #include "RLayer.h"
 #include "RObject.h"
@@ -100,47 +99,8 @@ void RObject::setUndone(bool on)
             }
         }
 
-        // current block is undone:
-        // change current block:
-        RBlock *block = dynamic_cast<RBlock *>(this);
-        if (block != NULL)
-        {
-            if (block->getId() == document->getCurrentBlockId())
-            {
-                document->setCurrentBlock(document->getModelSpaceBlockId());
-            }
-        }
     }
 }
-
-//QList<RProperty> RObject::getAllProperties(bool showOnRequest) const {
-//    Q_UNUSED(showOnRequest)
-
-//    QList<RProperty> ret;
-
-//    ret << RProperty(RObject::PropertyType, getType(), RPropertyAttributes(RPropertyAttributes::ReadOnly));
-//    ret << RProperty(RObject::PropertyHandle, getHandle(), RPropertyAttributes(RPropertyAttributes::ReadOnly));
-
-//    if (customProperties.contains("QCAD")) {
-//        const QVariantMap& vm = customProperties["QCAD"];
-
-//        //QVariantMap::const_iterator it;
-//        //for (it=vm.constBegin(); it!=vm.constEnd(); it++) {
-//        QStringList propertyKeys = vm.keys();
-//        for (int i=0; i<propertyKeys.length(); i++) {
-//            const QString& propertyKey = propertyKeys[i];
-//            const QVariant& v = vm[propertyKey];
-//            if (v.type()==QVariant::Int) {
-//                ret << RProperty(RPropertyTypeId("QCAD", propertyKey), v, RPropertyAttributes(RPropertyAttributes::Custom|RPropertyAttributes::Integer));
-//            }
-//            else {
-//                ret << RProperty(RPropertyTypeId("QCAD", propertyKey), v, RPropertyAttributes(RPropertyAttributes::Custom));
-//            }
-//        }
-//    }
-
-//    return ret;
-//}
 
 QPair<QVariant, RPropertyAttributes>
 RObject::getProperty(RPropertyTypeId &propertyTypeId, bool humanReadable,
@@ -380,68 +340,6 @@ bool RObject::setMemberVector(QList<RVector> &variable, const QVariant &value,
         variable.clear();
         return true;
     }
-
-    // if (!value.canConvert<QList<QPair<int, double>>>())
-    // {
-    //     qWarning() << "RObject::setMemberVector: '" << value
-    //                << "' is not a QList<QPair<int, double> >";
-    //     return false;
-    // }
-
-    // QList<QPair<int, double>> pairList =
-    //         value.value<QList<QPair<int, double>>>();
-    // QList<QPair<int, double>>::iterator it;
-    // int offset = 0;
-    // for (it = pairList.begin(); it != pairList.end(); ++it)
-    // {
-    //     int i = (*it).first;
-    //     double v = (*it).second;
-
-    //     // entry was removed:
-    //     if (RMath::isNaN(v) && i - offset < variable.size())
-    //     {
-    //         variable.removeLast();
-    //         offset++;
-    //     }
-
-    //     // entry was added:
-    //     else if (i >= variable.size())
-    //     {
-    //         switch (xyz)
-    //         {
-    //             case RObject::X:
-    //                 variable.append(RVector(v, 0.0, 0.0));
-    //                 break;
-    //             case RObject::Y:
-    //                 variable.append(RVector(0.0, v, 0.0));
-    //                 break;
-    //             case RObject::Z:
-    //                 variable.append(RVector(0.0, 0.0, v));
-    //                 break;
-    //         }
-    //     }
-
-    //     // entry was changed:
-    //     else if (i < variable.size())
-    //     {
-    //         switch (xyz)
-    //         {
-    //             case RObject::X:
-    //                 variable[i].x = v;
-    //                 break;
-    //             case RObject::Y:
-    //                 variable[i].y = v;
-    //                 break;
-    //             case RObject::Z:
-    //                 variable[i].z = v;
-    //                 break;
-    //         }
-    //         variable[i].valid = true;
-    //     }
-
-    //     else { Q_ASSERT(false); }
-    // }
-
     return true;
 }
 
@@ -451,41 +349,6 @@ bool RObject::setMemberVector(QList<RVector> &variable, const QVariant &value,
 bool RObject::setMember(QList<double> &variable, const QVariant &value,
                         bool condition)
 {
-    // if (!condition) { return false; }
-    // if (!value.canConvert<QList<QPair<int, double>>>())
-    // {
-    //     qWarning() << QString("RObject::setMember: '%1' is not a "
-    //                           "QList<QPair<int, double> >")
-    //                           .arg(value.toString());
-    //     return false;
-    // }
-
-    // QList<QPair<int, double>> pairList =
-    //         value.value<QList<QPair<int, double>>>();
-    // QList<QPair<int, double>>::iterator it;
-
-    // int offset = 0;
-    // for (it = pairList.begin(); it != pairList.end(); ++it)
-    // {
-    //     int i = (*it).first;
-    //     double v = (*it).second;
-
-    //     // entry was removed:
-    //     if (RMath::isNaN(v) && i - offset < variable.size())
-    //     {
-    //         variable.removeLast();
-    //         offset++;
-    //     }
-
-    //     // entry was added:
-    //     else if (i >= variable.size()) { variable.append(v); }
-
-    //     // entry was changed:
-    //     else if (i < variable.size()) { variable[i] = v; }
-
-    //     else { Q_ASSERT(false); }
-    // }
-
     return true;
 }
 

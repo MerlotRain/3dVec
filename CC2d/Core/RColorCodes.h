@@ -18,7 +18,6 @@
  */
 
 const double RColor::cadColors[][3] = {
-        {     0,      0,      0}, // ByBlock (unused in this array)
         {     1,      0,      0}, // 1
         {     1,      1,      0},
         {     0,      1,      0},

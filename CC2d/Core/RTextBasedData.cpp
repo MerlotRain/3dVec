@@ -388,16 +388,6 @@ QList<RTextLayout> RTextBasedData::getTextLayouts() const
 }
 
 /**
- * \return List of text data objects representing simple texts.
- * Complex formatted texts are split up into smaller text blocks,
- * each with unique formatting, color, etc.
- */
-QList<RTextBasedData> RTextBasedData::getSimpleTextBlocks()
-{
-    return QList<RTextBasedData>();
-}
-
-/**
  * Converts the given text document (typically from a QTextEdit) into
  * CAD escaped text.
  *

@@ -43,7 +43,6 @@ class QCADCORE_EXPORT RTextBasedEntity : public REntity
 public:
     static RPropertyTypeId PropertyHandle;
     static RPropertyTypeId PropertyType;
-    static RPropertyTypeId PropertyBlock;
     static RPropertyTypeId PropertyLayer;
     static RPropertyTypeId PropertyLinetype;
     static RPropertyTypeId PropertyLinetypeScale;
@@ -225,11 +224,6 @@ public:
     void sync(const RTextBasedEntity &other)
     {
         getData().sync(other.getData());
-    }
-
-    QList<RTextBasedData> getSimpleTextBlocks()
-    {
-        return getData().getSimpleTextBlocks();
     }
 };
 

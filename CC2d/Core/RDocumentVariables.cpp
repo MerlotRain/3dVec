@@ -25,12 +25,10 @@ RPropertyTypeId RDocumentVariables::PropertyCurrentLayerId;
 RPropertyTypeId RDocumentVariables::PropertyUnit;
 RPropertyTypeId RDocumentVariables::PropertyLinetypeScale;
 RPropertyTypeId RDocumentVariables::PropertyDimensionFont;
-RPropertyTypeId RDocumentVariables::PropertyWorkingSetBlockReferenceId;
 
 RDocumentVariables::RDocumentVariables(RDocument *document)
     : RObject(document), currentLayerId(RLayer::INVALID_ID), unit(RS::None),
-      measurement(RS::UnknownMeasurement), linetypeScale(1.0),
-      workingSetBlockReferenceId(RObject::INVALID_ID)
+      measurement(RS::UnknownMeasurement), linetypeScale(1.0)
 {
 }
 
@@ -54,9 +52,6 @@ void RDocumentVariables::init()
     RDocumentVariables::PropertyDimensionFont.generateId(
             RDocumentVariables::getRtti(), "",
             QT_TRANSLATE_NOOP("RDocumentVariables", "Dimension Font"));
-    RDocumentVariables::PropertyWorkingSetBlockReferenceId.generateId(
-            RDocumentVariables::getRtti(), "",
-            "Working Set Block Reference Id");
 }
 
 QPair<QVariant, RPropertyAttributes>
@@ -85,12 +80,6 @@ RDocumentVariables::getProperty(RPropertyTypeId &propertyTypeId,
         return qMakePair(QVariant(dimensionFont), RPropertyAttributes());
     }
 
-    if (propertyTypeId == PropertyWorkingSetBlockReferenceId)
-    {
-        return qMakePair(QVariant(workingSetBlockReferenceId),
-                         RPropertyAttributes());
-    }
-
     return RObject::getProperty(propertyTypeId, humanReadable, noAttributes,
                                 showOnRequest);
 }
@@ -110,9 +99,6 @@ bool RDocumentVariables::setProperty(RPropertyTypeId propertyTypeId,
                                     PropertyLinetypeScale == propertyTypeId);
     ret = ret || RObject::setMember(dimensionFont, value,
                                     PropertyDimensionFont == propertyTypeId);
-    ret = ret || RObject::setMember(workingSetBlockReferenceId, value,
-                                    PropertyWorkingSetBlockReferenceId ==
-                                            propertyTypeId);
 
     ret = ret || RObject::setProperty(propertyTypeId, value, transaction);
 

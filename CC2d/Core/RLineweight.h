@@ -71,7 +71,6 @@ public:
         Weight200 = 200,
         Weight211 = 211,
         WeightByLayer = -1,
-        WeightByBlock = -2,
         WeightByLwDefault = -3,
         WeightInvalid = -4
     };

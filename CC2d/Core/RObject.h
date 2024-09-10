@@ -248,8 +248,6 @@ public:
 
     virtual int getComplexity() const { return 0; }
 
-    virtual void setAutoUpdatesBlocked(bool on) { Q_UNUSED(on) }
-
     virtual bool validate() { return true; }
 
 protected:

@@ -181,9 +181,6 @@ bool RLinetypePattern::operator<(const RLinetypePattern &other) const
     if (n1 == "bylayer") { return true; }
     if (n2 == "bylayer") { return false; }
 
-    if (n1 == "byblock") { return true; }
-    if (n2 == "byblock") { return false; }
-
     if (n1 == "continuous") { return true; }
     if (n2 == "continuous") { return false; }
 
@@ -700,7 +697,6 @@ double RLinetypePattern::getLargestGap() const
 void RLinetypePattern::initNameMap()
 {
     nameMap.insert("BYLAYER", tr("By Layer"));
-    nameMap.insert("BYBLOCK", tr("By Block"));
     nameMap.insert("CONTINUOUS", tr("Continuous"));
 
     nameMap.insert("BORDER", tr("Border"));

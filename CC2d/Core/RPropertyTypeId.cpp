@@ -24,7 +24,6 @@
 
 long int RPropertyTypeId::counter = 0;
 const long int RPropertyTypeId::INVALID_ID = -1;
-//const QString RPropertyTypeId::blockAttributePrefix = "[[QCAD BLOCK ATTRIBUTE]]";
 
 QMap<RS::EntityType, QSet<RPropertyTypeId>>
         RPropertyTypeId::propertyTypeByObjectMap;
@@ -182,11 +181,6 @@ RPropertyTypeId RPropertyTypeId::getPropertyTypeId(const QString &groupTitle,
  */
 QString RPropertyTypeId::getPropertyGroupTitle() const
 {
-    // TODO: make translatable
-    //    if (isBlockAttribute()) {
-    //        return "Block Attributes";
-    //    }
-    //    else
     if (isCustom())
     {
         if (!customPropertyTitle.isEmpty()) { return customPropertyTitle; }
@@ -214,46 +208,6 @@ bool RPropertyTypeId::isCustom() const
     return id == INVALID_ID && !customPropertyName.isEmpty();
 }
 
-//bool RPropertyTypeId::isBlockAttribute() const {
-//    return isCustom() && customPropertyName.startsWith(RPropertyTypeId::blockAttributePrefix);
-//}
-
-//QString RPropertyTypeId::getBlockAttributeTag() const {
-//    if (!isBlockAttribute()) {
-//        return "";
-//    }
-
-//    QStringList parts = customPropertyName.split("|||");
-//    if (parts.length()!=3) {
-//        return "";
-//    }
-//    return parts[0];
-//}
-
-//QString RPropertyTypeId::getBlockAttributePrompt() const {
-//    if (!isBlockAttribute()) {
-//        return "";
-//    }
-
-//    QStringList parts = customPropertyName.split("|||");
-//    if (parts.length()!=3) {
-//        return "";
-//    }
-//    return parts[1];
-//}
-
-//QString RPropertyTypeId::getBlockAttributeId() const {
-//    if (!isBlockAttribute()) {
-//        return "";
-//    }
-
-//    QStringList parts = customPropertyName.split("|||");
-//    if (parts.length()!=3) {
-//        return "";
-//    }
-//    return parts[2];
-//}
-
 /**
  * \return The internal ID of this property.
  */
@@ -276,9 +230,6 @@ void RPropertyTypeId::setCustomPropertyTitle(const QString &t)
  */
 QString RPropertyTypeId::getCustomPropertyName() const
 {
-    //    if (isBlockAttribute()) {
-    //        return customPropertyName.mid(RPropertyTypeId::blockAttributePrefix.length());
-    //    }
     return customPropertyName;
 }
 

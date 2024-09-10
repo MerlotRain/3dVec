@@ -29,15 +29,6 @@
 
 class QTextDocument;
 
-/**
- * Stores and manages all data that defines the geometry and
- * appearance of a text based entity (text, block attribute, block attribute definition).
- *
- * \scriptable
- * \sharedPointerSupport
- * \copyable
- * \ingroup entity
- */
 class QCADCORE_EXPORT RTextBasedData : public REntityData
 {
     friend class RTextBasedEntity;
@@ -345,8 +336,6 @@ public:
                                             bool limited) const;
 
     QList<RTextLayout> getTextLayouts() const;
-
-    QList<RTextBasedData> getSimpleTextBlocks();
 
     static QString toEscapedText(const QTextDocument &textDocument,
                                  const RColor &initialColor,
