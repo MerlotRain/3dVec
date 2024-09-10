@@ -20,7 +20,7 @@
 #ifndef RARCDATA_H
 #define RARCDATA_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "RArc.h"
 #include "RBox.h"
@@ -37,7 +37,7 @@
  * \copyable
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RArcData : public REntityData, public RArc
+class CC2DCORE_EXPORT RArcData : public REntityData, public RArc
 {
 
     friend class RArcEntity;

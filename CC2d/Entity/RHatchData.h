@@ -20,7 +20,7 @@
 #ifndef RHATCHDATA_H
 #define RHATCHDATA_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "RBox.h"
 #include "RDocument.h"
@@ -43,7 +43,7 @@
  * \copyable
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RHatchData : public REntityData
+class CC2DCORE_EXPORT RHatchData : public REntityData
 {
 
     friend class RHatchEntity;

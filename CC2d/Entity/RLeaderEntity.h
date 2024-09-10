@@ -20,7 +20,7 @@
 #ifndef RLEADERENTITY_H
 #define RLEADERENTITY_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "REntity.h"
 #include "RLeaderData.h"
@@ -34,7 +34,7 @@ class RDocument;
  * \sharedPointerSupport
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RLeaderEntity : public REntity
+class CC2DCORE_EXPORT RLeaderEntity : public REntity
 {
     Q_DECLARE_TR_FUNCTIONS(RLeaderEntity)
 

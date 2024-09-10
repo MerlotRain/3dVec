@@ -20,7 +20,7 @@
 #ifndef RSOLIDDATA_H
 #define RSOLIDDATA_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "RBox.h"
 #include "RDocument.h"
@@ -38,7 +38,7 @@ class RTriangle;
  * \copyable
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RSolidData : public REntityData, public RPolyline
+class CC2DCORE_EXPORT RSolidData : public REntityData, public RPolyline
 {
 
     friend class RSolidEntity;

@@ -35,7 +35,7 @@ class RMouseEvent;
  *
  * \ingroup snap
  */
-class QCADSNAP_EXPORT RSnapReference : public RSnapEntityBase
+class CC2DCORE_EXPORT RSnapReference : public RSnapEntityBase
 {
 public:
     RSnapReference() : RSnapEntityBase(RSnap::Reference) {}

@@ -33,7 +33,7 @@ class RDocumentInterface;
  *
  * \ingroup snap
  */
-class QCADSNAP_EXPORT RRestrictVertical : public RRestrictOrthogonal
+class CC2DCORE_EXPORT RRestrictVertical : public RRestrictOrthogonal
 {
 public:
     RRestrictVertical(RDocumentInterface *documentInterface)

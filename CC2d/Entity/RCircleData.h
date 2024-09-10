@@ -20,7 +20,7 @@
 #ifndef RCIRCLEDATA_H
 #define RCIRCLEDATA_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "RBox.h"
 #include "RCircle.h"
@@ -37,7 +37,7 @@
  * \copyable
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RCircleData : public REntityData, public RCircle
+class CC2DCORE_EXPORT RCircleData : public REntityData, public RCircle
 {
 
     friend class RCircleEntity;

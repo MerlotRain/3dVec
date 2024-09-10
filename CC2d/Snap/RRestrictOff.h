@@ -33,7 +33,7 @@ class RDocumentInterface;
  *
  * \ingroup snap
  */
-class QCADSNAP_EXPORT RRestrictOff : public RSnapRestriction
+class CC2DCORE_EXPORT RRestrictOff : public RSnapRestriction
 {
 public:
     RRestrictOff(RDocumentInterface *documentInterface = NULL)

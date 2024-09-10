@@ -20,7 +20,7 @@
 #ifndef RLEADERDATA_H
 #define RLEADERDATA_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "RDocument.h"
 #include "RPolyline.h"
@@ -34,7 +34,7 @@
  * \copyable
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RLeaderData : public REntityData, public RPolyline
+class CC2DCORE_EXPORT RLeaderData : public REntityData, public RPolyline
 {
     friend class RLeaderEntity;
 

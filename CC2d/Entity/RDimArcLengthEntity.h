@@ -34,7 +34,7 @@ class RDocument;
  * \sharedPointerSupport
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RDimArcLengthEntity : public RDimAngularEntity
+class CC2DCORE_EXPORT RDimArcLengthEntity : public RDimAngularEntity
 {
 
     Q_DECLARE_TR_FUNCTIONS(RDimArcLengthEntity)

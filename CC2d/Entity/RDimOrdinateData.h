@@ -33,7 +33,7 @@
  * \copyable
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RDimOrdinateData : public RDimensionData
+class CC2DCORE_EXPORT RDimOrdinateData : public RDimensionData
 {
     friend class RDimOrdinateEntity;
 

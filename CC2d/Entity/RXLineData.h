@@ -20,7 +20,7 @@
 #ifndef RXLINEDATA_H
 #define RXLINEDATA_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "RBox.h"
 #include "RDocument.h"
@@ -36,7 +36,7 @@
  * \copyable
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RXLineData : public REntityData, public RXLine
+class CC2DCORE_EXPORT RXLineData : public REntityData, public RXLine
 {
 
     friend class RXLineEntity;

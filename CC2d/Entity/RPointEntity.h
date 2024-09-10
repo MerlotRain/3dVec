@@ -20,7 +20,7 @@
 #ifndef RPOINTENTITY_H
 #define RPOINTENTITY_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "REntity.h"
 #include "RPointData.h"
@@ -34,7 +34,7 @@ class RDocument;
  * \sharedPointerSupport
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RPointEntity : public REntity
+class CC2DCORE_EXPORT RPointEntity : public REntity
 {
 public:
     static RPropertyTypeId PropertyHandle;

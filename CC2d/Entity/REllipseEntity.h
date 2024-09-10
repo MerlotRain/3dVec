@@ -20,7 +20,7 @@
 #ifndef RELLIPSEENTITY_H
 #define RELLIPSEENTITY_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "REllipseData.h"
 #include "REntity.h"
@@ -35,7 +35,7 @@ class RDocument;
  * \sharedPointerSupport
  * \ingroup entity
  */
-class QCADENTITY_EXPORT REllipseEntity : public REntity
+class CC2DCORE_EXPORT REllipseEntity : public REntity
 {
 public:
     static RPropertyTypeId PropertyHandle;

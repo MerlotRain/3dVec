@@ -36,7 +36,7 @@
  *
  * \todo explodable interface that returns list of REntityData, maybe base class RComposedEntityData?
  */
-class QCADENTITY_EXPORT RDimensionData : public REntityData
+class CC2DCORE_EXPORT RDimensionData : public REntityData
 {
     friend class RDimensionEntity;
 

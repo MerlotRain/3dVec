@@ -20,7 +20,7 @@
 #ifndef RIMAGEDATA_H
 #define RIMAGEDATA_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "RBox.h"
 #include "RDocument.h"
@@ -37,7 +37,7 @@
  * \copyable
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RImageData : public REntityData
+class CC2DCORE_EXPORT RImageData : public REntityData
 {
 
     friend class RImageEntity;

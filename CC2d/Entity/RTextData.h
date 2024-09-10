@@ -34,7 +34,7 @@
  * \copyable
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RTextData : public RTextBasedData
+class CC2DCORE_EXPORT RTextData : public RTextBasedData
 {
     friend class RTextEntity;
 

@@ -35,7 +35,7 @@
  * \copyable
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RDimArcLengthData : public RDimAngularData
+class CC2DCORE_EXPORT RDimArcLengthData : public RDimAngularData
 {
     friend class RDimArcLengthEntity;
 

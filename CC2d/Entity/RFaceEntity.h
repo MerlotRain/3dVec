@@ -20,7 +20,7 @@
 #ifndef RFACEENTITY_H
 #define RFACEENTITY_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "REntity.h"
 #include "RFaceData.h"
@@ -34,7 +34,7 @@ class RDocument;
  * \sharedPointerSupport
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RFaceEntity : public REntity
+class CC2DCORE_EXPORT RFaceEntity : public REntity
 {
 public:
     static RPropertyTypeId PropertyHandle;

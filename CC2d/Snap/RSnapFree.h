@@ -34,7 +34,7 @@ class RMouseEvent;
  *
  * \ingroup snap
  */
-class QCADSNAP_EXPORT RSnapFree : public RSnap
+class CC2DCORE_EXPORT RSnapFree : public RSnap
 {
 public:
     RSnapFree() : RSnap(RSnap::Free) {}

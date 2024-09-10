@@ -20,7 +20,7 @@
 #ifndef RFACEDATA_H
 #define RFACEDATA_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "RSolidData.h"
 
@@ -32,7 +32,7 @@
  * \copyable
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RFaceData : public RSolidData
+class CC2DCORE_EXPORT RFaceData : public RSolidData
 {
 
     friend class RFaceEntity;

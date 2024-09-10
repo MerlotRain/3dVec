@@ -20,7 +20,7 @@
 #ifndef RLINEENTITY_H
 #define RLINEENTITY_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "REntity.h"
 #include "RLineData.h"
@@ -35,7 +35,7 @@ class RDocument;
  * \sharedPointerSupport
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RLineEntity : public REntity
+class CC2DCORE_EXPORT RLineEntity : public REntity
 {
 public:
     static RPropertyTypeId PropertyHandle;

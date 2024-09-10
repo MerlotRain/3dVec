@@ -20,7 +20,7 @@
 #ifndef RWIPEOUTENTITY_H
 #define RWIPEOUTENTITY_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "RPolylineEntity.h"
 #include "RWipeoutData.h"
@@ -40,7 +40,7 @@ class RLine;
  * \sharedPointerSupport
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RWipeoutEntity : public REntity
+class CC2DCORE_EXPORT RWipeoutEntity : public REntity
 {
 
 public:

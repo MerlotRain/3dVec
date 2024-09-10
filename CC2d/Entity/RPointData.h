@@ -20,7 +20,7 @@
 #ifndef RPOINTDATA_H
 #define RPOINTDATA_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "RBox.h"
 #include "RDocument.h"
@@ -37,7 +37,7 @@
  * \copyable
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RPointData : public REntityData, public RPoint
+class CC2DCORE_EXPORT RPointData : public REntityData, public RPoint
 {
 
     friend class RPointEntity;

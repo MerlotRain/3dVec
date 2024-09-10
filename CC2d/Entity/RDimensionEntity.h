@@ -34,7 +34,7 @@ class RDocument;
  * \sharedPointerSupport
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RDimensionEntity : public REntity
+class CC2DCORE_EXPORT RDimensionEntity : public REntity
 {
 
     Q_DECLARE_TR_FUNCTIONS(RDimensionEntity)

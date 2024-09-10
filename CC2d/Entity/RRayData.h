@@ -20,7 +20,7 @@
 #ifndef RRAYDATA_H
 #define RRAYDATA_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "REntityData.h"
 #include "RRay.h"
@@ -33,7 +33,7 @@
  * \copyable
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RRayData : public REntityData, public RRay
+class CC2DCORE_EXPORT RRayData : public REntityData, public RRay
 {
 
     friend class RRayEntity;

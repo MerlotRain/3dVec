@@ -33,7 +33,7 @@
  * \copyable
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RDimRotatedData : public RDimLinearData
+class CC2DCORE_EXPORT RDimRotatedData : public RDimLinearData
 {
     friend class RDimRotatedEntity;
 

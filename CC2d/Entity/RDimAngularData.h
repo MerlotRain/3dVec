@@ -35,7 +35,7 @@
  * \abstract
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RDimAngularData : public RDimensionData
+class CC2DCORE_EXPORT RDimAngularData : public RDimensionData
 {
     friend class RDimAngularEntity;
 

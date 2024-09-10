@@ -20,7 +20,7 @@
 #ifndef RCIRCLENTITY_H
 #define RCIRCLENTITY_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "RCircleData.h"
 #include "REntity.h"
@@ -34,7 +34,7 @@ class RDocument;
  * \sharedPointerSupport
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RCircleEntity : public REntity
+class CC2DCORE_EXPORT RCircleEntity : public REntity
 {
 public:
     static RPropertyTypeId PropertyHandle;

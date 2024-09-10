@@ -33,7 +33,7 @@
  * \abstract
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RDimLinearData : public RDimensionData
+class CC2DCORE_EXPORT RDimLinearData : public RDimensionData
 {
     friend class RDimLinearEntity;
 

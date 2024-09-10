@@ -36,7 +36,7 @@ class RGraphicsView;
  *
  * \ingroup snap
  */
-class QCADSNAP_EXPORT RSnapAuto : public RSnap
+class CC2DCORE_EXPORT RSnapAuto : public RSnap
 {
 public:
     enum Mode
@@ -105,39 +105,11 @@ public:
     static void setFreePositioning(bool on) { setMode(FreePositioning, on); }
     static bool getFreePositioning() { return getMode(FreePositioning); }
 
-    //    static bool getGridPoints() {
-    //        return gridPoints;
-    //    }
-
-    //    static void setGridPoints(bool on) {
-    //        gridPoints = on;
-    //    }
-
-    //    static bool getFreePositioning() {
-    //        return freePositioning;
-    //    }
-
-    //    static void setFreePositioning(bool on) {
-    //        freePositioning = on;
-    //    }
-
     virtual void reset() { status = RSnap::Unknown; }
 
 private:
     static bool initialized;
-
     static Modes modes;
-
-    //    static bool intersections;
-    //    static bool endPoints;
-    //    static bool middlePoints;
-    //    static bool centerPoints;
-    //    static bool perpendicular;
-    //    static bool tangential;
-    //    static bool referencePoints;
-    //    static bool gridPoints;
-    //    static bool pointsOnEntity;
-    //    static bool freePositioning;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(RSnapAuto::Modes)

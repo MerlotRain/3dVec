@@ -20,7 +20,7 @@
 #ifndef RSOLIDENTITY_H
 #define RSOLIDENTITY_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "REntity.h"
 #include "RSolidData.h"
@@ -34,7 +34,7 @@ class RDocument;
  * \sharedPointerSupport
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RSolidEntity : public REntity
+class CC2DCORE_EXPORT RSolidEntity : public REntity
 {
 public:
     static RPropertyTypeId PropertyHandle;

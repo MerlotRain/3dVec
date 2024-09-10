@@ -20,7 +20,7 @@
 #ifndef RTRACEENTITY_H
 #define RTRACEENTITY_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "REntity.h"
 #include "RTraceData.h"
@@ -35,7 +35,7 @@ class RDocument;
  * \sharedPointerSupport
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RTraceEntity : public REntity
+class CC2DCORE_EXPORT RTraceEntity : public REntity
 {
 
 public:

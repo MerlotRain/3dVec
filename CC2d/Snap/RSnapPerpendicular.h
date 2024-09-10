@@ -33,7 +33,7 @@ class RMouseEvent;
  *
  * \ingroup snap
  */
-class QCADSNAP_EXPORT RSnapPerpendicular : public RSnapEntityBase
+class CC2DCORE_EXPORT RSnapPerpendicular : public RSnapEntityBase
 {
 public:
     RSnapPerpendicular() : RSnapEntityBase(RSnap::Perpendicular) {}

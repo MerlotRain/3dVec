@@ -36,7 +36,7 @@ class RMouseEvent;
  *
  * \ingroup snap
  */
-class QCADSNAP_EXPORT RSnapIntersection : public RSnap
+class CC2DCORE_EXPORT RSnapIntersection : public RSnap
 {
 public:
     RSnapIntersection() : RSnap(RSnap::Intersection) {}

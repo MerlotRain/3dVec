@@ -20,7 +20,7 @@
 #ifndef RELLIPSEDATA_H
 #define RELLIPSEDATA_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "RBox.h"
 #include "RDocument.h"
@@ -37,7 +37,7 @@
  * \copyable
  * \ingroup entity
  */
-class QCADENTITY_EXPORT REllipseData : public REntityData, public REllipse
+class CC2DCORE_EXPORT REllipseData : public REntityData, public REllipse
 {
 
     friend class REllipseEntity;

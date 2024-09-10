@@ -20,7 +20,7 @@
 #ifndef RPOLYLINEDATA_H
 #define RPOLYLINEDATA_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "RBox.h"
 #include "RDocument.h"
@@ -40,7 +40,7 @@
  * \copyable
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RPolylineData : public REntityData, public RPolyline
+class CC2DCORE_EXPORT RPolylineData : public REntityData, public RPolyline
 {
 
     friend class RPolylineEntity;

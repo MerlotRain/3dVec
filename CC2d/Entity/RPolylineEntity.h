@@ -20,7 +20,7 @@
 #ifndef RPOLYLINEENTITY_H
 #define RPOLYLINEENTITY_H
 
-#include <CC2dEntityExport.h>
+#include <CC2dCoreExport.h>
 
 #include "REntity.h"
 #include "RPolylineData.h"
@@ -40,7 +40,7 @@ class RLine;
  * \sharedPointerSupport
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RPolylineEntity : public REntity
+class CC2DCORE_EXPORT RPolylineEntity : public REntity
 {
 
 public:

@@ -35,17 +35,6 @@
 bool RSnapAuto::initialized = false;
 RSnapAuto::Modes RSnapAuto::modes = RSnapAuto::None;
 
-//bool RSnapAuto::intersections = false;
-//bool RSnapAuto::endPoints = false;
-//bool RSnapAuto::middlePoints = false;
-//bool RSnapAuto::centerPoints = false;
-//bool RSnapAuto::perpendicular = false;
-//bool RSnapAuto::tangential = false;
-//bool RSnapAuto::referencePoints = false;
-//bool RSnapAuto::gridPoints = false;
-//bool RSnapAuto::pointsOnEntity = false;
-//bool RSnapAuto::freePositioning = false;
-
 RVector RSnapAuto::snap(const RVector &position, RGraphicsView &view,
                         double range)
 {
@@ -316,20 +305,5 @@ RVector RSnapAuto::snap(const RVector &position, RGraphicsView &view,
 void RSnapAuto::init(bool force)
 {
     if (initialized && !force) { return; }
-
-    setIntersections(RSettings::getBoolValue("AutoSnap/Intersections", true));
-    setEndPoints(RSettings::getBoolValue("AutoSnap/EndPoints", true));
-    setMiddlePoints(RSettings::getBoolValue("AutoSnap/MiddlePoints", true));
-    setCenterPoints(RSettings::getBoolValue("AutoSnap/CenterPoints", false));
-    setPerpendicular(RSettings::getBoolValue("AutoSnap/Perpendicular", true));
-    setTangential(RSettings::getBoolValue("AutoSnap/Tangential", true));
-    setReferencePoints(
-            RSettings::getBoolValue("AutoSnap/ReferencePoints", true));
-    setGridPoints(RSettings::getBoolValue("AutoSnap/GridPoints", true));
-    setPointsOnEntity(
-            RSettings::getBoolValue("AutoSnap/PointsOnEntity", false));
-    setFreePositioning(
-            RSettings::getBoolValue("AutoSnap/FreePositioning", true));
-
     initialized = true;
 }

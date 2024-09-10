@@ -34,7 +34,7 @@ class RDocumentInterface;
  *
  * \ingroup snap
  */
-class QCADSNAP_EXPORT RRestrictAngleLength : public RSnapRestriction
+class CC2DCORE_EXPORT RRestrictAngleLength : public RSnapRestriction
 {
 public:
     enum AngleLengthMode

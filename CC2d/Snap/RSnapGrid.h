@@ -34,7 +34,7 @@ class RMouseEvent;
  *
  * \ingroup snap
  */
-class QCADSNAP_EXPORT RSnapGrid : public RSnap
+class CC2DCORE_EXPORT RSnapGrid : public RSnap
 {
 public:
     RSnapGrid() : RSnap(RSnap::Grid) {}

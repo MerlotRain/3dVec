@@ -35,7 +35,7 @@
  * \copyable
  * \ingroup entity
  */
-class QCADENTITY_EXPORT RDimAngular2LData : public RDimAngularData
+class CC2DCORE_EXPORT RDimAngular2LData : public RDimAngularData
 {
     friend class RDimAngular2LEntity;
 
