@@ -19,7 +19,6 @@
 #include "RTransaction.h"
 #include "RDocument.h"
 #include "RLinetype.h"
-#include "RLinkedStorage.h"
 #include "RMemoryStorage.h"
 #include "RStorage.h"
 

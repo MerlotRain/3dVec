@@ -19,7 +19,6 @@ set(core_SRCS
     RLinetypeListMetric.cpp
     RLinetypePattern.cpp
     RLineweight.cpp
-    RLinkedStorage.cpp
     RMemoryStorage.cpp
     RObject.cpp
     RPattern.cpp
@@ -86,7 +85,6 @@ set(core_HDRS
     RLinetypeListMetric.h
     RLinetypePattern.h
     RLineweight.h
-    RLinkedStorage.h
     RMemoryStorage.h
     RObject.h
     RPattern.h

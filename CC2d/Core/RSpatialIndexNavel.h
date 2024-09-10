@@ -26,7 +26,7 @@
 #include <QSet>
 #include <QtGlobal>
 #include "RSpatialIndex.h"
-#include "include/spatialindex/SpatialIndex.h"
+#include <spatialindex/SpatialIndex.h>
 
 /**
  * \brief Spatial index class. 
