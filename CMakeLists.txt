@@ -36,8 +36,8 @@ set(CMAKE_AUTOUIC ON)
 
 include(GenerateExportHeader)
 
-add_subdirectory(external)
-add_subdirectory(CCCoreLib)
-#add_subdirectory(CCFbo)
-#add_subdirectory(CCdb)
+# add_subdirectory(external)
+# add_subdirectory(CCCoreLib)
+# add_subdirectory(CCFbo)
+# add_subdirectory(CCdb)
 add_subdirectory(CC2d)

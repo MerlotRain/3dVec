@@ -1,12 +1,6 @@
-[submodule "external/libspatialindex"]
-	path = external/libspatialindex
-	url = https://github.com/libspatialindex/libspatialindex.git
 [submodule "external/libdxfrw"]
 	path = external/libdxfrw
 	url = https://github.com/codelibs/libdxfrw.git
-[submodule "external/shapelib"]
-	path = external/shapelib
-	url = https://github.com/OSGeo/shapelib.git
 [submodule "external/libredwg"]
 	path = external/libredwg
 	url = https://github.com/LibreDWG/libredwg.git
