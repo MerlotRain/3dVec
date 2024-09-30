@@ -1,43 +1,22 @@
 cmake_minimum_required(VERSION 3.10)
 project(GLCAD)
 
-set(BUILD_WITH_QT6 FALSE CACHE BOOL "Enable (experimental) Qt6 support")
-if(BUILD_WITH_QT6)
-    set(QT_VERSION_MAJOR 6)
-    set(QT_MIN_VERSION 6.4.0)
-    set(QT_VERSION_BASE "Qt6")
-    set(QT_VERSION_BASE_LOWER "qt6")
-    set(CMAKE_CXX_STANDARD 17)
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
-else()
-    set(QT_VERSION_MAJOR 5)
-    set(QT_MIN_VERSION 5.15.2)
-    set(QT_VERSION_BASE "Qt5")
-    set(QT_VERSION_BASE_LOWER "qt5")
-    set(HAS_KDE_QT5_PDF_TRANSFORM_FIX FALSE CACHE BOOL "Using KDE's Qt 5.15 fork with the PDF brush transform fix")
-    set(HAS_KDE_QT5_SMALL_CAPS_FIX FALSE CACHE BOOL "Using KDE's Qt 5.15 fork with the QFont stretch fix")
-endif()
-
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
 
-message("QT_VERSION_BASE=${QT_VERSION_BASE}")
-find_package(${QT_VERSION_BASE} COMPONENTS Core Gui Widgets Concurrent OpenGL Xml Network REQUIRED)
-if(BUILD_WITH_QT6)
-    find_package(${QT_VERSION_BASE} COMPONENTS OpenGLWidgets REQUIRED)
-else()
-    find_package(${QT_VERSION_BASE} COMPONENTS OpenGLExtensions REQUIRED)
-endif()
-
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
-
 include(GenerateExportHeader)
 
-# add_subdirectory(external)
-# add_subdirectory(CCCoreLib)
-# add_subdirectory(CCFbo)
-# add_subdirectory(CCdb)
-add_subdirectory(CC2d)
+find_package(PkgConfig REQUIRED)
+
+# Check for Boost
+find_package(Boost REQUIRED COMPONENTS serialization)
+# Check for CGAL
+find_package(CGAL REQUIRED)
+# Check for Eigen
+find_package(Eigen3 REQUIRED)
+# Check for VTK
+find_package(VTK REQUIRED)
+
+
+add_subdirectory(math)
